@@ -1,0 +1,14 @@
+#navbar {
+    /* needed to use important to override bootstrap */
+    margin-bottom: 0 !important;
+    z-index: 101;
+}
+
+.navbar-brand {
+    box-shadow: none;
+    background: none;
+}
+
+.sidebar-sticky {
+    padding-top: 16px;
+}

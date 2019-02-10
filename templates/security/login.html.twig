@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html.twig' %}
+
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <h1>Log in</h1>
+
+    {{ form_start(loginForm, {'action': path('app_login'), 'method': 'POST'}) }}
+    {{ form_row(loginForm.email) }}
+    {{ form_row(loginForm.plainPassword) }}
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <button type="submit">Log in</button>
+    {{ form_end(loginForm) }}
+
+
+{% endblock %}

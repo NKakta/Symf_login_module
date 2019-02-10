@@ -1,0 +1,54 @@
+security:
+    role_hierarchy:
+            ROLE_ADMIN: [ROLE_USER]
+
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+        App\Entity\User:
+                    algorithm: bcrypt
+
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        chain_provider:
+            chain:
+                providers: [ in_memory, db_provider ]
+        in_memory:
+            memory:
+                users:
+                    admin@admin.lt:
+                        password: $2y$13$st6a8CcDt/X2ng.8b2brEeP0C/MiXSr78er4lTlnWIKzcCJv2ZF8y
+                        roles: 'ROLE_ADMIN'
+        db_provider:
+            entity:
+                class: App\Entity\User
+                #property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            #pattern: ^/
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+            provider: chain_provider
+            #form_login:
+                #username_parameter: "login_form[email]"
+                #login_path: login
+                #check_path: login
+            #logout: true
+            anonymous: ~
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        #- { path: ^/registration-form-submission$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/(login|register)$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/, role: ROLE_USER }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
