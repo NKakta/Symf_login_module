@@ -3,15 +3,15 @@
 {% block title %} Users {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('new_user') }}">Create new User</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_user') }}">Create new User</a>
     {% for user in users %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <span class="h2">{{ user.email }}</span>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Show</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_user', { 'id': user.id }) }}">Show</a>
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_user', { 'id': user.id }) }}">Edit</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Delete</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_user', { 'id': user.id }) }}">Delete</a>
             </div>
         </div>
     </div>

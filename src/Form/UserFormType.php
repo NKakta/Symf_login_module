@@ -20,16 +20,14 @@ class UserFormType extends AbstractType
         $builder
             ->add('username', TextType::class)
             ->add('email', EmailType::class)
-            ->add('roles', CollectionType::class, [
+            ->add('roles', ChoiceType::class, [
                 'label' => 'Role',
-                'entry_type' => ChoiceType::class,
-                'entry_options' => [
-                    'choices' => [
-                        'Admin' => 'ROLE_ADMIN',
-                        'User' => 'ROLE_USER',
-                    ],
+                'choices' => [
+                    'Admin' => 'ROLE_ADMIN',
+                    'User' => 'ROLE_USER',
                 ],
-
+                'multiple' => true,
+                'expanded' => true,
             ])
             ->add('plainPassword', PasswordType::class);
     }

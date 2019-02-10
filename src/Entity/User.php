@@ -141,6 +141,10 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getRoleStr() {
+        return implode(',', $this->roles);
+    }
+
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -150,7 +154,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        //Im usin bcrypt so no need for salt
+        //Im using bcrypt so no need for salt
     }
 
     /**
@@ -161,7 +165,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        //Actually I dont need to erase it. Im not storing it
+        //Actually I don't need to erase it. Im not storing plainPassword
         //$this->plainPassword = null;
     }
 }

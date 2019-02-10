@@ -11,28 +11,44 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-/**
- * @IsGranted("ROLE_ADMIN")
- */
+
 class UserController extends AbstractController
 {
     /**
-     * @Route("/admin/user", name="user_index")
+     * @Route("/admin", name="admin_home")
      * @Method({"GET", "POST"})
+     * @Template("admin/home.html.twig")
+     * @IsGranted("ROLE_SUPERADMIN")
      */
-    public function index()
+    public function adminDashboardAction()
     {
-
-        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return $this->render('admin/user/index.html.twig', ['users' => $users]);
     }
 
     /**
-     * @Route("/admin/user/create", name="new_user")
-     * Method({"GET", "POST"})
+     * @Route("/admin/user", name="user_index")
+     * @Method({"GET", "POST"})
+     * @Template("admin/user/index.html.twig")
+     * @IsGranted("ROLE_SUPERADMIN")
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function userListAction()
+    {
+
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        return ['users' => $users];
+    }
+
+    /**
+     * @Route("/admin/user/create", name="create_user")
+     * @Method({"GET", "POST"})
+     * @Template("admin/user/create.html.twig")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @IsGranted("ROLE_SUPERADMIN")
+     */
+    public function createUserAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
@@ -59,19 +75,19 @@ class UserController extends AbstractController
             $this->addFlash('error', 'Invalid data');
         }
 
-        return $this->render('admin/user/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return ['form' => $form->createView()];
     }
 
     /**
      * @Route("/admin/user/edit/{id}", name="edit_user")
-     * Method({"GET", "POST"})
+     * @Method({"GET", "POST"})
+     * @Template("admin/user/edit.html.twig")
      * @param Request $request
      * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return array
+     * @IsGranted("ROLE_SUPERADMIN")
      */
-    public function edit(Request $request, $id)
+    public function editUserAction(Request $request, $id)
     {
         $user = new User();
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
@@ -83,8 +99,34 @@ class UserController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('user_index');
         }
-        return $this->render('admin/user/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
+
+        return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("/admin/user/{id}", name="show_user")
+     * @Template("admin/user/show.html.twig")
+     * @param $id
+     * @return array
+     * @IsGranted("ROLE_SUPERADMIN")
+     */
+    public function showUserAction($id)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        return ['user' => $user];
+    }
+
+    /**
+     * @Route("/admin/user/remove/{id}", name="remove_user")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeUser($id)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
+        $this->addFlash('success','User has been removed');
+        return $this->redirectToRoute('user_index');
     }
 }
