@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\SearchEmailFormType;
 use App\Form\UserFormType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,12 +33,37 @@ class UserController extends AbstractController
      * @Method({"GET", "POST"})
      * @Template("admin/user/index.html.twig")
      * @IsGranted("ROLE_SUPERADMIN")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return array
      */
-    public function userListAction()
+    public function userListAction(Request $request, PaginatorInterface $paginator)
     {
+        $em = $this->getDoctrine()->getManager();
 
-        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return ['users' => $users];
+        //$users = $em->getRepository(User::class)->findAll();
+        $form = $this->createForm(SearchEmailFormType::class);
+        $queryBuilder = $em->getRepository('App\Entity\User')->createQueryBuilder('bp');
+
+        if ($request->query->getAlnum('query')) {
+            $queryBuilder
+                ->where('bp.email LIKE :email')
+                ->setParameter('email', '%'. $request->query
+                        ->getAlnum('query') . '%');
+        }
+
+        //$dql = "SELECT u FROM App:User u";
+        //$query = $em->createQuery($dql);
+
+        $query = $queryBuilder->getQuery();
+
+        $result = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 6)
+        );
+
+        return ['users' => $result, 'form' => $form->createView()];
     }
 
     /**
@@ -84,7 +111,7 @@ class UserController extends AbstractController
      * @Template("admin/user/edit.html.twig")
      * @param Request $request
      * @param $id
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @IsGranted("ROLE_SUPERADMIN")
      */
     public function editUserAction(Request $request, $id)
@@ -126,7 +153,7 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
-        $this->addFlash('success','User has been removed');
+        $this->addFlash('success', 'User has been removed');
         return $this->redirectToRoute('user_index');
     }
 }

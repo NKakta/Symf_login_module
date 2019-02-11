@@ -4,6 +4,12 @@
 
 {% block body %}
     <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_user') }}">Create new User</a>
+
+    {{ form_start(form, {'method': 'GET'}) }}
+    {{ form_row(form.query) }}
+    <button type="submit">Search</button>
+    {{ form_end(form) }}
+
     {% for user in users %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <span class="h2">{{ user.email }}</span>
@@ -16,4 +22,8 @@
         </div>
     </div>
     {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(users) }}
+    </div>
 {% endblock %}

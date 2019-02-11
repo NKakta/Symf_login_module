@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
      * @Method({"GET", "POST"})
      * @Template("security/login.html.twig")
      * @param AuthenticationUtils $authenticationUtils
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function loginAction(AuthenticationUtils $authenticationUtils)
     {
@@ -55,10 +55,10 @@ class SecurityController extends AbstractController
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return array
      * @Template("registration/register.html.twig")
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): array
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_homepage');

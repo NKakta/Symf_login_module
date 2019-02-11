@@ -35,8 +35,6 @@ class UserFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'csrf_protection' => true,
-            'csrf_field_name' => '_token',
             'data_class' => User::class,
         ]);
     }
