@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("username")
  * @UniqueEntity("email")
@@ -23,17 +24,20 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=191, unique=true)
+     * @Assert\NotBlank
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=191, unique=true)
      */
     private $password;
 
@@ -47,9 +51,10 @@ class User implements UserInterface
      */
     private $plainPassword;
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
+     * @Assert\NotBlank
      */
-    private $roles;
+    private $roles = null;
 
     public function getId(): ?int
     {
@@ -105,24 +110,10 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
@@ -141,8 +132,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoleStr() {
+    public function getRoleStr()
+    {
         return implode(',', $this->roles);
+    }
+
+    public function getPublicInfo()
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'email' => $this->email,
+        ];
     }
 
     /**
@@ -154,7 +155,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        //Im using bcrypt so no need for salt
+        //I'm using bcrypt so no need for salt
     }
 
     /**
@@ -165,7 +166,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        //Actually I don't need to erase it. Im not storing plainPassword
+        //No need to erase it. Not storing plainPassword
         //$this->plainPassword = null;
     }
 }

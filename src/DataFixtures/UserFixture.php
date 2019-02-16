@@ -24,11 +24,13 @@ class UserFixture extends Fixture
             $user = new User();
             $user->setUsername('user-'.$i);
             $user->setEmail('user-'.$i.'@mail.com');
+            $user->setRole('ROLE_USER');
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
                 'user-'.$i
             ));
             $manager->persist($user);
+            $manager->flush();
         }
     }
 }

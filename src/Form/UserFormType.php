@@ -29,7 +29,7 @@ class UserFormType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('plainPassword', PasswordType::class);
+            ->add('plainPassword', PasswordType::class, ['label' => 'Password']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

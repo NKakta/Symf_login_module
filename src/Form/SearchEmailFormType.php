@@ -14,7 +14,7 @@ class SearchEmailFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('query', TextType::class)
+            ->add('email', TextType::class)
         ;
     }
 
@@ -25,8 +25,7 @@ class SearchEmailFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-        ]);
+        $resolver->setDefaults([]);
     }
 
 

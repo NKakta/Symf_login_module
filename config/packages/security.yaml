@@ -31,6 +31,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            access_denied_handler: App\Security\AccessDeniedHandler
+
             #pattern: ^/
             guard:
                 authenticators:
@@ -39,11 +41,6 @@ security:
                 path: app_logout
                 target: app_homepage
             provider: chain_provider
-            #form_login:
-                #username_parameter: "login_form[email]"
-                #login_path: login
-                #check_path: login
-            #logout: true
             anonymous: ~
 
 

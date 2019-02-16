@@ -3,6 +3,7 @@
 namespace App\Form;
 
 //use App\Entity\Post;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +17,7 @@ class LoginFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('plainPassword', PasswordType::class)
+            ->add('plainPassword', PasswordType::class, ['label' => 'Password'])
         ;
     }
 

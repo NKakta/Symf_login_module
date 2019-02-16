@@ -3,7 +3,6 @@
 {% block title %} Users {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_user') }}">Create new User</a>
     {{ form_start(form)}}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
