@@ -22,4 +22,4 @@
 ###< symfony/web-server-bundle ###
 
 
-.idea/*
+/.idea
