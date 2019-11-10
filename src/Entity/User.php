@@ -49,11 +49,44 @@ class User implements UserInterface
      * )
      */
     private $plainPassword;
+
     /**
      * @ORM\Column(type="array")
      * @Assert\NotBlank
      */
     private $roles = null;
+
+    /**
+     * @var VacationRequest[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="VacationRequest",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $vacationRequests;
+
+    /**
+     * @var Vacation[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Vacation",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $vacations;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    private $department;
 
     public function getId(): ?int
     {
@@ -167,5 +200,53 @@ class User implements UserInterface
     {
         //No need to erase it. Not storing plainPassword
         //$this->plainPassword = null;
+    }
+
+    /**
+     * @return VacationRequest[]
+     */
+    public function getVacationRequests(): array
+    {
+        return $this->vacationRequests;
+    }
+
+    /**
+     * @param VacationRequest[] $vacationRequests
+     */
+    public function setVacationRequests(array $vacationRequests): void
+    {
+        $this->vacationRequests = $vacationRequests;
+    }
+
+    /**
+     * @return Vacation[]
+     */
+    public function getVacations(): array
+    {
+        return $this->vacations;
+    }
+
+    /**
+     * @param Vacation[] $vacations
+     */
+    public function setVacations(array $vacations): void
+    {
+        $this->vacations = $vacations;
+    }
+
+    /**
+     * @return User
+     */
+    public function getDepartment(): User
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param User $department
+     */
+    public function setDepartment(User $department): void
+    {
+        $this->department = $department;
     }
 }

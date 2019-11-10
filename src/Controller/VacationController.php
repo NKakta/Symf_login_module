@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Event\UserRegisteredEvent;
 use App\Form\UserFormType;
 use App\Repository\PictureRepository;
+use App\Repository\VacationRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,29 +21,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class PictureController extends AbstractController
+class VacationController extends AbstractController
 {
     private $repo;
 
-    public function __construct(PictureRepository $repo)
+    public function __construct(VacationRepository $repo)
     {
         $this->repo = $repo;
     }
 
-
     /**
-     * @Route("/admin/pictures", name="picture_index")
+     * @Route("/admin/vacations", name="vacation_index")
      * @Method({"GET"})
-     * @Template("picture/index.html.twig")
-     * @param Request $request
+     * @Template("vacation/index.html.twig")
      * @return array
      */
-    public function listPictures(Request $request)
+    public function listVacations()
     {
         $pictures = $this->repo->findAll();
 
-
-        return ['pictures' => $pictures];
+        return ['vacations' => $pictures];
     }
 }
 

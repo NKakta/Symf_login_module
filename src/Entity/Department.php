@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="contests")
- * @ORM\Entity(repositoryClass="App\Repository\ContestRepository")
+ * @ORM\Table(name="departments")
+ * @ORM\Entity(repositoryClass="App\Repository\DepartmentRepository")
  */
-class Contest
+class Department
 {
     /**
      * @ORM\Id()
@@ -26,11 +25,16 @@ class Contest
     private $topic;
 
     /**
-     * @var Collection
+     * @var User[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Picture", mappedBy="contests", cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="User",
+     *     mappedBy="department",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
-    private $pictures;
+    private $users;
 
     /**
      * @var \DateTime
@@ -56,8 +60,9 @@ class Contest
 
     /**
      * @param mixed $id
+     * @return Department
      */
-    public function setId($id): Contest
+    public function setId($id): Department
     {
         $this->id = $id;
 
@@ -74,8 +79,9 @@ class Contest
 
     /**
      * @param mixed $topic
+     * @return Department
      */
-    public function setTopic($topic): Contest
+    public function setTopic($topic): Department
     {
         $this->topic = $topic;
 
@@ -84,9 +90,9 @@ class Contest
 
     /**
      * @param \DateTime $dateFrom
-     * @return Contest
+     * @return Department
      */
-    public function setDateFrom(\DateTime $dateFrom): Contest
+    public function setDateFrom(\DateTime $dateFrom): Department
     {
         $this->dateFrom = $dateFrom;
 
@@ -103,9 +109,9 @@ class Contest
 
     /**
      * @param \DateTime $dateTo
-     * @return Contest
+     * @return Department
      */
-    public function setDateTo(\DateTime $dateTo): Contest
+    public function setDateTo(\DateTime $dateTo): Department
     {
         $this->dateTo = $dateTo;
 
@@ -118,5 +124,21 @@ class Contest
     public function getDateTo(): \DateTime
     {
         return $this->dateTo;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getUsers(): array
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param User[] $users
+     */
+    public function setUsers(array $users): void
+    {
+        $this->users = $users;
     }
 }
