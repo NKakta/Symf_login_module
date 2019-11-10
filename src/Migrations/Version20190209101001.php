@@ -22,8 +22,8 @@ final class Version20190209101001 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64935C246D5 ON user (password)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON users (username)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64935C246D5 ON users (password)');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,7 @@ final class Version20190209101001 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP INDEX UNIQ_8D93D649F85E0677 ON user');
-        $this->addSql('DROP INDEX UNIQ_8D93D64935C246D5 ON user');
+        $this->addSql('DROP INDEX UNIQ_8D93D649F85E0677 ON users');
+        $this->addSql('DROP INDEX UNIQ_8D93D64935C246D5 ON users');
     }
 }
