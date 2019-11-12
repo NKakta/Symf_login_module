@@ -1,24 +1,24 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Vacations {% endblock %}
+{% block title %} Orders {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Create new Vacation</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Create new Order</a>
 
-    {% for vacation in vacations %}
+    {% for order in orders %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <span class="h2">{{ vacation.user.username }} {{ vacation.dateFrom|date("m/d/Y") }} - {{ vacation.dateTo|date("m/d/Y") }}</span>
+        <span class="h2">{{ order.content }} - {{ order.dateTo|date("m/d/Y") }}</span>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Show</a>
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Edit</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Delete</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_order', { 'id': order.id }) }}">Delete</a>
             </div>
         </div>
     </div>
     {% endfor %}
 
-    {% if vacations|length < 1 %}
+    {% if orders|length < 1 %}
         <p> Nothing found. </p>
     {% endif %}
 {% endblock %}

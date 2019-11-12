@@ -3,6 +3,7 @@
 {% block title %} Users {% endblock %}
 
 {% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_index') }}">Back to Users list</a>
     {{ form_start(form)}}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}

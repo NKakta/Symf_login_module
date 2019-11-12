@@ -57,36 +57,28 @@ class User implements UserInterface
     private $roles = null;
 
     /**
-     * @var VacationRequest[]
+     * @var Order[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="VacationRequest",
-     *     mappedBy="user",
+     *     targetEntity="Order",
+     *     mappedBy="craftsman",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
      */
-    private $vacationRequests;
+    private $jobs;
 
     /**
-     * @var Vacation[]
+     * @var Order[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Vacation",
-     *     mappedBy="user",
+     *     targetEntity="Order",
+     *     mappedBy="customer",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
      */
-    private $vacations;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
-     */
-    private $department;
+    private $orders;
 
     public function getId(): ?int
     {
@@ -203,50 +195,34 @@ class User implements UserInterface
     }
 
     /**
-     * @return VacationRequest[]
+     * @return Order[]
      */
-    public function getVacationRequests(): array
+    public function getOrders(): array
     {
-        return $this->vacationRequests;
+        return $this->orders;
     }
 
     /**
-     * @param VacationRequest[] $vacationRequests
+     * @param Order[] $orders
      */
-    public function setVacationRequests(array $vacationRequests): void
+    public function setOrders(array $orders): void
     {
-        $this->vacationRequests = $vacationRequests;
+        $this->orders = $orders;
     }
 
     /**
-     * @return Vacation[]
+     * @return Order[]
      */
-    public function getVacations(): array
+    public function getJobs(): array
     {
-        return $this->vacations;
+        return $this->jobs;
     }
 
     /**
-     * @param Vacation[] $vacations
+     * @param Order[] $jobs
      */
-    public function setVacations(array $vacations): void
+    public function setJobs(array $jobs): void
     {
-        $this->vacations = $vacations;
-    }
-
-    /**
-     * @return User
-     */
-    public function getDepartment(): User
-    {
-        return $this->department;
-    }
-
-    /**
-     * @param User $department
-     */
-    public function setDepartment(User $department): void
-    {
-        $this->department = $department;
+        $this->jobs = $jobs;
     }
 }
