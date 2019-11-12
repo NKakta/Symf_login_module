@@ -2,14 +2,16 @@
 
 namespace App\Repository;
 
-use App\Entity\Department;
+use App\Entity\Resume;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DepartmentRepository extends ServiceEntityRepository
+class ResumeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Department::class);
+        parent::__construct($registry, Resume::class);
     }
+
+
 }

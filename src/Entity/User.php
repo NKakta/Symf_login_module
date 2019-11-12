@@ -41,6 +41,11 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $credits;
+
+    /**
      * @Assert\Length(
      *      min = 5,
      *      max = 40,
@@ -57,36 +62,16 @@ class User implements UserInterface
     private $roles = null;
 
     /**
-     * @var VacationRequest[]
+     * @var Resume[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="VacationRequest",
+     *     targetEntity="Resume",
      *     mappedBy="user",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
      */
-    private $vacationRequests;
-
-    /**
-     * @var Vacation[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Vacation",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $vacations;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
-     */
-    private $department;
+    private $resumes;
 
     public function getId(): ?int
     {
@@ -203,50 +188,34 @@ class User implements UserInterface
     }
 
     /**
-     * @return VacationRequest[]
+     * @return Resume[]
      */
-    public function getVacationRequests(): array
+    public function getResumes(): array
     {
-        return $this->vacationRequests;
+        return $this->resumes;
     }
 
     /**
-     * @param VacationRequest[] $vacationRequests
+     * @param Resume[] $resumes
      */
-    public function setVacationRequests(array $vacationRequests): void
+    public function setResumes(array $resumes): void
     {
-        $this->vacationRequests = $vacationRequests;
+        $this->resumes = $resumes;
     }
 
     /**
-     * @return Vacation[]
+     * @return mixed
      */
-    public function getVacations(): array
+    public function getCredits()
     {
-        return $this->vacations;
+        return $this->credits;
     }
 
     /**
-     * @param Vacation[] $vacations
+     * @param mixed $credits
      */
-    public function setVacations(array $vacations): void
+    public function setCredits($credits): void
     {
-        $this->vacations = $vacations;
-    }
-
-    /**
-     * @return User
-     */
-    public function getDepartment(): User
-    {
-        return $this->department;
-    }
-
-    /**
-     * @param User $department
-     */
-    public function setDepartment(User $department): void
-    {
-        $this->department = $department;
+        $this->credits = $credits;
     }
 }

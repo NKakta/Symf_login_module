@@ -10,7 +10,7 @@
                 <li class="nav-item">
                     <a href="{{ path('app_homepage') }}" class="nav-link">Home</a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_EMPLOYEE') %}
                     <li class="nav-item">
                         <a href="{{ path('admin_home') }}" class= "nav-link">Admin</a>
                     </li>

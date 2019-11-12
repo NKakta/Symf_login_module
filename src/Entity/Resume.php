@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="vacations")
- * @ORM\Entity(repositoryClass="App\Repository\VacationRepository")
+ * @ORM\Table(name="resumes")
+ * @ORM\Entity(repositoryClass="App\Repository\ResumeRepository")
  */
-class Vacation
+class Resume
 {
     /**
      * @ORM\Id()
@@ -26,7 +25,7 @@ class Vacation
     private $name;
 
     /**
-     * @ORM\Column(name="description", type="string", length=255, unique=false)
+     * @ORM\Column(name="description", type="text", unique=false)
      * @Assert\NotBlank
      */
     private $description;
@@ -34,21 +33,21 @@ class Vacation
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_from", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $dateFrom;
+    private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_to", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime")
      */
-    private $dateTo;
+    private $updatedAt;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="vacations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="resumes")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -63,9 +62,9 @@ class Vacation
 
     /**
      * @param mixed $id
-     * @return Vacation
+     * @return Resume
      */
-    public function setId(int $id): Vacation
+    public function setId(int $id): Resume
     {
         $this->id = $id;
 
@@ -123,33 +122,33 @@ class Vacation
     /**
      * @return \DateTime
      */
-    public function getDateFrom(): \DateTime
+    public function getCreatedAt(): \DateTime
     {
-        return $this->dateFrom;
+        return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $dateFrom
+     * @param \DateTime $createdAt
      */
-    public function setDateFrom(\DateTime $dateFrom): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
-        $this->dateFrom = $dateFrom;
+        $this->createdAt = $createdAt;
     }
 
     /**
      * @return \DateTime
      */
-    public function getDateTo(): \DateTime
+    public function getUpdatedAt(): \DateTime
     {
-        return $this->dateTo;
+        return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $dateTo
+     * @param \DateTime $updatedAt
      */
-    public function setDateTo(\DateTime $dateTo): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
-        $this->dateTo = $dateTo;
+        $this->updatedAt = $updatedAt;
     }
 
 
