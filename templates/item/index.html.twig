@@ -1,0 +1,29 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Items {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_item') }}">Create new Item</a>
+
+    {#{{ form_start(form, {'method': 'GET'}) }}#}
+    {#{{ form_row(form.email) }}#}
+    {#<button type="submit">Search</button>#}
+    {#{{ form_end(form) }}#}
+
+    {% for item in items %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <span class="h2">Name: {{ item.name }} Model: {{ item.model }}</span>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_item', { 'id': item.id }) }}">Show</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_item', { 'id': item.id }) }}">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_item', { 'id': item.id }) }}">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if items|length < 1 %}
+        <p> No items found. </p>
+    {% endif %}
+{% endblock %}

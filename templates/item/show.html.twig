@@ -1,0 +1,27 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Items {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('item_index') }}">Back to list</a>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Manufacturer</th>
+                <th>Price</th>
+                <th>Model</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.manufacturer }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.model }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

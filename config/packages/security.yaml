@@ -1,7 +1,10 @@
 security:
     role_hierarchy:
-            ROLE_ADMIN: [ROLE_USER]
             ROLE_SUPERADMIN: [ROLE_ADMIN]
+            ROLE_ADMIN: [ROLE_MANAGER, ROLE_SUPPLIER]
+            ROLE_DIRECTOR: [ROLE_MANAGER, ROLE_SUPPLIER]
+            ROLE_MANAGER: [ROLE_SUPPLIER]
+            ROLE_SUPPLIER: [ROLE_SUPPLIER]
 
     encoders:
         Symfony\Component\Security\Core\User\User:

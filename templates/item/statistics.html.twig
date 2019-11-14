@@ -1,0 +1,10 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Items statistics {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('item_index') }}">Back to list</a>
+    <div class="table-responsive">
+        This is how many items there are: {{ itemCount }}
+    </div>
+{% endblock %}

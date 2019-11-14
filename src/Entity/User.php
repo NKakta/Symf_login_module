@@ -57,36 +57,12 @@ class User implements UserInterface
     private $roles = null;
 
     /**
-     * @var VacationRequest[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="VacationRequest",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $vacationRequests;
-
-    /**
-     * @var Vacation[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Vacation",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $vacations;
-
-    /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="supplier")
+     * @ORM\JoinColumn(name="item_id", referencedColumnName="id")
      */
-    private $department;
+    private $items;
 
     public function getId(): ?int
     {
@@ -146,7 +122,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
 
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_SUPPLIER';
         return array_unique($roles);
     }
 
@@ -203,50 +179,18 @@ class User implements UserInterface
     }
 
     /**
-     * @return VacationRequest[]
-     */
-    public function getVacationRequests(): array
-    {
-        return $this->vacationRequests;
-    }
-
-    /**
-     * @param VacationRequest[] $vacationRequests
-     */
-    public function setVacationRequests(array $vacationRequests): void
-    {
-        $this->vacationRequests = $vacationRequests;
-    }
-
-    /**
-     * @return Vacation[]
-     */
-    public function getVacations(): array
-    {
-        return $this->vacations;
-    }
-
-    /**
-     * @param Vacation[] $vacations
-     */
-    public function setVacations(array $vacations): void
-    {
-        $this->vacations = $vacations;
-    }
-
-    /**
      * @return User
      */
-    public function getDepartment(): User
+    public function getItems(): User
     {
-        return $this->department;
+        return $this->items;
     }
 
     /**
-     * @param User $department
+     * @param User $items
      */
-    public function setDepartment(User $department): void
+    public function setItems(User $items): void
     {
-        $this->department = $department;
+        $this->items = $items;
     }
 }
