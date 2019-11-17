@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/s", name="app_homepage")
      * @Method({"GET", "POST"})
      * @Template("home.html.twig")
      */

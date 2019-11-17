@@ -10,11 +10,8 @@ use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -37,7 +34,7 @@ class SecurityController extends AbstractController
     public function loginAction(AuthenticationUtils $authenticationUtils)
     {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('account_index');
         }
 
         $emailConstraint = new Assert\Email();
@@ -78,7 +75,7 @@ class SecurityController extends AbstractController
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $dispatcher)
     {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('account_index');
         }
 
         $user = new User();
@@ -110,7 +107,7 @@ class SecurityController extends AbstractController
             $entityManager->commit();
             $this->addFlash('success', 'You have successfully registered');
 
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute('account_index');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {

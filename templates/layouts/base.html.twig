@@ -7,26 +7,40 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ absolute_url('assets/css/admin-style.css') }}">
+
+
+    <meta charset="utf-8">
+    <title><?php echo $config['website']['title']; ?></title>
+
+    <link rel="stylesheet" href="{{ absolute_url('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ absolute_url('assets/css/style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ absolute_url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ absolute_url('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ absolute_url('assets/js/script.js') }}"></script>
+    <link rel="icon" type="image/png" href="{{ absolute_url('assets/images/icon.png') }}">
+
+
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-    {{ include('inc/navbar.html.twig') }}
-    <div class="container">
+    {% include('inc/navbar.html.twig') %}
+    <div class="row h-100">
         {% include('inc/flash-messages.html.twig') %}
 
         {% block body %}{% endblock %}
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-        crossorigin="anonymous"></script>
+    {% include('inc/modals/modal-faq.html.twig') %}
+    {% include('inc/modals/modal-thankyou.html.twig') %}
+    {% include('inc/modals/modal-checkout.html.twig') %}
+
+    <!--<script>$('#checkoutModal').modal('show');</script>-->
+
 
     {% block javascripts %}{% endblock %}
+
 </body>
 </html>

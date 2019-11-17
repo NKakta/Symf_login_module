@@ -1,35 +1,36 @@
-<nav id="navbar" class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
-    <div class="container">
-        <a href="{{ path('app_homepage') }}" class="navbar-brand">User Module</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
-            <span class="navbar-toggle-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mobile-nav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="{{ path('app_homepage') }}" class="nav-link">Home</a>
-                </li>
-                {% if is_granted('ROLE_EMPLOYEE') %}
-                    <li class="nav-item">
-                        <a href="{{ path('admin_home') }}" class= "nav-link">Admin</a>
-                    </li>
-                {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <li class="nav-item">
-                        <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a href="{{ path('app_login') }}" class="nav-link">Log in</a>
-                    </li>
-                {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
-                    <li class="nav-item">
-                        <a href="{{ path('app_register') }}" class="nav-link">Register</a>
-                    </li>
-                {% endif %}
-            </ul>
+<nav class="navigation">
+    <div class="row">
+        <div class="col-6">
+            <img src="{{ absolute_url('assets/images/logo.png') }}" width="220px" alt="site logo">
+        </div>
+        <div class="col-6 text-right">
+            <div class="nav-social-icons justify-content-end align-items-center d-none d-md-flex">
+                <div class="faq-btn mr-4">
+                    <a href="#" data-toggle="modal" data-target="#faqModal">FAQ</a>
+                </div>
+                <div class="bubble d-flex justify-content-center align-items-center">
+                    <a target="_blank" href="#">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                </div>
+                <div class="bubble d-flex justify-content-center align-items-center">
+                    <a target="_blank" href="#">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                </div>
+                <div class="bubble d-flex justify-content-center align-items-center">
+                    <a target="_blank" href="#">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-social-icons justify-content-end align-items-center d-flex d-md-none">
+                <div class="bubble d-flex justify-content-center align-items-center">
+                    <a href="#" class="show-mobile-menu">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

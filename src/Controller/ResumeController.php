@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Resume;
+use App\Entity\Account;
 use App\Form\ResumeFormType;
-use App\Repository\ResumeRepository;
+use App\Repository\AccountRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ class ResumeController extends AbstractController
 {
     private $repo;
 
-    public function __construct(ResumeRepository $repo)
+    public function __construct(AccountRepository $repo)
     {
         $this->repo = $repo;
     }
@@ -25,7 +25,7 @@ class ResumeController extends AbstractController
     /**
      * @Route("/admin/resumes", name="resume_index")
      * @Method({"GET"})
-     * @Template("resume/index.html.twig")
+     * @Template("account/index.html.twig")
      * @return array
      */
     public function listResumes()
@@ -36,16 +36,16 @@ class ResumeController extends AbstractController
     }
 
     /**
-     * @Route("/admin/resume/create", name="create_resume")
+     * @Route("/admin/account/create", name="create_resume")
      * @Method({"GET", "POST"})
-     * @Template("resume/create.html.twig")
+     * @Template("account/create.html.twig")
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createResumeAction(Request $request)
     {
 
-        $resume = new Resume();
+        $resume = new Account();
         $form = $this->createForm(ResumeFormType::class, $resume);
         $form->handleRequest($request);
 
@@ -58,7 +58,7 @@ class ResumeController extends AbstractController
             $entityManager->persist($resume);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Resume created');
+            $this->addFlash('success', 'Account created');
 
             //Sends email to the user with login link
             return $this->redirectToRoute('resume_index');
@@ -72,13 +72,13 @@ class ResumeController extends AbstractController
     }
 
     /**
-     * @Route("/admin/resume/edit/{id}", name="edit_resume", requirements={"id"="\d+"})
+     * @Route("/admin/account/edit/{id}", name="edit_resume", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
-     * @Template("resume/edit.html.twig")
+     * @Template("account/edit.html.twig")
      */
     public function editResumeAction(Request $request, $id)
     {
-        $resume = $this->getDoctrine()->getRepository(Resume::class)->find($id);
+        $resume = $this->getDoctrine()->getRepository(Account::class)->find($id);
         $form = $this->createForm(ResumeFormType::class, $resume);
         $form->handleRequest($request);
 
@@ -92,25 +92,25 @@ class ResumeController extends AbstractController
     }
 
     /**
-     * @Route("/admin/resume/{id}", name="show_resume", requirements={"id"="\d+"})
-     * @Template("resume/show.html.twig")
+     * @Route("/admin/account/{id}", name="show_resume", requirements={"id"="\d+"})
+     * @Template("account/show.html.twig")
      */
     public function showResumeAction($id)
     {
-        $resume = $this->getDoctrine()->getRepository(Resume::class)->find($id);
-        return ['resume' => $resume];
+        $resume = $this->getDoctrine()->getRepository(Account::class)->find($id);
+        return ['account' => $resume];
     }
 
     /**
-     * @Route("resume/remove/{id}", name="remove_resume", requirements={"id"="\d+"})
+     * @Route("account/remove/{id}", name="remove_resume", requirements={"id"="\d+"})
      */
     public function removeResume($id)
     {
-        $resume = $this->getDoctrine()->getRepository(Resume::class)->find($id);
+        $resume = $this->getDoctrine()->getRepository(Account::class)->find($id);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($resume);
         $entityManager->flush();
-        $this->addFlash('success', 'Resume has been removed');
+        $this->addFlash('success', 'Account has been removed');
         return $this->redirectToRoute('resume_index');
     }
 }

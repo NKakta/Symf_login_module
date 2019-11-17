@@ -1,0 +1,44 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %} Resumes {% endblock %}
+
+{% block body %}
+    {% include('inc/sidebar-mobile.html.twig') %}
+    {% include('inc/sidebar.html.twig') %}
+    <div class="col-md-9 p-0">
+        {% include('account/inc/announcement.html.twig') %}
+        <div class="px-5 mx-5 py-4">
+            <div class="container mt-4">
+                <h4 class="m-title text-uppercase">League of Legends accounts</h4>
+                <p class="m-subtitle">Choose your package</p>
+
+                <div class="products">
+                    <div class="row pb-5">
+                        {% for product in products %}
+                        <div class="col-md-4 mt-3">
+                            <div class="product-photo">
+                                <div class="hovered-photo-bg">
+                                    <p>Buy now</p>
+                                </div>
+                                <img class="img-fluid"
+                                     src="https://lolaccounts.club/template/assets/images/products/2.png"
+                                     width="100%">
+                            </div>
+                            <div class="row product-details">
+                                <div class="col-md-6">
+                                    <h4 class="mb-0 title">{{ product.name }}</h4>
+                                    <h4 class="mb-0 stock">In stock: <span>12</span></h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <h1 class="mb-0 text-right price">{{ product.price }}$</h1>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

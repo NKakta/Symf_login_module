@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600');
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+}
+
+.navigation {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+.nav-social-icons .bubble {
+    background: transparent;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+}
+
+.faq-btn a {
+    font-weight: 600;
+    font-size: 13px;
+    color: #848484;
+}
+
+.nav-social-icons .bubble a {
+    color: #848484;
+}
+
+.menu-border-right {
+    position: relative;
+    padding-right: 0;
+    border-right: 1px solid rgba(0, 0, 0, .15);
+}
+
+.menuside .menu-footer {
+    border-top: 1px solid rgba(0, 0, 0, .15);
+    padding: 20px 10px;
+    font-size: 13px;
+    color: #848484;
+}
+
+.no-scroll {
+    overflow-y: hidden;
+}
+
+.mobile-navigation {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    background: #fff;
+    z-index: 1;
+    transition: .2s all;
+}
+
+.menuside:not(.mobile-navigation) .menu-footer {
+    position: absolute;
+    bottom: 0;
+}
+
+.menu-footer span {
+    color: #373737;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.discord-block {
+    background: #7289da;
+    color: #fff;
+    padding: 20px;
+    font-size: 12px;
+    width: 100%;
+}
+
+.discord-block h4 {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.discord-block p {
+    font-weight: 400;
+}
+
+.menu {
+    padding-bottom: 150px;
+}
+
+.menu p {
+    color: #848484;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.menu-cat h5 a {
+    color: #000;
+}
+
+.menu-cat h5 {
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.menu-cat ul {
+    list-style: none;
+}
+
+.menu-cat li {
+    text-indent: -1em;
+    font-size: 13px;
+}
+
+.menu-cat li:before {
+    content: "+";
+    padding-right: 5px;
+}
+
+.menu-cat li a {
+    color: #5D5D5D;
+}
+
+.menu-cat li a.active, .menu-cat li a:hover {
+    color: #000;
+}
+
+.menu-title-circle {
+    border-radius: 15px;
+    width: 10px;
+    height: 10px;
+    border: 3px solid #5d0de0;
+}
+
+.announcement {
+    background: #fafafa;
+    border-bottom: 1px solid #cecece;
+}
+
+.announcement h4 {
+    color: #5d0de0;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.announcement p {
+    color: #848484;
+    font-size: 12px;
+}
+
+.m-title {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #373737;
+}
+
+.m-subtitle {
+    font-size: 15px;
+    color: #848484;
+}
+
+.product-details {
+    margin-top: 5px;
+}
+
+.product-details .title {
+    color: #373737;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.product-details .stock {
+    color: #848484;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.product-details .stock span {
+    color: #373737;
+}
+
+.product-details .price {
+    color: #5d0de0;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.product-photo {
+    position: relative;
+}
+
+.product-photo:hover .hovered-photo-bg {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.product-photo .hovered-photo-bg {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(93, 13, 224, 0.7);
+    transition: .2s all;
+}
+
+.product-photo .hovered-photo-bg p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 600;
+}
+
+.product-photo .product-photo-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.product-photo .product-photo-text .product-info {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    color: #fff;
+}
+
+.product-photo .product-photo-text .product-info h1 {
+    font-weight: 700;
+}
+
+.btn-product {
+    background: #ffd060;
+    border-radius: 0;
+    width: 100%;
+    margin-top: 5px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.breadcrumb {
+    padding-left: 0;
+    padding-bottom: 0;
+    background: transparent;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "»"
+}
+
+footer {
+    color: #7289da;
+    padding: 25px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+footer h3 {
+    font-weight: 600;
+}
+
+.footer-bottom {
+    color: #8c8c8c;
+}
+
+.footer-bottom a, .footer-bottom a:hover {
+    color: #575757;
+}
+
+.modal-content {
+    border: 0;
+    border-radius: 0;
+}
+
+.modal-header {
+    border-bottom: 0;
+}
+
+.modal h4 {
+    font-weight: 600;
+    color: #373737;
+    font-size: 18px;
+}
+
+.modal .form-check.payments {
+    position: relative;
+}
+
+.modal .terms-text, .modal .rules-text {
+    color: #848484;
+}
+
+.modal .total_price_color {
+    color: #5d0de0;
+}
+
+.modal .discount-text {
+    color: #373737;
+    font-size: 14px;
+}
+
+.modal .cont-btn {
+    background: #5d0de0;
+    border: #5d0de0;
+    border-radius: 0;
+}
+
+.modal .discount-text a {
+    color: #5d0de0;
+    font-size: 14px;
+}
+
+.modal .form-check.payments input {
+    position: absolute;
+    opacity: 0;
+}
+
+.modal .form-check.payments label {
+    color: #848484;
+}
+
+.modal-body {
+    padding: 3rem;
+}
+
+.modal .form-check.payments input:checked + label, .modal .form-check.payments:hover label {
+    font-weight: 600;
+    color: #5d0de0 !important;
+}
+
+.centered {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background: rgba(0, 0, 0, .25);
+    z-index: 9;
+    filter: blur(10px) contrast(100);
+}
+
+.blob-1, .blob-2 {
+    width:70px;
+    height:70px;
+    position:absolute;
+    background:#fff;
+    border-radius:50%;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.blob-1 {
+    left:20%;
+    animation:osc-l 2.5s ease infinite;
+}
+
+.blob-2 {
+    left:80%;
+    animation:osc-r 2.5s ease infinite;
+    background:#0ff;
+}
+
+@keyframes osc-l {
+    0% { left:20%; }
+    50% { left:50%; }
+    100% { left:20%; }
+}
+
+@keyframes osc-r{
+    0% { left:80%; }
+    50% { left:50%; }
+    100% { left:80%; }
+}

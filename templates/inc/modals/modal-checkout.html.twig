@@ -1,0 +1,83 @@
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form action="" method="POST">
+                <div class="modal-header">
+                    <button type="button" class="close mr-1 mt-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img class="img-fluid" src="{{ absolute_url('assets/images/checkout-bg.png') }}">
+
+                            <h4 class="text-uppercase mt-3">Choose your payment method</h4>
+                            <div class="form-check form-check-inline payments">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal" checked>
+                                <label class="form-check-label text-uppercase" for="paypal"><i class="fa fa-paypal"></i> Paypal</label>
+                            </div>
+                            <div class="form-check form-check-inline payments">
+                                <input class="form-check-input" type="radio" name="payment_method" id="bitcoin" value="crypto">
+                                <label class="form-check-label text-uppercase" for="bitcoin"><i class="fa fa-btc"></i> Bitcoin</label>
+                            </div>
+
+                            <h4 class="text-uppercase mt-4">Amount</h4>
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                            </div>
+
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required>
+                                <label class="form-check-label small terms-text" for="defaultCheck1">
+                                    I agree with terms of service
+                                </label>
+                            </div>
+
+                            <div class="row mt-5">
+                                <div class="col-md-8">
+                                    <strong>TOTAL:</strong><span class="ml-3 total_price font-weight-bold total_price_color">2.50$</span><br>
+                                    <span class="discount-text">Have a discount code? <a data-toggle="collapse" href="#discount-code-place">Click here</a></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary text-uppercase d-block w-100 cont-btn">Continue</button>
+                                </div>
+                            </div>
+                            <div class="collapse" id="discount-code-place">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="discount_code" name="discount_code" placeholder="Enter discount code here">
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-5 d-none">
+                                <label for="in_stock">In Stock:</label>
+                                <input type="number" class="form-control" id="in_stock" name="in_stock" readonly>
+                            </div>
+                            <div class="form-group d-none">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                            </div>
+                            <input type="hidden" name="total_price" value="">
+                            <input type="hidden" name="original_price" value="">
+                            <input type="hidden" name="product_id" value="">
+                        </div>
+                        <div class="col-md-6 mt-5 mt-md-0">
+                            <h3 class="text-uppercase product_name font-weight-bold"></h3>
+                            <p class="small rules-text">
+                                All accounts are high-quality accounts with inactivity.<br><br>
+                                Please read these general guidelines before purchasing our product:<br><br>
+                                1. Don't attempt to change the account's password or e-mail (only on verified accounts).<br><br>
+                                2. Do not purchase any RP on the account.<br><br>
+                                3. Your warranty starts from purchase date.<br><br>
+                                4. If anything bad or wrong, you must create a ticket at our discord server in warranty period. <br><br>
+                                If there any problems with your purchase, please do not open dispute on payment service network without contacting us first. If you will open a dispute on us, you will get banned for future purchases permamently.<br><br>
+                                Upon purchasing lolaccounts.club product you are agreeing to the following terms: "I am purchasing a virtual item and will not send any unauthorized transactions, disputes, claims or anything related. I have received my virtual item and I am not eligible to retrieve my money sent."
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

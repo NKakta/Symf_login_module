@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -17,8 +18,8 @@ class User implements UserInterface
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
@@ -62,10 +63,10 @@ class User implements UserInterface
     private $roles = null;
 
     /**
-     * @var Resume[]
+     * @var Account[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Resume",
+     *     targetEntity="Account",
      *     mappedBy="user",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -188,7 +189,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Resume[]
+     * @return Account[]
      */
     public function getResumes(): array
     {
@@ -196,7 +197,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param Resume[] $resumes
+     * @param Account[] $resumes
      */
     public function setResumes(array $resumes): void
     {

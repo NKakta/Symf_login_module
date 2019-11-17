@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Resume;
+use App\Entity\Account;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +21,7 @@ class ResumeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Resume::class,
+            'data_class' => Account::class,
         ]);
     }
 }
