@@ -1,29 +1,64 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Resumes {% endblock %}
+{% block title %} Account {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('resume_index') }}">Back to list</a>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>User</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ resume.name }}</td>
-                <td>{{ resume.description }}</td>
-                <td>{{ resume.createdAt|date("m/d/Y") }}</td>
-                <td>{{ resume.updatedAt|date("m/d/Y") }}</td>
-                <td>{{ resume.user.username }}</td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card card-primary" style="margin: auto; min-width: 50%;">
+                <div class="card-header">
+                    <h3 class="card-title">Account</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <strong>Username</strong>
+                    <p class="text-muted">
+                        {{ account.username }}
+                    </p>
+                    <hr>
+
+                    <strong>Password</strong>
+                    <p class="text-muted">
+                        ******
+                    </p>
+                    <hr>
+
+                    <strong>Username</strong>
+                    <p class="text-muted">
+                        {{ account.username }}
+                    </p>
+                    <hr>
+
+                    <strong>Status</strong>
+                    <p class="text-muted">
+                        {% if account.sold %}
+                            <span class="badge bg-success">SOLD</span>
+                        {% else %}
+                            <span class="badge bg-warning">IN STOCK</span>
+                        {% endif %}
+                    </p>
+                    <hr>
+
+                    <strong>Product</strong>
+                    <p class="text-muted">
+                        {{ account.product.name }}
+                    </p>
+                    <hr>
+
+                    <strong>Created at</strong>
+                    <p class="text-muted">
+                        {{ account.createdAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+
+                    <strong>Updated at</strong>
+                    <p class="text-muted">
+                        {{ account.updatedAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
     </div>
 {% endblock %}

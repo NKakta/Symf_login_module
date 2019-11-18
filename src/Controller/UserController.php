@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -31,16 +32,6 @@ class UserController extends AbstractController
         $this->validator = $validator;
     }
 
-
-    /**
-     * @Route("/admin", name="admin_home")
-     * @Method({"GET", "POST"})
-     * @Template("admin/home.html.twig")
-     * @IsGranted("ROLE_EMPLOYEE")
-     */
-    public function adminDashboardAction()
-    {
-    }
 
     /**
      * @Route("/admin/user", name="user_index")

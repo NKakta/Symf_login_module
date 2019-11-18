@@ -61,18 +61,18 @@ class Account
     private $updatedAt;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @return Account
      */
-    public function setId(int $id): Account
+    public function setId(string $id): Account
     {
         $this->id = $id;
 
@@ -182,7 +182,7 @@ class Account
     /**
      * @return Product
      */
-    public function getProduct(): Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }

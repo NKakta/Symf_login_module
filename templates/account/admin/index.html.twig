@@ -3,73 +3,71 @@
 {% block title %} Accounts {% endblock %}
 
 {% block body %}
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>150</h3>
-
-                            <p>New Orders</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
+    <div class="card">
+        <a href="{{ path('create_account') }}">
+            <button style="width: 25%;" type="button" class="btn btn-block btn-default">
+                Create new Account
+            </button>
+        </a>
+        <div class="card-header">
+            <h3 class="card-title">Accounts</h3>
+            <div class="card-tools">
+                <div class="input-group input-group-sm">
+                    {{ form_start(form, {'method': 'GET'}) }}
+                    {{ form_label(form.username) }}
+                    {{ form_widget(form.username) }}
+                    <button type="submit" class="btn btn-default" style="float:right;"><i class="fas fa-search"></i></button>
+                    {{ form_end(form) }}
                 </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                            <p>Bounce Rate</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>44</h3>
-
-                            <p>User Registrations</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>65</h3>
-
-                            <p>Unique Visitors</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </section>
-
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Account</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in accounts %}
+                <tr>
+                    <td>{{ loop.index }}.</td>
+                    <td>
+                        <a href="{{ path('show_account', { 'id': account.id }) }}">
+                            {{ account.username }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if account.sold %}
+                            <span class="badge bg-success">SOLD</span>
+                        {% else %}
+                            <span class="badge bg-warning">IN STOCK</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{{ path('edit_account', { 'id': account.id }) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            Edit
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{ path('delete_account', { 'id': account.id }) }}">
+                            <i class="fas fa-trash">
+                            </i>
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            {{ knp_pagination_render(accounts) }}
+        </div>
+    </div>
 {% endblock %}

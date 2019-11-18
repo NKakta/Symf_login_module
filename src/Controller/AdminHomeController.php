@@ -8,12 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class HomeController extends AbstractController
+class AdminHomeController extends AbstractController
 {
     /**
-     * @Route("/s", name="app_homepage")
-     * @Method({"GET", "POST"})
-     * @Template("home.html.twig")
+     * @Route("/admin", name="admin_home")
+     * @Method({"GET"})
+     * @Template("admin/home.html.twig")
      */
     public function showHomepageAction() {
     }

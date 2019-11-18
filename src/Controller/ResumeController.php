@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Entity\Account;
-use App\Form\ResumeFormType;
+use App\Form\AccountFormType;
 use App\Repository\AccountRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +47,7 @@ class ResumeController extends AbstractController
     {
 
         $resume = new Account();
-        $form = $this->createForm(ResumeFormType::class, $resume);
+        $form = $this->createForm(AccountFormType::class, $resume);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,7 +80,7 @@ class ResumeController extends AbstractController
     public function editResumeAction(Request $request, $id)
     {
         $resume = $this->getDoctrine()->getRepository(Account::class)->find($id);
-        $form = $this->createForm(ResumeFormType::class, $resume);
+        $form = $this->createForm(AccountFormType::class, $resume);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

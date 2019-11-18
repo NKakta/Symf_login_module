@@ -5,7 +5,7 @@ namespace App\Controller\Account;
 
 use App\Entity\Account;
 use App\Enum\Regions;
-use App\Form\ResumeFormType;
+use App\Form\AccountFormType;
 use App\Repository\AccountRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
