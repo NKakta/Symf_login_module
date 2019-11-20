@@ -1,0 +1,54 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Product {% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card card-primary" style="margin: auto; min-width: 50%;">
+                <div class="card-header">
+                    <h3 class="card-title">Product</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <strong>Name</strong>
+                    <p class="text-muted">
+                        {{ product.name }}
+                    </p>
+                    <hr>
+
+                    <strong>Price</strong>
+                    <p class="text-muted">
+                        {{ product.Price }}
+                    </p>
+                    <hr>
+
+                    <strong>Category</strong>
+                    <p class="text-muted">
+                        {{ product.category }}
+                    </p>
+                    <hr>
+
+                    <strong>Photo</strong>
+                    <p class="text-muted">
+                        <img src="{{ product.photoFilename }}" alt="">
+                    </p>
+                    <hr>
+
+                    <strong>Created at</strong>
+                    <p class="text-muted">
+                        {{ product.createdAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+
+                    <strong>Updated at</strong>
+                    <p class="text-muted">
+                        {{ product.updatedAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

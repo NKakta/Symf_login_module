@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Account;
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Model\ProductFilterModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -37,5 +38,22 @@ class ProductRepository extends ServiceEntityRepository
             ->where('p.category = :category')
             ->setParameter('category', $category);
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param ProductFilterModel $filter
+     * @return \Doctrine\ORM\Query
+     */
+    public function getAllQuery(ProductFilterModel $filter)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($filter->getName()) {
+            $qb
+                ->where('p.name = :name')
+                ->setParameter('name', $filter->getName())
+            ;
+        }
+        return $qb->getQuery();
     }
 }

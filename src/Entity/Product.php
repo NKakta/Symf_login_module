@@ -61,7 +61,7 @@ class Product
     private $photoFilename;
 
     /**
-     * @var Product
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -243,10 +243,10 @@ class Product
     }
 
     /**
-     * @param Product $category
+     * @param Category $category
      * @return Product
      */
-    public function setCategory(Product $category): Product
+    public function setCategory(Category $category): Product
     {
         $this->category = $category;
 
@@ -254,9 +254,9 @@ class Product
     }
 
     /**
-     * @return Product
+     * @return Category
      */
-    public function getCategory(): Product
+    public function getCategory(): ?Category
     {
         return $this->category;
     }

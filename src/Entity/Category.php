@@ -38,7 +38,7 @@ class Category
     private $region;
 
     /**
-     * @var Account[]
+     * @var Product[]
      *
      * @ORM\OneToMany(
      *     targetEntity="Product",
@@ -153,25 +153,6 @@ class Category
     }
 
     /**
-     * @param Product $product
-     * @return Category
-     */
-    public function setProduct(Product $product): Category
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * @return Product
-     */
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
-    /**
      * @return Product
      */
     public function getCategoryTemplateId(): string
@@ -215,5 +196,9 @@ class Category
     public function getProducts(): array
     {
         return $this->products;
+    }
+
+    public function __toString() {
+        return $this->getName();
     }
 }

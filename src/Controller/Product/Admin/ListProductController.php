@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Account\Admin;
+namespace App\Controller\Product\Admin;
 
-use App\Form\Account\SearchAccountFormType;
-use App\Model\AccountFilterModel;
-use App\Repository\AccountRepository;
+use App\Form\Product\SearchProductFormType;
+use App\Model\ProductFilterModel;
+use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,25 +14,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class ListAccountController extends AbstractController
+class ListProductController extends AbstractController
 {
     private $repo;
 
-    public function __construct(AccountRepository $repo)
+    public function __construct(ProductRepository $repo)
     {
         $this->repo = $repo;
     }
 
     /**
-     * @Route("/admin/accounts", name="admin_account_index")
+     * @Route("/admin/products", name="admin_product_index")
      * @Method({"GET"})
-     * @Template("account/admin/index.html.twig")
+     * @Template("product/admin/index.html.twig")
      * @return array
      */
-    public function listAccounts(Request $request, PaginatorInterface $paginator)
+    public function listProducts(Request $request, PaginatorInterface $paginator)
     {
-        $filter = new AccountFilterModel();
-        $form = $this->createForm(SearchAccountFormType::class, $filter, ['method' => 'GET']);
+        $filter = new ProductFilterModel();
+        $form = $this->createForm(SearchProductFormType::class, $filter, ['method' => 'GET']);
         $form->handleRequest($request);
 
         $result = $paginator->paginate(
@@ -41,7 +41,7 @@ class ListAccountController extends AbstractController
             $request->query->getInt('limit', 15)
         );
 
-        return ['accounts' => $result, 'form' => $form->createView()];
+        return ['products' => $result, 'form' => $form->createView()];
     }
 }
 

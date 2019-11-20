@@ -35,15 +35,15 @@ final class Regions
     public static function getChoices(): array
     {
         return [
-            self::EUROPE_WEST => self::EUROPE_WEST,
-            self::NORTH_AMERICA => self::NORTH_AMERICA,
-            self::EUROPE_NORDIC_EAST => self::EUROPE_NORDIC_EAST,
-            self::BRAZIL => self::BRAZIL,
-            self::LAS => self::LAS,
-            self::LAN => self::LAN,
-            self::RUSSIA => self::RUSSIA,
-            self::TURKEY => self::TURKEY,
-            self::OCEANIA => self::OCEANIA,
+            self::EUROPE_WEST => 'europe_west',
+            self::NORTH_AMERICA => 'north_america',
+            self::EUROPE_NORDIC_EAST => 'europe_nordic_east',
+            self::BRAZIL => 'brazil',
+            self::LAS => 'las',
+            self::LAN => 'lan',
+            self::RUSSIA => 'russia',
+            self::TURKEY => 'turkey',
+            self::OCEANIA => 'oceania',
 
         ];
     }

@@ -1,0 +1,73 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Categories {% endblock %}
+
+{% block body %}
+    <div class="card">
+        <a href="{{ path('create_category') }}">
+            <button style="width: 25%;" type="button" class="btn btn-block btn-default">
+                Create new Category
+            </button>
+        </a>
+        <div class="card-header">
+            <h3 class="card-title">Categories</h3>
+            <div class="card-tools">
+                <div class="input-group input-group-sm">
+                    {{ form_start(form, {'method': 'GET'}) }}
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                    <button type="submit" class="btn btn-default" style="float:right;"><i class="fas fa-search"></i></button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Category</th>
+                    <th>Color</th>
+                    <th>Region</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ loop.index }}.</td>
+                    <td>
+                        <a href="{{ path('show_category', { 'id': category.id }) }}">
+                            {{ category.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ category.color }}
+                    </td>
+                    <td>
+                        {{ category.region }}
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{{ path('edit_category', { 'id': category.id }) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            Edit
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{ path('delete_category', { 'id': category.id }) }}">
+                            <i class="fas fa-trash">
+                            </i>
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+            {{ knp_pagination_render(categories) }}
+        </div>
+    </div>
+{% endblock %}

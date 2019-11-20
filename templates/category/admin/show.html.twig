@@ -1,0 +1,48 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Category {% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card card-primary" style="margin: auto; min-width: 50%;">
+                <div class="card-header">
+                    <h3 class="card-title">Category</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <strong>Name</strong>
+                    <p class="text-muted">
+                        {{ category.name }}
+                    </p>
+                    <hr>
+
+                    <strong>color</strong>
+                    <p class="text-muted">
+                        {{ category.color }}
+                    </p>
+                    <hr>
+
+                    <strong>Region</strong>
+                    <p class="text-muted">
+                        {{ category.region }}
+                    </p>
+                    <hr>
+
+                    <strong>Created at</strong>
+                    <p class="text-muted">
+                        {{ category.createdAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+
+                    <strong>Updated at</strong>
+                    <p class="text-muted">
+                        {{ category.updatedAt|date("Y-d-m") }}
+                    </p>
+                    <hr>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
