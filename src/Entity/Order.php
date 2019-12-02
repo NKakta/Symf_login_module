@@ -12,6 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Order
 {
+    const PAYMENT_PENDING = 'pending';
+    const PAYMENT_COMPLETED = 'finished';
+    const PAYMENT_CANCELED = 'canceled';
+
+    const TYPE_PAYMENT_CRYPTO = 'crypto';
+    const TYPE_PAYMENT_PAYPAL = 'paypal';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,24 +27,19 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255, unique=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      * @Assert\NotBlank
      */
     private $name;
 
     /**
-     * @ORM\Column(name="order_id", type="string", length=255, unique=false)
+     * @ORM\Column(name="transaction_id", type="string", length=255, nullable=true)
      */
-    private $orderId;
+    private $transactionId;
 
     /**
      * @var Product|null
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\Product",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orders")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      *
      */
@@ -49,32 +51,32 @@ class Order
     private $quantity;
 
     /**
-     * @ORM\Column(name="payer_email", type="string", length=255, unique=false)
+     * @ORM\Column(name="payer_email", type="string", length=255, nullable=true)
      */
     private $payerEmail;
 
     /**
-     * @ORM\Column(name="status", type="string", length=255, unique=false)
+     * @ORM\Column(name="payment_status", type="string", length=255, unique=false)
      */
-    private $status;
+    private $paymentStatus;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="price", type="decimal", precision=2, scale=2, nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      *
      */
     private $price;
 
     /**
-     * @ORM\Column(name="method", type="string", length=255, unique=false)
+     * @ORM\Column(name="method", type="string", length=255, unique=false, nullable=false)
      */
     private $method;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="sold", type="boolean")
+     * @ORM\Column(name="sold", type="boolean", nullable=true)
      */
     private $sold = false;
 
@@ -95,7 +97,7 @@ class Order
     /**
      * @return mixed
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -104,7 +106,7 @@ class Order
      * @param mixed $id
      * @return Order
      */
-    public function setId(int $id): Order
+    public function setId(string $id): Order
     {
         $this->id = $id;
 
@@ -125,22 +127,6 @@ class Order
     public function setName($name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     /**
@@ -192,12 +178,12 @@ class Order
     }
 
     /**
-     * @param mixed $orderId
+     * @param mixed $transactionId
      * @return Order
      */
-    public function setOrderId($orderId)
+    public function setTransactionId($transactionId)
     {
-        $this->orderId = $orderId;
+        $this->transactionId = $transactionId;
 
         return $this;
     }
@@ -205,9 +191,9 @@ class Order
     /**
      * @return mixed
      */
-    public function getOrderId()
+    public function getTransactionId()
     {
-        return $this->orderId;
+        return $this->transactionId;
     }
 
     /**
@@ -306,12 +292,12 @@ class Order
     }
 
     /**
-     * @param mixed $status
+     * @param mixed $paymentStatus
      * @return Order
      */
-    public function setStatus($status)
+    public function setPaymentStatus($paymentStatus)
     {
-        $this->status = $status;
+        $this->paymentStatus = $paymentStatus;
 
         return $this;
     }
@@ -319,9 +305,17 @@ class Order
     /**
      * @return mixed
      */
-    public function getStatus()
+    public function getPaymentStatus()
     {
-        return $this->status;
+        return $this->paymentStatus;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPrice(): float
+    {
+        return $this->getQuantity() * $this->getProduct()->getPrice();
     }
 
 

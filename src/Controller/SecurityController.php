@@ -16,33 +16,47 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
 
-    public function __construct(ValidatorInterface $validator) {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->validator = $validator;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
      * @Route("/login", name="app_login")
      * @Method({"GET", "POST"})
      * @Template("security/login.html.twig")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function loginAction(AuthenticationUtils $authenticationUtils)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted(User::ROLE_USER)) {
             return $this->redirectToRoute('account_index');
         }
-
-        $emailConstraint = new Assert\Email();
-        $emailConstraint->message = 'Invalid email address';
-
-        $notBlankConstraint = new Assert\NotBlank();
-        $notBlankConstraint->message = 'Email can not be blank';
 
         $form = $this->createForm(LoginFormType::class);
 
@@ -72,15 +86,17 @@ class SecurityController extends AbstractController
      * @Route("/register", name="app_register")
      * @Method({"GET", "POST"})
      * @Template("registration/register.html.twig")
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $dispatcher)
+    public function registerAction(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
+        if ($this->isGranted(User::ROLE_USER)) {
             return $this->redirectToRoute('account_index');
         }
 
         $user = new User();
-        $user->setRole('ROLE_USER');
+        $user->setRole(User::ROLE_USER);
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -88,7 +104,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $this->passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -103,7 +119,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
 
             $event = new UserRegisteredEvent($user);
-            $dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
+            $this->dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
 
             $entityManager->commit();
             $this->addFlash('success', 'You have successfully registered');

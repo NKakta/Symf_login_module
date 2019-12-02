@@ -71,7 +71,7 @@ function loadProducts() {
         $.ajax({
             method: "GET",
             dataType: "json",
-            url: "http://symf-login-module.test/ajax/products",
+            url: window.location.href.split('?')[0]+"ajax/products",
             data: { category: id }
         })
         .done(function(resp) {
@@ -85,7 +85,7 @@ function loadProducts() {
                     console.log(value);
                     output += '<div class="col-md-4 mt-3">';
                         output += '<div class="product-photo">';
-                            let photoUrl = window.location.href+'assets/images/products/'+value.photo_filename;
+                            let photoUrl = window.location.href.split('?')[0]+'assets/images/products/'+value.photo_filename;
                             if (value.in_stock > 0) {
                                 output += '<div class="hovered-photo-bg checkout-btn" photo="'+ photoUrl +'" product-id="'+value.id+'" price="'+parseFloat(value.price).toFixed(2)+'" product-name="'+value.name+'" in-stock="'+value.in_stock+'"><p>Buy now</p></div>';
                             } else {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Account;
+use App\Entity\Order;
+use App\Entity\Product;
 use App\Model\AccountFilterModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -39,6 +41,24 @@ class AccountRepository extends ServiceEntityRepository
             ;
         }
         return $qb->getQuery();
+    }
+
+    /**
+     * @param Order $order
+     * @param int $amount
+     * @return Account[]
+     */
+    public function getAvailableAccountsByOrder(Order $order, int $amount)
+    {
+        $qb = $this->createQueryBuilder('acc');
+
+        $qb
+            ->where('acc.product = :product')
+            ->andWhere('acc.sold = 0')
+            ->setParameter('product', $order->getProduct())
+            ->setMaxResults($amount)
+        ;
+        return $qb->getQuery()->getResult();
     }
 
 

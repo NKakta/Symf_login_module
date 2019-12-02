@@ -1,7 +1,7 @@
 <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <form action="" method="POST">
+            <form action="{{ path('checkout_payment_paypal') }}" method="POST">
                 <div class="modal-header">
                     <button type="button" class="close mr-1 mt-0" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -24,7 +24,7 @@
 
                             <h4 class="text-uppercase mt-4">Amount</h4>
                             <div class="form-group">
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                                <input type="number" class="form-control" id="quantity" min="1" name="quantity" value="1" required>
                             </div>
 
                             <div class="form-check mt-3">
@@ -37,15 +37,9 @@
                             <div class="row mt-5">
                                 <div class="col-md-8">
                                     <strong>TOTAL:</strong><span class="ml-3 total_price font-weight-bold total_price_color">2.50$</span><br>
-                                    <span class="discount-text">Have a discount code? <a data-toggle="collapse" href="#discount-code-place">Click here</a></span>
                                 </div>
                                 <div class="col-md-4">
                                     <button type="submit" class="btn btn-primary text-uppercase d-block w-100 cont-btn">Continue</button>
-                                </div>
-                            </div>
-                            <div class="collapse" id="discount-code-place">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="discount_code" name="discount_code" placeholder="Enter discount code here">
                                 </div>
                             </div>
 

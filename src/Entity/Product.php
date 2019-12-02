@@ -32,7 +32,7 @@ class Product
     /**
      * @var string|null
      *
-     * @ORM\Column(name="price", type="decimal", precision=2, nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      *
      * @Serializer\Expose()
      * @Serializer\Type("double")
@@ -269,7 +269,13 @@ class Product
      */
     public function getInStock(): int
     {
-        return count($this->accounts);
+        $count = 0;
+        foreach ($this->accounts as $account) {
+            if (!$account->isSold()) {
+                $count++;
+            }
+        }
+        return $count;
     }
 
 }

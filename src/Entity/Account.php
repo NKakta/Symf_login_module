@@ -47,6 +47,14 @@ class Account
     private $product;
 
     /**
+     * @var Order|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     *
+     */
+    private $order;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -187,5 +195,21 @@ class Account
         return $this->product;
     }
 
+    /**
+     * @return Order|null
+     */
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
 
+    /**
+     * @param Order|null $order
+     * @return Account
+     */
+    public function setOrder(?Order $order): Account
+    {
+        $this->order = $order;
+        return $this;
+    }
 }

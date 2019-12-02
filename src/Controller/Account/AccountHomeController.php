@@ -3,18 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Account;
 
-use App\Entity\Account;
 use App\Enum\Regions;
-use App\Form\AccountFormType;
 use App\Repository\AccountRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class AccountHomeController extends AbstractController
@@ -39,20 +36,27 @@ class AccountHomeController extends AbstractController
      * @Route("/", name="account_index")
      * @Method({"GET"})
      * @Template("account/index.html.twig")
+     * @param Request $request
      * @return array
      */
-    public function listResumes()
+    public function listAccounts(Request $request)
     {
         $accounts = $this->repo->findAll();
         $categories = $this->categoryRepo->findAll();
         $products = $this->productRepo->findAll();
         $regions = Regions::getAll();
+        $showModal = false;
+
+        if ($request->query->has('thankyou')) {
+            $showModal = true;
+        }
 
         return [
             'categories' => $categories,
             'accounts' => $accounts,
             'products' => $products,
-            'regions' => $regions
+            'regions' => $regions,
+            'show_modal' => $showModal
         ];
     }
 }

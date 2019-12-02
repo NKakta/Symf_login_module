@@ -28,8 +28,6 @@
 <body>
     {% include('inc/navbar.html.twig') %}
     <div class="row h-100">
-        {% include('inc/flash-messages.html.twig') %}
-
         {% block body %}{% endblock %}
     </div>
 
@@ -37,8 +35,9 @@
     {% include('inc/modals/modal-thankyou.html.twig') %}
     {% include('inc/modals/modal-checkout.html.twig') %}
 
-    <!--<script>$('#checkoutModal').modal('show');</script>-->
-
+    {% for message in app.flashes('thank_you') %}
+        <script>$('#thankyouModal').modal('show');</script>
+    {% endfor %}
 
     {% block javascripts %}{% endblock %}
 

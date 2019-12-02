@@ -68,6 +68,10 @@ class UserController extends AbstractController
      * @Route("/admin/user/create", name="create_user")
      * @Method({"GET", "POST"})
      * @Template("admin/user/create.html.twig")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EventDispatcherInterface $dispatcher
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createUserAction(
         Request $request,
@@ -77,7 +81,7 @@ class UserController extends AbstractController
         $notBlankRestriction = new Assert\NotBlank();
 
         $user = new User();
-        $user->setRole('ROLE_EMPLOYEE');
+        $user->setRole(User::ROLE_USER);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
@@ -127,10 +131,12 @@ class UserController extends AbstractController
      * @Route("/admin/user/edit/{id}", name="edit_user", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("admin/user/edit.html.twig")
+     * @param Request $request
+     * @param $id
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editUserAction(Request $request, $id)
     {
-        $user = new User();
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
@@ -156,6 +162,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/remove/{id}", name="remove_user", requirements={"id"="\d+"})
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeUser($id)
     {
@@ -169,6 +177,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/search/{email}", name="search_user")
+     * @param $email
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
      */
     public function searchAction($email, ValidatorInterface $validator)
     {
