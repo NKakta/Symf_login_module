@@ -19,10 +19,10 @@ class Department
     private $id;
 
     /**
-     * @ORM\Column(name="topic", type="string", length=191, unique=false)
+     * @ORM\Column(name="name", type="string", length=191, unique=false)
      * @Assert\NotBlank
      */
-    private $topic;
+    private $name;
 
     /**
      * @var User[]
@@ -72,18 +72,18 @@ class Department
     /**
      * @return mixed
      */
-    public function getTopic(): string
+    public function getName(): ?string
     {
-        return $this->topic;
+        return $this->name;
     }
 
     /**
-     * @param mixed $topic
+     * @param mixed $name
      * @return Department
      */
-    public function setTopic($topic): Department
+    public function setName($name): Department
     {
-        $this->topic = $topic;
+        $this->name = $name;
 
         return $this;
     }
@@ -102,7 +102,7 @@ class Department
     /**
      * @return \DateTime
      */
-    public function getDateFrom(): \DateTime
+    public function getDateFrom(): ?\DateTime
     {
         return $this->dateFrom;
     }
@@ -121,7 +121,7 @@ class Department
     /**
      * @return \DateTime
      */
-    public function getDateTo(): \DateTime
+    public function getDateTo(): ?\DateTime
     {
         return $this->dateTo;
     }
@@ -129,7 +129,7 @@ class Department
     /**
      * @return User[]
      */
-    public function getUsers(): array
+    public function getUsers()
     {
         return $this->users;
     }

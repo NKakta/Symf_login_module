@@ -59,7 +59,7 @@ class VacationRequest
     /**
      * @return User
      */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -75,7 +75,7 @@ class VacationRequest
     /**
      * @return \DateTime
      */
-    public function getDateFrom(): \DateTime
+    public function getDateFrom(): ?\DateTime
     {
         return $this->dateFrom;
     }
@@ -91,7 +91,7 @@ class VacationRequest
     /**
      * @return \DateTime
      */
-    public function getDateTo(): \DateTime
+    public function getDateTo(): ?\DateTime
     {
         return $this->dateTo;
     }

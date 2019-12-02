@@ -81,7 +81,7 @@ class User implements UserInterface
     private $vacations;
 
     /**
-     * @var User
+     * @var Department
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
@@ -205,7 +205,7 @@ class User implements UserInterface
     /**
      * @return VacationRequest[]
      */
-    public function getVacationRequests(): array
+    public function getVacationRequests()
     {
         return $this->vacationRequests;
     }
@@ -237,7 +237,7 @@ class User implements UserInterface
     /**
      * @return User
      */
-    public function getDepartment(): User
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
@@ -245,7 +245,7 @@ class User implements UserInterface
     /**
      * @param User $department
      */
-    public function setDepartment(User $department): void
+    public function setDepartment(Department $department): void
     {
         $this->department = $department;
     }
