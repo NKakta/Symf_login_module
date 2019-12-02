@@ -31,7 +31,7 @@ class VacationController extends AbstractController
     }
 
     /**
-     * @Route("/admin/vacations", name="vacation_index")
+     * @Route("/vacations", name="vacation_index")
      * @Method({"GET"})
      * @Template("vacation/index.html.twig")
      * @return array
