@@ -1,12 +1,18 @@
-{% extends 'layouts/admin-base.html.twig' %}
+{% extends 'layouts/base.html.twig' %}
 
-{% block title %} Resumes {% endblock %}
+{% block title %} CV paraiškos {% endblock %}
 
 {% block body %}
     {{ form_start(form)}}
-    {{ form_row(form.name) }}
-    {{ form_row(form.description) }}
+    {{ form_row(form.area) }}
+    {{ form_row(form.education) }}
+    {{ form_row(form.languages) }}
+    {{ form_row(form.salary) }}
+    {{ form_row(form.experience) }}
+    {{ form_row(form.aboutYou) }}
+    {{ form_row(form.usersToHide) }}
+    {{ form_row(form.isMain) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Submit</button>
+    <button type="submit">Sukurti</button>
     {{ form_end(form) }}
 {% endblock %}

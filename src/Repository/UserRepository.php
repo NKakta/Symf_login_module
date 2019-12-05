@@ -65,4 +65,18 @@ class UserRepository extends ServiceEntityRepository  implements UserLoaderInter
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return UserInterface|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByRoleEmployer()
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%ROLE_EMPLOYER%')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

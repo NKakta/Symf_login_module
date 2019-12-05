@@ -36,7 +36,7 @@ class UserController extends AbstractController
      * @Route("/admin", name="admin_home")
      * @Method({"GET", "POST"})
      * @Template("admin/home.html.twig")
-     * @IsGranted("ROLE_EMPLOYEE")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function adminDashboardAction()
     {
@@ -93,6 +93,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $roles = $request->get('user_form')['roles'];
 
+            $user->setCredits(50);
             $user->setRoles($roles);
 
             //validates if password is blank

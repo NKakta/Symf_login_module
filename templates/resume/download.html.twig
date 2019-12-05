@@ -1,18 +1,5 @@
-{% extends 'layouts/base.html.twig' %}
-
-{% block title %} CV paraiškos {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('download_resume', { 'id': resume.id }) }}">Parsisiųsti CV</a>
-    {% if is_granted('ROLE_EMPLOYER') %}
-        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('search_resume') }}">Grįžti atgal</a>
-    {% endif %}
-    {% if is_granted('ROLE_EMPLOYEE') %}
-        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('resume_index') }}">Grįžti į CV sąrašą</a>
-    {% endif %}
-    {% if is_granted('ROLE_ADMIN') %}
-        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('resume_index') }}">Grįžti į CV sąrašą</a>
-    {% endif %}
 
     <div class="table-responsive">
         <table class="table table-striped table-sm">
@@ -32,17 +19,6 @@
                     <th>Elektroninis adresas</th>
                     <th>Telefono numeris</th>
                 {% endif %}
-                <th>Sritis</th>
-                <th>Išsilavinimas</th>
-                <th>Kalbos</th>
-                <th>Atlyginimas</th>
-                <th>Patirtis</th>
-                <th>Apie</th>
-                <th>Sukūrta</th>
-                <th>Atnaujinta</th>
-                {% if is_granted('ROLE_EMPLOYEE') %}
-                    <th>Nerodoma šiems asmenims</th>
-                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -61,10 +37,37 @@
                     <td>{{ resume.user.email }}</td>
                     <td>{{ resume.user.phoneNum }}</td>
                 {% endif %}
+                </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>Sritis</th>
+                <th>Išsilavinimas</th>
+                <th>Kalbos</th>
+                <th>Atlyginimas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
                 <td>{{ resume.area }}</td>
                 <td>{{ resume.education }}</td>
                 <td>{{ resume.kalbosStr() }}</td>
                 <td>{{ resume.salary }}</td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>Patirtis</th>
+                <th>Apie</th>
+                <th>Sukūrta</th>
+                <th>Atnaujinta</th>
+                {% if is_granted('ROLE_EMPLOYEE') %}
+                    <th>Nerodoma šiems asmenims</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
                 <td>{{ resume.experience }}</td>
                 <td>{{ resume.aboutYou }}</td>
                 <td>{{ resume.createdAt|date("m/d/Y") }}</td>

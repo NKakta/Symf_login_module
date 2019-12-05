@@ -1,13 +1,13 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Users {% endblock %}
+{% block title %} Vartotojų sąrašas {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_user') }}">Create new User</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_user') }}">Sukurti naują vartotoją</a>
 
     {{ form_start(form, {'method': 'GET'}) }}
     {{ form_row(form.email) }}
-    <button type="submit">Search</button>
+    <button type="submit">Ieškoti</button>
     {{ form_end(form) }}
 
     {% for user in users %}
@@ -15,16 +15,16 @@
         <span class="h2">{{ user.email }}</span>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_user', { 'id': user.id }) }}">Show</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_user', { 'id': user.id }) }}">Edit</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_user', { 'id': user.id }) }}">Delete</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_user', { 'id': user.id }) }}">Rodyti</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_user', { 'id': user.id }) }}">Redaguoti</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_user', { 'id': user.id }) }}">Pašalinti</a>
             </div>
         </div>
     </div>
     {% endfor %}
 
     {% if users|length < 1 %}
-        <p> No users found. </p>
+        <p> Vartotojų nerasta. </p>
     {% endif %}
 
     <div class="navigation">

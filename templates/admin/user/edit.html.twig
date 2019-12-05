@@ -1,15 +1,18 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Users {% endblock %}
+{% block title %} Redaguoti vartotoją {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Back to Users list</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Grįžti į vartotojų sąrašą</a>
     {{ form_start(form)}}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
     {{ form_row(form.username) }}
+    {{ form_row(form.phoneNum) }}
     {{ form_row(form.email) }}
-    {{ form_row(form.roles) }}
     {{ form_row(form.plainPassword) }}
+    {{ form_row(form.roles) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Submit</button>
+    <button type="submit">Patvirtinti</button>
     {{ form_end(form) }}
 {% endblock %}

@@ -18,17 +18,6 @@ class Resume
      */
     private $id;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=191, unique=false)
-     * @Assert\NotBlank
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(name="description", type="text", unique=false)
-     * @Assert\NotBlank
-     */
-    private $description;
 
     /**
      * @var \DateTime
@@ -53,6 +42,53 @@ class Resume
     private $user;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $area;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $education;
+
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $salary;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $experience;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $languages = [];
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isMain;
+
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $aboutYou;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     * @ORM\OneToMany(targetEntity="User", cascade={"persist", "remove"}, orphanRemoval=true )
+     */
+    private $usersToHide;
+
+    public function __construct() {
+        $this->usersToHide = new ArrayCollection();
+    }
+
+    /**
      * @return mixed
      */
     public function getId(): int
@@ -69,38 +105,6 @@ class Resume
         $this->id = $id;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description): void
-    {
-        $this->description = $description;
     }
 
     /**
@@ -150,6 +154,111 @@ class Resume
     {
         $this->updatedAt = $updatedAt;
     }
+
+    public function getArea(): ?string
+    {
+        return $this->area;
+    }
+
+    public function setArea(string $area): self
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    public function getEducation(): ?string
+    {
+        return $this->education;
+    }
+
+    public function setEducation(string $education): self
+    {
+        $this->education = $education;
+
+        return $this;
+    }
+
+    public function getSalary(): ?float
+    {
+        return $this->salary;
+    }
+
+    public function setSalary(float $salary): self
+    {
+        $this->salary = $salary;
+
+        return $this;
+    }
+
+    public function getExperience(): ?int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(int $experience): self
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    public function getLanguages(): ?array
+    {
+        return $this->languages;
+    }
+
+    public function getKalbosStr()
+    {
+        return implode(',', $this->languages);
+    }
+
+    public function setLanguages(array $languages): self
+    {
+        $this->languages = $languages;
+
+        return $this;
+    }
+
+    public function getIsMain(): ?bool
+    {
+        return $this->isMain;
+    }
+
+    public function setIsMain(bool $isMain): self
+    {
+        $this->isMain = $isMain;
+
+        return $this;
+    }
+
+
+    public function getAboutYou(): ?string
+    {
+        return $this->aboutYou;
+    }
+
+    public function setAboutYou(string $aboutYou): self
+    {
+        $this->aboutYou = $aboutYou;
+
+        return $this;
+    }
+
+    public function getUsersToHide(): ?array
+    {
+        return $this->usersToHide;
+    }
+
+    public function setUsersToHide(?array $usersToHide): self
+    {
+        $this->usersToHide = $usersToHide;
+
+        return $this;
+    }
+
+
+
 
 
 }

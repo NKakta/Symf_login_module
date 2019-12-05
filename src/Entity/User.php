@@ -40,10 +40,6 @@ class User implements UserInterface
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $credits;
 
     /**
      * @Assert\Length(
@@ -72,6 +68,36 @@ class User implements UserInterface
      * )
      */
     private $resumes;
+
+
+
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $credits;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phoneNum;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mainNum;
+
+
 
     public function getId(): ?int
     {
@@ -203,19 +229,67 @@ class User implements UserInterface
         $this->resumes = $resumes;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCredits()
+
+
+
+    public function getCredits(): ?int
     {
         return $this->credits;
     }
 
-    /**
-     * @param mixed $credits
-     */
-    public function setCredits($credits): void
+    public function setCredits(int $credits): self
     {
         $this->credits = $credits;
+
+        return $this;
     }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getPhoneNum(): ?string
+    {
+        return $this->phoneNum;
+    }
+
+    public function setPhoneNum(string $phoneNum): self
+    {
+        $this->phoneNum = $phoneNum;
+
+        return $this;
+    }
+
+    public function getMainNum(): ?int
+    {
+        return $this->mainNum;
+    }
+
+    public function setMainNum(?int $mainNum): self
+    {
+        $this->mainNum = $mainNum;
+
+        return $this;
+    }
+
 }

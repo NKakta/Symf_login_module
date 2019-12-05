@@ -8,6 +8,7 @@ namespace App\Form;
 use App\Entity\User;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,7 +24,14 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('firstName', TextType::class, [
+                'label' => 'Vardas',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Pavardė',
+            ])
             ->add('username', TextType::class, [
+                'label' => 'Prisijungimo vardas',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Username can not be empty',
@@ -35,14 +43,19 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('email', EmailType::class)
+            ->add('phoneNum', TextType::class, [
+                'label' => 'Telefono numeris',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Elektroninis adresas',
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'Slaptažodis',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password'
+                    'label' => 'Pakartoti slaptažodį'
                 ],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -57,6 +70,16 @@ class RegistrationFormType extends AbstractType
                         'max' => 255
                     ]),
                 ],
+            ])
+
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Kas jūs esate?',
+                'choices' => [
+                    'Darbdavys' => 'ROLE_EMPLOYER',
+                    'Darbuotojas' => 'ROLE_EMPLOYEE',
+                ],
+                'multiple' => true,
+                'expanded' => true,
             ]);
     }
 
