@@ -96,7 +96,7 @@ class Order
     /**
      * @return \DateTime
      */
-    public function getDateFrom(): \DateTime
+    public function getDateFrom(): ?\DateTime
     {
         return $this->dateFrom;
     }
@@ -115,7 +115,7 @@ class Order
     /**
      * @return \DateTime
      */
-    public function getDateTo(): \DateTime
+    public function getDateTo(): ?\DateTime
     {
         return $this->dateTo;
     }

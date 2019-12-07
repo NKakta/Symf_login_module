@@ -3,16 +3,19 @@
 {% block title %} Orders {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Create new Order</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_order') }}">Create new Order</a>
 
     {% for order in orders %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <span class="h2">{{ order.content }} - {{ order.dateTo|date("m/d/Y") }}</span>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Show</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="#">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_order', { 'id': order.id }) }}">Show</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_order', { 'id': order.id }) }}">Edit</a>
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_order', { 'id': order.id }) }}">Delete</a>
+                {% if is_granted('ROLE_CRAFTSMAN') %}
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('complete_order', { 'id': order.id }) }}">Complete</a>
+                {% endif %}
             </div>
         </div>
     </div>

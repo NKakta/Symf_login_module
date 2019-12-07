@@ -12,4 +12,13 @@ class OrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Order::class);
     }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function findByCraftsman(string $id)
+    {
+        return $this->findBy(['craftsman' => $id]);
+    }
 }

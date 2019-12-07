@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Form;
 
@@ -23,9 +24,9 @@ class UserFormType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'label' => 'Role',
                 'choices' => [
-                    'Admin' => 'ROLE_ADMIN',
-                    'Craftsman' => 'ROLE_CRAFTSMAN',
-                    'User' => 'ROLE_USER',
+                    'Admin' => User::ROLE_ADMIN,
+                    'Craftsman' => User::ROLE_CRAFTSMAN,
+                    'User' => User::ROLE_USER,
                 ],
                 'multiple' => true,
                 'expanded' => true,

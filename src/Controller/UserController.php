@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -24,11 +25,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserController extends AbstractController
 {
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
 
-    public function __construct(ValidatorInterface $validator)
-    {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->validator = $validator;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->dispatcher = $dispatcher;
     }
 
 
@@ -36,7 +55,7 @@ class UserController extends AbstractController
      * @Route("/admin", name="admin_home")
      * @Method({"GET", "POST"})
      * @Template("admin/home.html.twig")
-     * @IsGranted("ROLE_SUPERADMIN")
+     * @IsGranted("ROLE_USER")
      */
     public function adminDashboardAction()
     {
@@ -46,7 +65,7 @@ class UserController extends AbstractController
      * @Route("/admin/user", name="user_index")
      * @Method({"GET", "POST"})
      * @Template("admin/user/index.html.twig")
-     * @IsGranted("ROLE_SUPERADMIN")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function userListAction(Request $request, PaginatorInterface $paginator)
     {
@@ -78,17 +97,14 @@ class UserController extends AbstractController
      * @Route("/admin/user/create", name="create_user")
      * @Method({"GET", "POST"})
      * @Template("admin/user/create.html.twig")
-     * @IsGranted("ROLE_SUPERADMIN")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function createUserAction(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        EventDispatcherInterface $dispatcher)
+    public function createUserAction(Request $request)
     {
         $notBlankRestriction = new Assert\NotBlank();
 
         $user = new User();
-        $user->setRole('ROLE_USER');
+        $user->setRole(User::ROLE_USER);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
@@ -108,7 +124,7 @@ class UserController extends AbstractController
             }
 
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $this->passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -122,7 +138,7 @@ class UserController extends AbstractController
 
             //Sends email to the user with login link
             $event = new UserRegisteredEvent($user);
-            $dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
+            $this->dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
 
             return $this->redirectToRoute('create_user');
         }
@@ -138,7 +154,7 @@ class UserController extends AbstractController
      * @Route("/admin/user/edit/{id}", name="edit_user", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("admin/user/edit.html.twig")
-     * @IsGranted("ROLE_SUPERADMIN")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editUserAction(Request $request, $id)
     {
@@ -159,7 +175,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/{id}", name="show_user", requirements={"id"="\d+"})
      * @Template("admin/user/show.html.twig")
-     * @IsGranted("ROLE_SUPERADMIN")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function showUserAction($id)
     {
