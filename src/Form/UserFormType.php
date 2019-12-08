@@ -27,8 +27,6 @@ class UserFormType extends AbstractType
                     'User' => User::ROLE_USER,
                     'Admin' => User::ROLE_ADMIN,
                 ],
-                'multiple' => true,
-                'expanded' => true,
             ])
             ->add('plainPassword', PasswordType::class, ['label' => 'Password']);
     }

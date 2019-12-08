@@ -10,7 +10,7 @@
 
 
     <meta charset="utf-8">
-    <title><?php echo $config['website']['title']; ?></title>
+    <title> Register </title>
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -26,20 +26,14 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-    {% include('inc/navbar.html.twig') %}
-    <div class="row h-100">
-        {% block body %}{% endblock %}
-    </div>
+{% include('inc/navbar.html.twig') %}
+<div class="row h-100">
+    {% block body %}
+        {% block fos_user_content %}{% endblock %}
+    {% endblock %}
+</div>
 
-    {% include('inc/modals/modal-faq.html.twig') %}
-    {% include('inc/modals/modal-thankyou.html.twig') %}
-    {% include('inc/modals/modal-checkout.html.twig') %}
-
-    {% for message in app.flashes('thank_you') %}
-        <script>$('#thankyouModal').modal('show');</script>
-    {% endfor %}
-
-    {% block javascripts %}{% endblock %}
+{% block javascripts %}{% endblock %}
 
 </body>
 </html>
