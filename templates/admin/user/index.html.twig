@@ -17,6 +17,7 @@
             <div class="btn-group mr-2">
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_user', { 'id': user.id }) }}">Show</a>
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_user', { 'id': user.id }) }}">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('deactivate_user', { 'id': user.id }) }}">Deactivate</a>
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_user', { 'id': user.id }) }}">Delete</a>
             </div>
         </div>

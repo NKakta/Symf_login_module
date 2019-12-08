@@ -1,0 +1,24 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Categories {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_category') }}">Create new Category</a>
+
+    {% for category in categories %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <span class="h2">{{ category.name }}</span>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_category', { 'id': category.id }) }}">Show</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_category', { 'id': category.id }) }}">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_category', { 'id': category.id }) }}">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if categories|length < 1 %}
+        <p> Nothing found. </p>
+    {% endif %}
+{% endblock %}

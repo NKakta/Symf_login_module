@@ -44,13 +44,6 @@ class UserFormType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('department', EntityType::class, [
-                'choice_label' => 'name',
-                'class' => Department::class,
-                'choices' => [
-                    $this->departmentRepo->findAll()
-                ],
-            ])
             ->add('plainPassword', PasswordType::class, ['label' => 'Password']);
     }
 

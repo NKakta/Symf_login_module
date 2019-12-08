@@ -36,6 +36,21 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $activated;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $privacy;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $marketing;
+
+    /**
      * @ORM\Column(type="string", length=191, unique=true)
      */
     private $password;
@@ -79,14 +94,6 @@ class User implements UserInterface
      * )
      */
     private $vacations;
-
-    /**
-     * @var Department
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
-     */
-    private $department;
 
     public function getId(): ?int
     {
@@ -235,18 +242,58 @@ class User implements UserInterface
     }
 
     /**
-     * @return User
+     * @return mixed
      */
-    public function getDepartment(): ?Department
+    public function getActivated()
     {
-        return $this->department;
+        return $this->activated;
     }
 
     /**
-     * @param User $department
+     * @param mixed $activated
+     * @return User
      */
-    public function setDepartment(Department $department): void
+    public function setActivated($activated)
     {
-        $this->department = $department;
+        $this->activated = $activated;
+        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivacy()
+    {
+        return $this->privacy;
+    }
+
+    /**
+     * @param mixed $privacy
+     * @return User
+     */
+    public function setPrivacy($privacy)
+    {
+        $this->privacy = $privacy;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMarketing()
+    {
+        return $this->marketing;
+    }
+
+    /**
+     * @param mixed $marketing
+     * @return User
+     */
+    public function setMarketing($marketing)
+    {
+        $this->marketing = $marketing;
+        return $this;
+    }
+
+
 }

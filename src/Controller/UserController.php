@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -6,13 +7,12 @@ use App\Entity\User;
 use App\Event\UserRegisteredEvent;
 use App\Form\SearchEmailFormType;
 use App\Form\UserFormType;
+use App\Form\UserSettingFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -36,7 +36,6 @@ class UserController extends AbstractController
      * @Route("/admin", name="admin_home")
      * @Method({"GET", "POST"})
      * @Template("admin/home.html.twig")
-     * @IsGranted("ROLE_ADMIN")
      */
     public function adminDashboardAction()
     {
@@ -46,7 +45,6 @@ class UserController extends AbstractController
      * @Route("/admin/user", name="user_index")
      * @Method({"GET", "POST"})
      * @Template("admin/user/index.html.twig")
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param PaginatorInterface $paginator
      * @return array
@@ -80,7 +78,6 @@ class UserController extends AbstractController
      * @Route("/admin/user/create", name="create_user")
      * @Method({"GET", "POST"})
      * @Template("admin/user/create.html.twig")
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param EventDispatcherInterface $dispatcher
@@ -144,7 +141,6 @@ class UserController extends AbstractController
      * @Route("/admin/user/edit/{id}", name="edit_user", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("admin/user/edit.html.twig")
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param $id
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -167,7 +163,6 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/{id}", name="show_user", requirements={"id"="\d+"})
      * @Template("admin/user/show.html.twig")
-     * @IsGranted("ROLE_ADMIN")
      * @param $id
      * @return array
      */
@@ -216,6 +211,46 @@ class UserController extends AbstractController
             }
         }
         return new JsonResponse([]);
+    }
+
+    /**
+     * @Route("/admin/user/{id}/deactivate", name="deactivate_user", requirements={"id"="\d+"})
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deactivateUser($id)
+    {
+        /* @var $user \App\Entity\User */
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $user->setActivated(false);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        $this->addFlash('success', 'User has been deactivated');
+        return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/admin/user/settings", name="settings_user", requirements={"id"="\d+"})
+     * @Method({"GET", "POST"})
+     * @Template("admin/user/settings.html.twig")
+     * @param Request $request
+     * @param $id
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editSettingsUser(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserSettingFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            return $this->redirectToRoute('user_index');
+        }
+
+        return ['form' => $form->createView()];
     }
 }
 
