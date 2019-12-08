@@ -1,0 +1,27 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Ads {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('ad_index') }}">Back to list</a>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Info</th>
+                <th>Web Page</th>
+                <th>Clicks</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ ad.title }}</td>
+                <td>{{ ad.info }}</td>
+                <td>{{ ad.webPage }}</td>
+                <td>{{ ad.views }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
