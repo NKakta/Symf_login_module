@@ -1,0 +1,16 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Ads {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('ad_index') }}">Back to Ads list</a>
+    {% for ad in ads %}
+        <div>
+        <a href="{{ad.webPage}}"><img src="{{ ad.imgSource }}"></a>
+        </div>
+    {% endfor %}
+
+    {% if ads|length < 1 %}
+        <p> Nothing found. </p>
+    {% endif %}
+{% endblock %}
