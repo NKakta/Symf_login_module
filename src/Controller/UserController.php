@@ -93,7 +93,6 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $roles = $request->get('user_form')['roles'];
 
-            $user->setCredits(50);
             $user->setRoles($roles);
 
             //validates if password is blank
@@ -102,7 +101,7 @@ class UserController extends AbstractController
 
             if (count($errors)) {
                 $form = $this->createForm(UserFormType::class, $user);
-                $this->addFlash('danger', 'Password can not be blank');
+                $this->addFlash('danger', 'Prašome įrašyti slaptažodį');
                 return ['form' => $form->setData($form->getData())->createView()];
             }
 
@@ -113,11 +112,12 @@ class UserController extends AbstractController
                 )
             );
 
+            //$user->setCredits(50);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'User created');
+            $this->addFlash('success', 'Vartotojas sukurtas');
 
             //Sends email to the user with login link
             $event = new UserRegisteredEvent($user);
@@ -173,7 +173,7 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
-        $this->addFlash('success', 'User has been removed');
+        $this->addFlash('success', 'Vartotojas pašalintas');
         return $this->redirectToRoute('user_index');
     }
 
@@ -183,7 +183,7 @@ class UserController extends AbstractController
     public function searchAction($email, ValidatorInterface $validator)
     {
         $emailConstraint = new Assert\Email();
-        $emailConstraint->message = 'Invalid email address';
+        $emailConstraint->message = 'Neteisingas e-mail adresas';
 
         $errors = $validator->validate(
             $email,

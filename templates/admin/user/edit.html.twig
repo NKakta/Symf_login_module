@@ -4,15 +4,48 @@
 
 {% block body %}
     <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Grįžti į vartotojų sąrašą</a>
-    {{ form_start(form)}}
-    {{ form_row(form.firstName) }}
-    {{ form_row(form.lastName) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.phoneNum) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.plainPassword) }}
-    {{ form_row(form.roles) }}
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Patvirtinti</button>
-    {{ form_end(form) }}
+    <div class="container register-form">
+        <div class="note">
+            <p>Redaguoti vartotoją</p>
+        </div>
+        {{ form_start(form) }}
+        <div class="form-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_row(form.firstName) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.lastName) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_row(form.username) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.phoneNum) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_row(form.plainPassword) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.credits) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.roles) }}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btnSubmit">Redaguoti</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

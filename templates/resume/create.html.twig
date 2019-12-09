@@ -3,16 +3,37 @@
 {% block title %} CV paraiškos {% endblock %}
 
 {% block body %}
-    {{ form_start(form)}}
-    {{ form_row(form.area) }}
-    {{ form_row(form.education) }}
-    {{ form_row(form.languages) }}
-    {{ form_row(form.salary) }}
-    {{ form_row(form.experience) }}
-    {{ form_row(form.aboutYou) }}
-    {{ form_row(form.usersToHide) }}
-    {{ form_row(form.isMain) }}
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Sukurti</button>
-    {{ form_end(form) }}
+    <div class="text-center border border-light p-5">
+        {{ form_start(form)}}
+        <p class="h4 mb-4">CV anketa</p>
+
+        <!-- Name -->
+        <div class="form-control mb-4">
+            {{ form_row(form.area) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.education) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.languages) }}
+        </div>
+        <div class="form-control mb-4">
+            <label>Pageidaujamas atlyginimas</label>
+            {{ form_row(form.salary) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.experience) }}
+        </div>
+        <div class="form-control mb-4">
+            <label>Trumpai papasakokite apie save</label>
+            {{ form_row(form.aboutYou) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.isMain) }}
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button class="btn btn-info btn-block" type="submit">Sukurti</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

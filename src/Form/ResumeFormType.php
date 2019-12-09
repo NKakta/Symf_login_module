@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Choises;
 use App\Entity\Resume;
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -14,6 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ResumeFormType extends AbstractType
 {
@@ -96,8 +98,8 @@ class ResumeFormType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])*/
-            ->add('salary', TextType::class, [
-                'label' => 'Pageidaujamas atlyginimas: ',
+            ->add('salary', IntegerType::class, [
+                'label' => false,
                 /*'choices' => [
                     '500e' => 500,
                     '1000e' => 1000,
@@ -118,9 +120,9 @@ class ResumeFormType extends AbstractType
                 'expanded' => true,
             ])
             ->add('aboutYou', TextareaType::class, [
-                'label' => 'Trumpai papasakokite apie save',
+                'label' => false,
             ])
-            ->add('hideFrom', EntityType::class, [
+            /*->add('usersToHide', EntityType::class, [
                 'label' => 'Pasirinkite kam nerodyti jūsų CV, jeigu tokių žmonių yra',
                 'choice_label' => 'lastName',
                 'class' => User::class,
@@ -129,9 +131,9 @@ class ResumeFormType extends AbstractType
                 ],
                 'multiple' => true,
                 'expanded' => true,
-            ])
+            ])*/
             ->add('isMain', ChoiceType::class, [
-                'label' => 'Ar norite, jog šis CV būtų isMain? ',
+                'label' => 'Ar norite, jog šis CV būtų pagrindinis? ',
                 'choices' => [
                     'Taip' => true,
                     'Ne' => false,

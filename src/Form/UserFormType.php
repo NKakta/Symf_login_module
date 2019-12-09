@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -23,13 +24,25 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Vardas',
+                //'label' => 'Vardas',
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Jūsų vardas',
+                ),
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Pavardė',
+                //'label' => 'Pavardė',
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Jūsų pavardė',
+                ),
             ])
             ->add('username', TextType::class, [
-                'label' => 'Prisijungimo firstName',
+                //'label' => 'Prisijungimo vardas',
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Slapyvardis',
+                ),
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Username can not be empty',
@@ -42,18 +55,34 @@ class UserFormType extends AbstractType
                 ],
             ])
             ->add('phoneNum', TextType::class, [
-                'label' => 'Telefono numeris',
+                //'label' => 'Telefono numeris',
+                'attr' => array(
+                    'placeholder' => 'Telefono numeris',
+                ),
+                'label' => false,
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Elektroninis adresas',
+                //'label' => 'Elektroninis adresas',
+                'attr' => array(
+                    'placeholder' => 'Elektroninis adresas',
+                ),
+                'label' => false,
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Slaptažodis',
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Slaptažodis',
+                    ),
+                    //'label' => 'Slaptažodis',
                 ],
                 'second_options' => [
-                    'label' => 'Pakartoti slaptažodį'
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Pakartoti slaptažodį',
+                    ),
+                    //'label' => 'Pakartoti slaptažodį'
                 ],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -69,11 +98,19 @@ class UserFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('credits', IntegerType::class, [
+                //'label' => 'Telefono numeris',
+                'attr' => array(
+                    'placeholder' => 'Kreditai',
+                ),
+                'label' => false,
+            ])
             ->add('roles', ChoiceType::class, [
-                'label' => 'Kas jūs esate?',
+                //'label' => 'Kas jūs esate?',
+                'label' => false,
                 'choices' => [
-                    'Darbdavys' => 'ROLE_EMPLOYER',
-                    'Darbuotojas' => 'ROLE_EMPLOYEE',
+                    'Ieškau darbuotojų' => 'ROLE_EMPLOYER',
+                    'Ieškau darbo' => 'ROLE_EMPLOYEE',
                 ],
                 'multiple' => true,
                 'expanded' => true,

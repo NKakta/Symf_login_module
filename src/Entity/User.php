@@ -69,7 +69,17 @@ class User implements UserInterface
      */
     private $resumes;
 
-
+    /**
+     * @var Track[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Tracking",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $tracking;
 
 
     /**

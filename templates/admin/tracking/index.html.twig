@@ -1,0 +1,18 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Sekimo sistema {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Grįžti į vartotojų sąrašą</a>
+    {% for track in tracking %}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <span class="h2">{{ track.action }}</span>
+            <span class="h2">{{ track.time|date("m/d/Y") }}</span>
+        </div>
+    {% endfor %}
+
+    {% if tracking|length < 1 %}
+        <p> įrašų nerasta. </p>
+    {% endif %}
+
+{% endblock %}

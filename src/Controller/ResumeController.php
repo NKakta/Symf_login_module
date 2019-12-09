@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Resume;
+use App\Entity\Tracking;
 use App\Form\ResumeFormType;
 use App\Form\SearchCvFormType;
 use App\Form\SearchEmailFormType;
@@ -12,6 +13,8 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
 use phpDocumentor\Reflection\Types\This;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,6 +36,7 @@ class ResumeController extends AbstractController
      * @Method({"GET"})
      * @Template("resume/index.html.twig")
      * @return array
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')")
      */
     public function listResumes()
     {
@@ -47,11 +51,13 @@ class ResumeController extends AbstractController
      * @Template("resume/create.html.twig")
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @IsGranted("ROLE_EMPLOYEE")
      */
     public function createResumeAction(Request $request)
     {
 
         $resume = new Resume();
+
         $form = $this->createForm(ResumeFormType::class, $resume);
         $form->handleRequest($request);
 
@@ -66,18 +72,29 @@ class ResumeController extends AbstractController
             $entityManager->flush();
 
             if($resume->getIsMain()== true){
-                $this->getUser()->setMain($resume->getId());
+                //$query = $entityManager->getRepository('App\Entity\Resume');
+                //$query = $entityManager->getRepository('App\Entity\Resume')
+                //    ->find(2)
+                 //   ->setParameter('isMain', '0');
+                $this->getUser()->setMainNum($resume->getId());
                 $resume->setIsMain(false);
+            }
+            if($this->isGranted('ROLE_EMPLOYEE')){
+                $tracking = new Tracking();
+                $tracking->setUser($this->getUser());
+                $tracking->setAction('Sukurta nauja CV anketa');
+                $tracking->setTime(new DateTime());
+                $entityManager->persist($tracking);
                 $entityManager->flush();
             }
 
-            $this->addFlash('success', 'Resume created');
+            $this->addFlash('success', 'CV anketa sėkmingai sukurta');
 
             return $this->redirectToRoute('resume_index');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('error', 'Invalid data');
+            $this->addFlash('error', 'Blogas duomenų formatas');
         }
 
         return ['form' => $form->createView()];
@@ -87,6 +104,7 @@ class ResumeController extends AbstractController
      * @Route("/searchCV", name="search_resume")
      * @Method({"GET", "POST"})
      * @Template("resume/search.html.twig")
+     * @IsGranted("ROLE_EMPLOYER")
      */
     public function searchResumeAction(Request $request, PaginatorInterface $paginator)
     {
@@ -96,14 +114,49 @@ class ResumeController extends AbstractController
         $form = $this->createForm(SearchCvFormType::class);
         $queryBuilder = $em->getRepository('App\Entity\Resume')->createQueryBuilder('bp');
 
-        if ($request->query->getAlnum('sritis')) {
+
+        if ($request->query->getAlnum('area')) {
             $queryBuilder
-                ->where('bp.sritis LIKE :sritis')
-                ->setParameter('sritis', '%' . $request->query
-                        ->getAlnum('sritis') . '%');
+                ->where('bp.area LIKE :area')
+                ->setParameter('area', '%' . $request->query
+                        ->getAlnum('area') . '%');
+        }
+        if ($request->query->getAlnum('education')) {
+            $queryBuilder
+                ->andWhere('bp.education LIKE :education')
+                ->setParameter('education', '%' . $request->query
+                        ->getAlnum('education') . '%');
+        }
+        if ($request->query->getAlnum('languages')) {
+            $queryBuilder
+                ->andWhere('bp.languages LIKE :languages')
+                ->setParameter('languages', '%' . $request->query
+                        ->getAlnum('languages') . '%');
+        }
+        if ($request->query->getAlnum('salary')) {
+            $queryBuilder
+                ->andWhere('bp.salary <= :salary')
+                ->setParameter('salary', $request->query
+                        ->getAlnum('salary'));
+        }
+        if ($request->query->getAlnum('experience')) {
+            $queryBuilder
+                ->andWhere('bp.experience LIKE :experience')
+                ->setParameter('experience', '%' . $request->query
+                        ->getAlnum('experience') . '%');
         }
 
-        $query = $queryBuilder->getQuery();
+        $query = $queryBuilder
+           // ->where('bp.user.mainNum = bp.id')
+            ->getQuery();
+
+        $count = $queryBuilder
+            //->where('bp.user.mainNum = bp.id')
+            ->select('Count(bp.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $this->addFlash('success', 'Pagal kriterijus radome '. $count . ' atitikmenis');
 
         $result = $paginator->paginate(
             $query,
@@ -119,6 +172,7 @@ class ResumeController extends AbstractController
      * @Route("/resume/edit/{id}", name="edit_resume", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("resume/edit.html.twig")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')")
      */
     public function editResumeAction(Request $request, $id)
     {
@@ -134,6 +188,14 @@ class ResumeController extends AbstractController
                 $resume->setIsMain(false);
                 $entityManager->flush();
             }
+            if($this->isGranted('ROLE_EMPLOYEE')){
+                $tracking = new Tracking();
+                $tracking->setUser($this->getUser());
+                $tracking->setAction('Redagavo savo CV anketą');
+                $tracking->setTime(new DateTime());
+                $entityManager->persist($tracking);
+                $entityManager->flush();
+            }
             return $this->redirectToRoute('resume_index');
         }
 
@@ -143,9 +205,19 @@ class ResumeController extends AbstractController
     /**
      * @Route("/resume/{id}", name="show_resume", requirements={"id"="\d+"})
      * @Template("resume/show.html.twig")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')")
      */
     public function showResumeAction($id)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        if($this->isGranted('ROLE_EMPLOYEE')){
+            $tracking = new Tracking();
+            $tracking->setUser($this->getUser());
+            $tracking->setAction('Peržiūrėjo savo CV anketą');
+            $tracking->setTime(new DateTime());
+            $entityManager->persist($tracking);
+            $entityManager->flush();
+        }
         $resume = $this->getDoctrine()->getRepository(Resume::class)->find($id);
         return ['resume' => $resume];
     }
@@ -156,6 +228,13 @@ class ResumeController extends AbstractController
      */
     public function downloadResumeAction($id)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $tracking = new Tracking();
+        $tracking->setUser($this->getUser());
+        $tracking->setAction('Parsisiuntė CV anketą');
+        $tracking->setTime(new DateTime());
+        $entityManager->persist($tracking);
+        $entityManager->flush();
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -172,7 +251,7 @@ class ResumeController extends AbstractController
         $dompdf->loadHtml($html);
 
         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
 
         // Render the HTML as PDF
         $dompdf->render();
@@ -187,6 +266,7 @@ class ResumeController extends AbstractController
      * @Route("/resume/employer/{id}", name="showForEmployer_resume", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("resume/show.html.twig")
+     * @IsGranted("ROLE_EMPLOYER")
      */
     public function showResumeForEmployerAction($id)
     {
@@ -195,6 +275,15 @@ class ResumeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $this->getUser()->setCredits($this->getUser()->getCredits()-10);
             $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            if($this->isGranted('ROLE_EMPLOYER')){
+                $tracking = new Tracking();
+                $tracking->setUser($this->getUser());
+                $tracking->setAction('Peržiūrėjo darbuotojo CV už 10 kreditų, kurio ID: '. $id);
+                $tracking->setTime(new DateTime());
+                $entityManager->persist($tracking);
+                $entityManager->flush();
+            }
             return ['resume' => $resume];
         }
         else
@@ -206,6 +295,7 @@ class ResumeController extends AbstractController
 
     /**
      * @Route("resume/remove/{id}", name="remove_resume", requirements={"id"="\d+"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')")
      */
     public function removeResume($id)
     {
@@ -213,7 +303,15 @@ class ResumeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($resume);
         $entityManager->flush();
-        $this->addFlash('success', 'Resume has been removed');
+        $this->addFlash('success', 'CV anketa ištrinta');
+        if($this->isGranted('ROLE_EMPLOYEE')){
+            $tracking = new Tracking();
+            $tracking->setUser($this->getUser());
+            $tracking->setAction('Ištrynė CV anketą');
+            $tracking->setTime(new DateTime());
+            $entityManager->persist($tracking);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('resume_index');
     }
 }

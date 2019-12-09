@@ -1,81 +1,100 @@
-
+{% extends 'layouts/download-base.html.twig' %}
 {% block body %}
 
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>Vartotojo firstName</th>
-                    <th>Vardas</th>
-                    <th>Pavardė</th>
-                    <th>Elektroninis adresas</th>
-                    <th>Telefono numeris</th>
-                    <th>Nerodoma šiems asmenims</th>
-                {% endif %}
-                {% if is_granted('ROLE_EMPLOYER') %}
-                    <th>Vardas</th>
-                    <th>Pavardė</th>
-                    <th>Elektroninis adresas</th>
-                    <th>Telefono numeris</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>{{ resume.user.username }}</td>
-                    <td>{{ resume.user.firstName }}</td>
-                    <td>{{ resume.user.lastName }}</td>
-                    <td>{{ resume.user.email }}</td>
-                    <td>{{ resume.user.phoneNum }}</td>
-                    <td>{{ resume.usersToHide }}</td>
-                {% endif %}
-                {% if is_granted('ROLE_EMPLOYER') %}
-                    <td>{{ resume.user.firstName }}</td>
-                    <td>{{ resume.user.lastName }}</td>
-                    <td>{{ resume.user.email }}</td>
-                    <td>{{ resume.user.phoneNum }}</td>
-                {% endif %}
-                </tr>
-            </tbody>
-            <thead>
-            <tr>
-                <th>Sritis</th>
-                <th>Išsilavinimas</th>
-                <th>Kalbos</th>
-                <th>Atlyginimas</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ resume.area }}</td>
-                <td>{{ resume.education }}</td>
-                <td>{{ resume.kalbosStr() }}</td>
-                <td>{{ resume.salary }}</td>
-            </tr>
-            </tbody>
-            <thead>
-            <tr>
-                <th>Patirtis</th>
-                <th>Apie</th>
-                <th>Sukūrta</th>
-                <th>Atnaujinta</th>
-                {% if is_granted('ROLE_EMPLOYEE') %}
-                    <th>Nerodoma šiems asmenims</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ resume.experience }}</td>
-                <td>{{ resume.aboutYou }}</td>
-                <td>{{ resume.createdAt|date("m/d/Y") }}</td>
-                <td>{{ resume.updatedAt|date("m/d/Y") }}</td>
-                {% if is_granted('ROLE_EMPLOYEE') %}
-                {% endif %}
-            </tr>
-            </tbody>
-        </table>
+    <div class="wrapper">
+        <div class="sidebar-wrapper">
+            <div class="profile-container">
+                <h1 class="name">{{ resume.user.firstName }} {{ resume.user.lastName }}</h1>
+                <h3 class="tagline">{{ resume.area }}</h3>
+            </div><!--//profile-container-->
+
+            <div class="contact-container container-block">
+                <ul class="list-unstyled contact-list">
+                    <li class="email"><i class="fas fa-envelope"></i><a href="mailto: {{ resume.user.email }}">{{ resume.user.email }}</a></li>
+                    <li class="phone"><i class="fas fa-phone"></i><a href="tel: {{ resume.user.phoneNum }}">{{ resume.user.phoneNum }}</a></li>
+                </ul>
+            </div><!--//contact-container-->
+            <div class="education-container container-block">
+                <h2 class="container-block-title">Išsilavinimas</h2>
+                <div class="item">
+                    <h4 class="degree">{{ resume.education }}</h4>
+                </div><!--//item-->
+            </div><!--//education-container-->
+
+            <div class="languages-container container-block">
+                <h2 class="container-block-title">Šnekamos kalbos</h2>
+                <ul class="list-unstyled interests-list">
+                    {% for language in resume.languages %}
+                        <li>{{ language }}<span class="lang-desc"></span></li>
+                    {% endfor %}
+                </ul>
+            </div><!--//interests-->
+
+            <div class="interests-container container-block">
+                <h2 class="container-block-title">Patirtis</h2>
+                <ul class="list-unstyled interests-list">
+                    <li>{{ resume.experience }} metai</li>
+                </ul>
+            </div><!--//interests-->
+
+        </div><!--//sidebar-wrapper-->
+
+        <div class="main-wrapper">
+
+            <section class="section summary-section">
+                <h2 class="section-title"><span class="icon-holder"><i class="fas fa-user"></i></span>Apie save</h2>
+                <div class="summary">
+                    <p>{{ resume.aboutYou }}</p>
+                </div><!--//summary-->
+            </section><!--//section-->
+
+
+            <section class="section projects-section">
+                <h2 class="section-title"><span class="icon-holder"><i class="fas fa-archive"></i></span>Pageidaujamas atlyginimas</h2>
+                <div class="intro">
+                    <p>{{ resume.salary }} € / metus</p>
+                </div><!--//intro-->
+            </section><!--//section-->
+
+            <section class="skills-section section">
+                <h2 class="section-title"><span class="icon-holder"><i class="fas fa-rocket"></i></span>Papildoma informacija</h2>
+                <div class="skillset">
+                    <div class="item">
+                        <h3 class="level-title">CV sukurtas</h3>
+                        <div class="intro">
+                            <p>{{ resume.createdAt|date("m/d/Y") }}</p>
+                        </div><!--//intro-->
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title">CV atnaujintas</h3>
+                        <div class="intro">
+                            <p>{{ resume.updatedAt|date("m/d/Y") }}</p>
+                        </div><!--//intro-->
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title"></h3>
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title"></h3>
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title"></h3>
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title"></h3>
+                    </div><!--//item-->
+
+                    <div class="item">
+                        <h3 class="level-title"></h3>
+                    </div><!--//item-->
+
+                </div>
+            </section><!--//skills-section-->
+        </div><!--//main-body-->
     </div>
 {% endblock %}

@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 
+use App\Entity\Tracking;
 use App\Entity\User;
 use App\Event\UserRegisteredEvent;
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -41,10 +43,10 @@ class SecurityController extends AbstractController
         }
 
         $emailConstraint = new Assert\Email();
-        $emailConstraint->message = 'Invalid email address';
+        $emailConstraint->message = 'Neteisingas e-mail adredas';
 
         $notBlankConstraint = new Assert\NotBlank();
-        $notBlankConstraint->message = 'Email can not be blank';
+        $notBlankConstraint->message = 'e-mail laukelis, neglai būti tuščias';
 
         $form = $this->createForm(LoginFormType::class);
 
@@ -81,6 +83,8 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_homepage');
         }
 
+
+
         $user = new User();
         $user->setRole('ROLE_USER');
 
@@ -100,7 +104,7 @@ class SecurityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->getConnection()->beginTransaction();
-
+            $user->setCredits(50);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -108,13 +112,13 @@ class SecurityController extends AbstractController
             $dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
 
             $entityManager->commit();
-            $this->addFlash('success', 'You have successfully registered');
+            $this->addFlash('success', 'Sveikiname užsiregistravus!');
 
             return $this->redirectToRoute('app_homepage');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('danger', 'Registration failed');
+            $this->addFlash('danger', 'Oooops kažkas nepavyko...');
         }
 
         return ['registrationForm' => $form->createView()];

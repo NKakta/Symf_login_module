@@ -3,15 +3,35 @@
 {% block title %} Paieškos sistema {% endblock %}
 
 {% block body %}
-    <p> Vieno CV peržiūros kaina 10 kreditų </p>
-    {{ form_start(form, {'method': 'GET'}) }}
-    {{ form_row(form.area) }}
-    <button type="submit">Ieškoti</button>
-    {{ form_end(form) }}
 
+    <div class="text-center border border-light p-5">
+        {{ form_start(form, {'method': 'GET'}) }}
+        <p class="h2 mb-4"> Vieno CV peržiūros kaina 10 kreditų </p>
+        <p class="h4 mb-4">CV anketų paieška</p>
+
+        <!-- Name -->
+        <div class="form-control mb-4">
+            {{ form_row(form.area) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.education) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.languages) }}
+        </div>
+        <div class="form-control mb-4">
+            <label>Mokamas atlgyinimas, iki:</label>
+            {{ form_row(form.salary) }}
+        </div>
+        <div class="form-control mb-4">
+            {{ form_row(form.experience) }}
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button class="btn btn-info btn-block" type="submit">Ieškoti</button>
+        {{ form_end(form) }}
+    </div>
 
     {% for resume in resumes %}
-
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <span class="h2">{{ resume.area}} - sukūrė: {{ resume.user.firstName }} {{ resume.createdAt|date("m/d/Y") }}</span>
             <div class="btn-toolbar mb-2 mb-md-0">

@@ -2,13 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Gabrielius Jurgelionis IFF-7/5{% endblock %}</title>
-    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
-    <link rel="stylesheet" href="{{ absolute_url('assets/css/admin-style.css') }}">
 
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,400italic,300italic,300,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
@@ -347,38 +344,12 @@
                 margin-bottom: 0;
             }
         }
-        .note {
-            text-align: center;
-            height: 80px;
-            background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-            color: #fff;
-            font-weight: bold;
-            line-height: 80px;
-        }
-
-        .form-content {
-            padding: 5%;
-            border: 1px solid #ced4da;
-            margin-bottom: 2%;
-        }
-
-        .btnSubmit {
-            border: none;
-            border-radius: 1.5rem;
-            padding: 1%;
-            width: 20%;
-            cursor: pointer;
-            background: #0062cc;
-            color: #fff;
-        }
     </style>
 
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-    {{ include('inc/navbar.html.twig') }}
     <div class="container">
-        {% include('inc/flash-messages.html.twig') %}
 
         {% block body %}{% endblock %}
     </div>

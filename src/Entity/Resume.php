@@ -80,13 +80,10 @@ class Resume
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @ORM\OneToMany(targetEntity="User", cascade={"persist", "remove"}, orphanRemoval=true )
+     *
      */
     private $usersToHide;
 
-    public function __construct() {
-        $this->usersToHide = new ArrayCollection();
-    }
 
     /**
      * @return mixed
@@ -121,6 +118,11 @@ class Resume
     public function setUser(User $user): void
     {
         $this->user = $user;
+    }
+
+    public function getUserMain(): ?int
+    {
+        return $this->user->getMainNum();
     }
 
     /**

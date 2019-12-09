@@ -5,14 +5,34 @@
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <h1>Prisijungimas</h1>
 
-    {{ form_start(loginForm, {'action': path('app_login'), 'method': 'POST'}) }}
-    {{ form_row(loginForm.email) }}
-    {{ form_row(loginForm.plainPassword) }}
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Prisijungti</button>
-    {{ form_end(loginForm) }}
+    <div class="container register-form">
+        <div class="form">
+            <div class="note">
+                <p>Prašome prisijungti</p>
+            </div>
 
+            <div class="form-content">
+                {{ form_start(loginForm, {'action': path('app_login'), 'method': 'POST'}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_row(loginForm.email) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_row(loginForm.plainPassword) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-1" align="center">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button type="submit" class="btnSubmit">Prisijungti</button>
+                </div>
+            </div>
+        </div>
+        {{ form_end(loginForm) }}
+    </div>
 
 {% endblock %}
