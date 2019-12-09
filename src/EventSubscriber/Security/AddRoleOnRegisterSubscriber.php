@@ -32,7 +32,7 @@ class AddRoleOnRegisterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FOSUserEvents::REGISTRATION_INITIALIZE => 'addRole',
+            FOSUserEvents::REGISTRATION_SUCCESS => 'addRole',
         ];
     }
 
@@ -41,8 +41,8 @@ class AddRoleOnRegisterSubscriber implements EventSubscriberInterface
      */
     public function addRole(FormEvent $event)
     {
-        $event->getForm()->getData();
-        $user = $event->getUser();
-        $user->addRole(User::ROLE_USER);
+        /* @var $user \App\Entity\User */
+        $user = $event->getForm()->getData();
+        $user->setRoles([User::ROLE_ADMIN]);
     }
 }
