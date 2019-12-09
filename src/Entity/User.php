@@ -163,7 +163,14 @@ class User implements UserInterface
 
     public function getRoleStr()
     {
-        return implode(',', $this->roles);
+        $new = [];
+        foreach($this->roles as $role) {
+            if ($role == 'ROLE_USER') { $new[] = 'Vartotojas';}
+            if ($role == 'ROLE_ADMIN') { $new[] = 'Administratorius';}
+            if ($role == 'ROLE_CRAFTSMAN') { $new[] = 'Meistras';}
+            if ($role == 'ROLE_SUPERADMIN') { $new[] = 'Super Administratorius';}
+        }
+        return implode(' <br> ', $new);
     }
 
     public function getPublicInfo()

@@ -60,7 +60,7 @@ class OrderController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($order);
         $entityManager->flush();
-        $this->addFlash('success', 'Order has been removed');
+        $this->addFlash('success', 'Užsakymas pašalintas');
         return $this->redirectToRoute('order_index');
     }
 
@@ -82,18 +82,20 @@ class OrderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $order->setCompleted(false);
+            $order->setCustomer($this->getUser());
+            $order->setCraftsman(null);
 
             $entityManager->persist($order);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Order created');
+            $this->addFlash('success', 'Užsakymas sukurtas');
 
             //Sends email to the user with login link
             return $this->redirectToRoute('order_index');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('error', 'Invalid data');
+            $this->addFlash('error', 'Blogi duomenys');
         }
 
         return ['form' => $form->createView()];
@@ -143,7 +145,24 @@ class OrderController extends AbstractController
         $order->setCompleted(true);
         $entityManager->persist($order);
         $entityManager->flush();
-        $this->addFlash('success', 'Order has been completed');
+        $this->addFlash('success', 'Užsakymas atliktas');
+
+        return $this->redirectToRoute('order_index');
+    }
+
+    /**
+     * @Route("/admin/order/accept/{id}", name="accept_order", requirements={"id"="\d+"})
+     * @Method({"GET", "POST"})
+     * @IsGranted("ROLE_CRAFTSMAN")
+     */
+    public function acceptOrder(Request $request, $id)
+    {
+        $order = $this->getDoctrine()->getRepository(Order::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $order->setCraftsman($this->getUser());
+        $entityManager->persist($order);
+        $entityManager->flush();
+        $this->addFlash('success', 'Užsakymas priimtas');
 
         return $this->redirectToRoute('order_index');
     }

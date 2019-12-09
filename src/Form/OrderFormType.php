@@ -28,23 +28,9 @@ class OrderFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customer', EntityType::class, [
-                'choice_label' => 'email',
-                'class' => User::class,
-                'choices' => [
-                    $this->userRepo->findAll()
-                ],
-            ])
-            ->add('craftsman', EntityType::class, [
-                'choice_label' => 'email',
-                'class' => User::class,
-                'choices' => [
-                    $this->userRepo->findAll()
-                ],
-            ])
             ->add('content', TextType::class)
-            ->add('dateFrom', DateType::class)
-            ->add('dateTo', DateType::class)
+            ->add('dateFrom', DateType::class, ['years' => [2019, 2020, 2021]])
+            ->add('dateTo', DateType::class, ['years' => [2019, 2020, 2021]])
 
         ;
     }

@@ -3,22 +3,40 @@
 {% block title %} Orders {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_order') }}">Create new Order</a>
+    <h1>Užsakymų sąrašas</h1>
+    <span>Atlikti pažymėti pilkai</span>
+    {% if not is_granted('ROLE_CRAFTSMAN') %}
+        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_order') }}">Kurti naują užsakyma</a>
+    {% endif %}
 
     {% for order in orders %}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <span class="h2">{{ order.content }} - {{ order.dateTo|date("m/d/Y") }}</span>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_order', { 'id': order.id }) }}">Show</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_order', { 'id': order.id }) }}">Edit</a>
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_order', { 'id': order.id }) }}">Delete</a>
-                {% if is_granted('ROLE_CRAFTSMAN') %}
-                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('complete_order', { 'id': order.id }) }}">Complete</a>
-                {% endif %}
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+            {% if order.completed %}
+                    style="background: #ebebeb;"
+            {% endif %}
+            >
+                <span class="h2">{{ order.customer.email }} - {{ order.dateTo|date("m-d-Y") }}</span>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{{ path('show_order', { 'id': order.id }) }}">Apžiūrėti</a>
+                        {% if not is_granted('ROLE_CRAFTSMAN') and not is_granted('ROLE_USER') %}
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{{ path('edit_order', { 'id': order.id }) }}">Redaguoti</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{{ path('remove_order', { 'id': order.id }) }}">Trinti</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_CRAFTSMAN') and order.completed == 0 %}
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{{ path('complete_order', { 'id': order.id }) }}">Užbaigti</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_CRAFTSMAN') and order.craftsman is null %}
+                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                               href="{{ path('accept_order', { 'id': order.id }) }}">Priimti</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
     {% endfor %}
 
     {% if orders|length < 1 %}

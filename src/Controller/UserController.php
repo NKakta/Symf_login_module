@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Event\UserRegisteredEvent;
 use App\Form\SearchEmailFormType;
 use App\Form\UserFormType;
+use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -73,8 +74,8 @@ class UserController extends AbstractController
 
         //$users = $em->getRepository(User::class)->findAll();
         $form = $this->createForm(SearchEmailFormType::class);
+        /* @var $queryBuilder QueryBuilder */
         $queryBuilder = $em->getRepository('App\Entity\User')->createQueryBuilder('bp');
-
         if ($request->query->getAlnum('email')) {
             $queryBuilder
                 ->where('bp.email LIKE :email')

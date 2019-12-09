@@ -1,21 +1,43 @@
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
     <div class="sidebar-sticky">
         <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('user_index') }}">
-                    Users
-                </a>
+            <li class="nav-item" style="margin:10px;">
+                Vartotojas: <br>
+                {% if not is_granted('ROLE_SUPERADMIN') %}
+                    {{ app.user.email }} <br>
+                    Rolės: <br>
+                    {{ app.user.getRoleStr()|raw }}
+                {% else %}
+                    SUPER ADMIN
+                {% endif %}
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('user_index') }}">
+                        Users
+                    </a>
+                </li>
+            {% endif %}
+
             <li class="nav-item">
                 <a class="nav-link active" href="{{ path('order_index') }}">
-                    Orders
+                    Užsakymai (bendras sąrašas)
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('order_personal_index') }}">
-                    My Orders
-                </a>
-            </li>
+            {% if is_granted('ROLE_USER') and not is_granted('ROLE_CRAFTSMAN') %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('create_order') }}">
+                        Kurti užsakymą
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_CRAFTSMAN') %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('order_personal_index') }}">
+                        Mano užsakymai
+                    </a>
+                </li>
+            {% endif %}
         </ul>
 
     </div>
