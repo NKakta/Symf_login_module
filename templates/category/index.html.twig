@@ -5,6 +5,11 @@
 {% block body %}
     <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_category') }}">Create new Category</a>
 
+    {{ form_start(form, {'method': 'GET'}) }}
+    {{ form_row(form.name) }}
+    <button type="submit">Search</button>
+    {{ form_end(form) }}
+
     {% for category in categories %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <span class="h2">{{ category.name }}</span>

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryFormType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -26,13 +27,29 @@ class CategoryController extends AbstractController
      * @Route("/categories", name="category_index")
      * @Method({"GET"})
      * @Template("category/index.html.twig")
+     * @param Request $request
      * @return array
      */
-    public function listCategories()
+    public function listCategories(Request $request)
     {
         $categories = $this->repo->findAll();
 
-        return ['categories' => $categories];
+        $form = $this->createForm(CategoryFormType::class);
+
+        $name = $request->query->get('name');
+
+        $filtered = [];
+        foreach ($categories as $category) {
+            if ($category->getName() == $name) {
+                array_push($filtered, $category);
+            }
+        }
+
+        if (!$name) {
+            $filtered = $categories;
+        }
+
+        return ['categories' => $filtered, 'form' => $form->createView()];
     }
 
     /**
