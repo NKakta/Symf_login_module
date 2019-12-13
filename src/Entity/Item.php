@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="items")
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
+ * @UniqueEntity("name")
  */
 class Item
 {
@@ -64,6 +66,28 @@ class Item
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
      */
     private $supplier;
+
+    /**
+     * @ORM\Column(name="count", type="integer")
+     * @Assert\NotBlank
+     */
+    private $count;
+
+    /**
+     * @return mixed
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * @param mixed $count
+     */
+    public function setCount($count): void
+    {
+        $this->count = $count;
+    }
 
     /**
      * @return mixed

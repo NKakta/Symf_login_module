@@ -26,6 +26,7 @@ class ItemFormType extends AbstractType
                 'expanded' => false,
             ])
             ->add('price', NumberType::class)
+            ->add('count', NumberType::class)
             ->add('model', TextType::class)
             ->add('name', TextType::class)
         ;
