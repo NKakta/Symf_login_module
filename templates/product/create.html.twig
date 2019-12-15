@@ -1,14 +1,10 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Users {% endblock %}
+{% block title %} Products {% endblock %}
 
 {% block body %}
     {{ form_start(form)}}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.department) }}
-    {{ form_row(form.roles) }}
-    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.name) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <button type="submit">Submit</button>
     {{ form_end(form) }}

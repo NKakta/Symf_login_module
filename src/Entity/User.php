@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -50,11 +49,44 @@ class User implements UserInterface
      * )
      */
     private $plainPassword;
+
     /**
      * @ORM\Column(type="array")
      * @Assert\NotBlank
      */
     private $roles = null;
+
+    /**
+     * @var VacationRequest[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="VacationRequest",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $vacationRequests;
+
+    /**
+     * @var Vacation[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Vacation",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $vacations;
+
+    /**
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="users")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    private $department;
 
     public function getId(): ?int
     {
@@ -168,5 +200,53 @@ class User implements UserInterface
     {
         //No need to erase it. Not storing plainPassword
         //$this->plainPassword = null;
+    }
+
+    /**
+     * @return VacationRequest[]
+     */
+    public function getVacationRequests()
+    {
+        return $this->vacationRequests;
+    }
+
+    /**
+     * @param VacationRequest[] $vacationRequests
+     */
+    public function setVacationRequests(array $vacationRequests): void
+    {
+        $this->vacationRequests = $vacationRequests;
+    }
+
+    /**
+     * @return Vacation[]
+     */
+    public function getVacations(): array
+    {
+        return $this->vacations;
+    }
+
+    /**
+     * @param Vacation[] $vacations
+     */
+    public function setVacations(array $vacations): void
+    {
+        $this->vacations = $vacations;
+    }
+
+    /**
+     * @return User
+     */
+    public function getDepartment(): ?Department
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param User $department
+     */
+    public function setDepartment(Department $department): void
+    {
+        $this->department = $department;
     }
 }
