@@ -1,0 +1,11 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Products {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('product_index') }}">Back to list</a>
+    <div>
+        Element count
+        {{ productCount }}
+    </div>
+{% endblock %}

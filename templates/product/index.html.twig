@@ -1,0 +1,25 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Products {% endblock %}
+
+{% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('create_product') }}">Create new Product</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('product_statistics') }}">Statistics</a>
+
+    {% for product in products %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <span class="h2">{{ product.name }}</span>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('show_product', { 'id': product.id }) }}">Show</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('edit_product', { 'id': product.id }) }}">Edit</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_product', { 'id': product.id }) }}">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if products|length < 1 %}
+        <p> Nothing found. </p>
+    {% endif %}
+{% endblock %}
