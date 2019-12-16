@@ -30,12 +30,19 @@ class UzsakymasController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $sessionVal = $this->get('session')->get('productsInOrder');
+
         $uzsakyma = new Uzsakymas();
         $form = $this->createForm(UzsakymasType::class, $uzsakyma);
         $form->handleRequest($request);
-
+        $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($sessionVal as $product) {
+                $entityManager->persist($product);
+                $uzsakyma->addProduct($product);
+                }
+
+            dump($uzsakyma);
             $entityManager->persist($uzsakyma);
             $entityManager->flush();
 
@@ -44,6 +51,7 @@ class UzsakymasController extends AbstractController
 
         return $this->render('uzsakymas/new.html.twig', [
             'uzsakyma' => $uzsakyma,
+            'products'=>$sessionVal,
             'form' => $form->createView(),
         ]);
     }

@@ -76,6 +76,61 @@ class ProductController extends AbstractController
         return ['form' => $form->createView()];
     }
 
+
+    /**
+     * @Route("admin/product/add/order/{id}", name="add_product_order", requirements={"id"="\d+"})
+     */
+    public function addProductToOrder($id)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        // Get Value from session
+        $sessionVal = $this->get('session')->get('productsInOrder');
+        // Append value to retrieved array.
+        $sessionVal[] = $product;
+        // Set value back to session
+        $this->get('session')->set('productsInOrder', $sessionVal);
+        dump($sessionVal);
+
+        $this->addFlash('success', 'Product has been added to order');
+        return $this->redirectToRoute('product_index');
+    }
+
+    /**
+     * @Route("admin/product/remove/order/{id}", name="remove_product_order", requirements={"id"="\d+"})
+     */
+    public function removeProductToOrder($id)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        // Get Value from session
+        $sessionVal = $this->get('session')->get('productsInOrder');
+
+
+        dump($sessionVal);
+        dump($product);
+        // object exists in array; do something
+        $item = null;
+        $id = $product->getId();
+        $sessionVal = array_filter($sessionVal, function($v) use ($id) { return $v->getId() != $id; });
+        dump($sessionVal);
+        $this->get('session')->set('productsInOrder', $sessionVal);
+
+        $this->addFlash('danger', 'Product has been removed successfully');
+        return $this->redirectToRoute('uzsakymas_index');
+    }
+
+    function findObjectById($id)
+    {
+        $array = array( /* your array of objects */);
+
+        foreach ($array as $element) {
+            if ($id == $element->id) {
+                return $element;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @Route("/admin/product/edit/{id}", name="edit_product", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
