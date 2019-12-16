@@ -27,6 +27,12 @@
                 <td>
                     <a href="{{ path('uzsakymas_show', {'id': uzsakyma.id}) }}">show</a>
                     <a href="{{ path('uzsakymas_edit', {'id': uzsakyma.id}) }}">edit</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('uzsakymas_delete', {'id': uzsakyma.id}) }}">delete</a>
+                    {% endif %}
+{#                    {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN') ==false %}#}
+{#                        <a href="{{ path('uzsakymas_deactivate', {'id': uzsakyma.id}) }}">deactivate</a>#}
+{#                    {% endif %}#}
                 </td>
             </tr>
         {% else %}

@@ -182,7 +182,7 @@ class ProductController extends AbstractController
         $sessionVal = array_filter($sessionVal, function($v) use ($id) { return $v->getId() != $id; });
         dump($sessionVal);
         $this->get('session')->set('productsInOrder', $sessionVal);
-        $this->addFlash('danger', 'Product has been removed successfully');
+        $this->addFlash('success', 'Product has been removed successfully');
         return $this->redirectToRoute('uzsakymas_index');
     }
 
@@ -199,7 +199,7 @@ class ProductController extends AbstractController
         $sessionVal = array_filter($sessionVal, function($v) use ($id) { return $v->getId() != $id; });
         dump($sessionVal);
         $this->get('session')->set('productsInOrder', $sessionVal);
-        $this->addFlash('danger', 'Product has been removed successfully');
+        $this->addFlash('success', 'Product has been removed successfully');
         return $this->redirectToRoute('uzsakymas_index');
     }
     /**
