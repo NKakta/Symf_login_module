@@ -15,7 +15,7 @@ class UzsakymasType extends AbstractType
             ->add('patvirtinimo_laiskas')
             ->add('numeris')
             ->add('bendra_suma')
-            ->add('statusas')
+            ->add('additional_order_info')
         ;
     }
 

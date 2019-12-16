@@ -34,14 +34,14 @@ class Uzsakymas
     private $bendra_suma;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $statusas;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="uzsakymas")
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $additional_order_info;
 
     public function __construct()
     {
@@ -89,17 +89,6 @@ class Uzsakymas
         return $this;
     }
 
-    public function getStatusas(): ?string
-    {
-        return $this->statusas;
-    }
-
-    public function setStatusas(string $statusas): self
-    {
-        $this->statusas = $statusas;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Product[]
@@ -123,6 +112,18 @@ class Uzsakymas
         if ($this->product->contains($product)) {
             $this->product->removeElement($product);
         }
+
+        return $this;
+    }
+
+    public function getAdditionalOrderInfo(): ?string
+    {
+        return $this->additional_order_info;
+    }
+
+    public function setAdditionalOrderInfo(?string $additional_order_info): self
+    {
+        $this->additional_order_info = $additional_order_info;
 
         return $this;
     }
