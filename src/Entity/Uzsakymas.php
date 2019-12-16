@@ -43,6 +43,11 @@ class Uzsakymas
      */
     private $additional_order_info;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="uzsakymas")
+     */
+    private $user_orderer;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();
@@ -124,6 +129,18 @@ class Uzsakymas
     public function setAdditionalOrderInfo(?string $additional_order_info): self
     {
         $this->additional_order_info = $additional_order_info;
+
+        return $this;
+    }
+
+    public function getUserOrderer(): ?User
+    {
+        return $this->user_orderer;
+    }
+
+    public function setUserOrderer(?User $user_orderer): self
+    {
+        $this->user_orderer = $user_orderer;
 
         return $this;
     }

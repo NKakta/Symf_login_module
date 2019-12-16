@@ -37,13 +37,20 @@ class UzsakymasController extends AbstractController
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($sessionVal as $product) {
-                $entityManager->persist($product);
-                $uzsakyma->addProduct($product);
+            if($sessionVal!=null) {
+                foreach ($sessionVal as $product) {
+                    $entityManager->persist($product);
+                    $uzsakyma->addProduct($product);
                 }
-
-            dump($uzsakyma);
+            }
             $entityManager->persist($uzsakyma);
+            //only user, not admin
+            $user =$this->getUser();
+            if($user!=null){
+                $user->addUzsakyma($uzsakyma);
+                $entityManager->persist($user);
+            }
+            dump($uzsakyma);
             $entityManager->flush();
 
             return $this->redirectToRoute('uzsakymas_index');

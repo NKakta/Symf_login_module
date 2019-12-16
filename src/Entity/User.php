@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -94,6 +96,16 @@ class User implements UserInterface
      * )
      */
     private $vacations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Uzsakymas", mappedBy="user_orderer")
+     */
+    private $uzsakymas;
+
+    public function __construct()
+    {
+        $this->uzsakymas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -292,6 +304,37 @@ class User implements UserInterface
     public function setMarketing($marketing)
     {
         $this->marketing = $marketing;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Uzsakymas[]
+     */
+    public function getUzsakymas(): Collection
+    {
+        return $this->uzsakymas;
+    }
+
+    public function addUzsakyma(Uzsakymas $uzsakyma): self
+    {
+        if (!$this->uzsakymas->contains($uzsakyma)) {
+            $this->uzsakymas[] = $uzsakyma;
+            $uzsakyma->setUserOrderer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUzsakyma(Uzsakymas $uzsakyma): self
+    {
+        if ($this->uzsakymas->contains($uzsakyma)) {
+            $this->uzsakymas->removeElement($uzsakyma);
+            // set the owning side to null (unless already changed)
+            if ($uzsakyma->getUserOrderer() === $this) {
+                $uzsakyma->setUserOrderer(null);
+            }
+        }
+
         return $this;
     }
 
