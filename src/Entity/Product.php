@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,6 +51,16 @@ class Product
      * @ORM\Column(name="date_to", type="datetime")
      */
     private $dateTo;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Uzsakymas", mappedBy="product")
+     */
+    private $uzsakymas;
+
+    public function __construct()
+    {
+        $this->uzsakymas = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -140,5 +152,33 @@ class Product
     public function setUsers(array $users): void
     {
         $this->users = $users;
+    }
+
+    /**
+     * @return Collection|Uzsakymas[]
+     */
+    public function getUzsakymas(): Collection
+    {
+        return $this->uzsakymas;
+    }
+
+    public function addUzsakyma(Uzsakymas $uzsakyma): self
+    {
+        if (!$this->uzsakymas->contains($uzsakyma)) {
+            $this->uzsakymas[] = $uzsakyma;
+            $uzsakyma->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUzsakyma(Uzsakymas $uzsakyma): self
+    {
+        if ($this->uzsakymas->contains($uzsakyma)) {
+            $this->uzsakymas->removeElement($uzsakyma);
+            $uzsakyma->removeProduct($this);
+        }
+
+        return $this;
     }
 }

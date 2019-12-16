@@ -12,7 +12,7 @@
                 <th>Patvirtinimo_laiskas</th>
                 <th>Numeris</th>
                 <th>Bendra_suma</th>
-                <th>Statusas</th>
+                <th>Papildoma informacija užsakymo</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                 <td>{{ uzsakyma.patvirtinimoLaiskas ? 'Yes' : 'No' }}</td>
                 <td>{{ uzsakyma.numeris }}</td>
                 <td>{{ uzsakyma.bendraSuma }}</td>
-                <td>{{ uzsakyma.statusas }}</td>
+                <td>{{ uzsakyma.getAdditionalOrderInfo() }}</td>
                 <td>
                     <a href="{{ path('uzsakymas_show', {'id': uzsakyma.id}) }}">show</a>
                     <a href="{{ path('uzsakymas_edit', {'id': uzsakyma.id}) }}">edit</a>

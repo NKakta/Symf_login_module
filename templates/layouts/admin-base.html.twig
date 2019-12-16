@@ -11,10 +11,16 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
+{% if is_granted('ROLE_ADMIN')%}
 {% include('inc/navbar-admin.html.twig') %}
+{% else %}
+{% include('inc/navbar.html.twig') %}
+{% endif %}
 <div class="container-fluid">
     <div class="row">
+        {% if is_granted('ROLE_ADMIN')%}
         {% include('inc/sidebar-admin.html.twig') %}
+        {% endif %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {% include('inc/flash-messages.html.twig') %}
 

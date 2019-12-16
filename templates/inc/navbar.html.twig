@@ -13,6 +13,11 @@
                 <li class="nav-item">
                     <a href="{{ path('uzsakymas_index') }}" class="nav-link">Uzsakymai</a>
                 </li>
+                {% if is_granted('ROLE_USER') and is_granted('ROLE_ADMIN')==false%}
+                <li class="nav-item">
+                    <a href="{{ path('product_index_user') }}" class="nav-link">Prekės</a>
+                </li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
                         <a href="{{ path('admin_home') }}" class= "nav-link">Admin</a>

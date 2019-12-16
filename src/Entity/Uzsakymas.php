@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,9 +34,24 @@ class Uzsakymas
     private $bendra_suma;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="uzsakymas")
      */
-    private $statusas;
+    private $product;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $additional_order_info;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="uzsakymas")
+     */
+    private $user_orderer;
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,14 +94,53 @@ class Uzsakymas
         return $this;
     }
 
-    public function getStatusas(): ?string
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProduct(): Collection
     {
-        return $this->statusas;
+        return $this->product;
     }
 
-    public function setStatusas(string $statusas): self
+    public function addProduct(Product $product): self
     {
-        $this->statusas = $statusas;
+        if (!$this->product->contains($product)) {
+            $this->product[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->product->contains($product)) {
+            $this->product->removeElement($product);
+        }
+
+        return $this;
+    }
+
+    public function getAdditionalOrderInfo(): ?string
+    {
+        return $this->additional_order_info;
+    }
+
+    public function setAdditionalOrderInfo(?string $additional_order_info): self
+    {
+        $this->additional_order_info = $additional_order_info;
+
+        return $this;
+    }
+
+    public function getUserOrderer(): ?User
+    {
+        return $this->user_orderer;
+    }
+
+    public function setUserOrderer(?User $user_orderer): self
+    {
+        $this->user_orderer = $user_orderer;
 
         return $this;
     }
