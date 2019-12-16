@@ -34,6 +34,20 @@ class ProductController extends AbstractController
         return ['productCount' => count($products)];
     }
 
+
+    /**
+     * @Route("/product/statistics", name="product_statistics_user")
+     * @Method({"GET"})
+     * @Template("product/statistics.html.twig")
+     * @return array
+     */
+    public function showUserProductStatistics()
+    {
+        $products = $this->repo->findAll();
+
+        return ['productCount' => count($products)];
+    }
+
     /**
      * @Route("/admin/product", name="product_index")
      * @Method({"GET"})
@@ -41,6 +55,19 @@ class ProductController extends AbstractController
      * @return array
      */
     public function listProducts()
+    {
+        $products = $this->repo->findAll();
+
+        return ['products' => $products];
+    }
+
+    /**
+     * @Route("/product", name="product_index_user")
+     * @Method({"GET"})
+     * @Template("product/index.html.twig")
+     * @return array
+     */
+    public function listUserProducts()
     {
         $products = $this->repo->findAll();
 
@@ -76,9 +103,38 @@ class ProductController extends AbstractController
         return ['form' => $form->createView()];
     }
 
+    /**
+     * @Route("/product/create", name="create_product_user")
+     * @Method({"GET", "POST"})
+     * @Template("product/create.html.twig")
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function createProductActionUser(Request $request)
+    {
+        $product = new Product();
+        $product->setDateTo(new \DateTime());
+        $product->setDateFrom(new \DateTime());
+        $form = $this->createForm(ProductFormType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
+            $this->addFlash('success', 'Product created');
+            //Sends email to the user with login link
+            return $this->redirectToRoute('product_index');
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Invalid data');
+        }
+        return ['form' => $form->createView()];
+    }
+
 
     /**
-     * @Route("admin/product/add/order/{id}", name="add_product_order", requirements={"id"="\d+"})
+     * @Route("/admin/product/add/order/{id}", name="add_product_order", requirements={"id"="\d+"})
      */
     public function addProductToOrder($id)
     {
@@ -96,41 +152,56 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("admin/product/remove/order/{id}", name="remove_product_order", requirements={"id"="\d+"})
+     * @Route("/product/add/order/{id}", name="add_product_order_user", requirements={"id"="\d+"})
+     */
+    public function addProductToOrderUser($id)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        // Get Value from session
+        $sessionVal = $this->get('session')->get('productsInOrder');
+        // Append value to retrieved array.
+        $sessionVal[] = $product;
+        // Set value back to session
+        $this->get('session')->set('productsInOrder', $sessionVal);
+        dump($sessionVal);
+
+        $this->addFlash('success', 'Product has been added to order');
+        return $this->redirectToRoute('product_index');
+    }
+
+    /**
+     * @Route("/admin/product/remove/order/{id}", name="remove_product_order", requirements={"id"="\d+"})
      */
     public function removeProductToOrder($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         // Get Value from session
         $sessionVal = $this->get('session')->get('productsInOrder');
-
-
-        dump($sessionVal);
-        dump($product);
         // object exists in array; do something
-        $item = null;
         $id = $product->getId();
         $sessionVal = array_filter($sessionVal, function($v) use ($id) { return $v->getId() != $id; });
         dump($sessionVal);
         $this->get('session')->set('productsInOrder', $sessionVal);
-
         $this->addFlash('danger', 'Product has been removed successfully');
         return $this->redirectToRoute('uzsakymas_index');
     }
 
-    function findObjectById($id)
+    /**
+     * @Route("/product/remove/order/{id}", name="remove_product_order_user", requirements={"id"="\d+"})
+     */
+    public function removeProductToOrderUser($id)
     {
-        $array = array( /* your array of objects */);
-
-        foreach ($array as $element) {
-            if ($id == $element->id) {
-                return $element;
-            }
-        }
-
-        return false;
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        // Get Value from session
+        $sessionVal = $this->get('session')->get('productsInOrder');
+        // object exists in array; do something
+        $id = $product->getId();
+        $sessionVal = array_filter($sessionVal, function($v) use ($id) { return $v->getId() != $id; });
+        dump($sessionVal);
+        $this->get('session')->set('productsInOrder', $sessionVal);
+        $this->addFlash('danger', 'Product has been removed successfully');
+        return $this->redirectToRoute('uzsakymas_index');
     }
-
     /**
      * @Route("/admin/product/edit/{id}", name="edit_product", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
@@ -158,6 +229,16 @@ class ProductController extends AbstractController
      * @Template("product/show.html.twig")
      */
     public function showProductAction($id)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
+        return ['product' => $product];
+    }
+
+    /**
+     * @Route("/product/{id}", name="show_product_user", requirements={"id"="\d+"})
+     * @Template("product/show.html.twig")
+     */
+    public function showProductActionUser($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
         return ['product' => $product];
