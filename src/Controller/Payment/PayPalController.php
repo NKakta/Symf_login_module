@@ -3,18 +3,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Payment;
 
+use App\CoinRemitter\CoinRemitterUtil;
 use App\Entity\Order;
+use App\Event\PaymentCompletedEvent;
 use App\Form\Payment\PaymentFormType;
 use App\Model\PaymentModel;
 use App\Model\PayPalModel;
-use App\Repository\AccountRepository;
+use App\PayPal\PayPalIPN;
 use App\Repository\OrderRepository;
+use App\UseCase\Account\CheckAvailableAccountsUseCase;
+use App\UseCase\Account\PickSoldAccountsUseCase;
+use App\UseCase\Account\ProcessSoldAccountsUseCase;
 use App\UseCase\Order\CreateOrderUseCase;
+use App\UseCase\Payment\PurchasePaypalUseCase;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PayPalController extends Controller
 {
@@ -29,32 +37,80 @@ class PayPalController extends Controller
     private $payPal;
 
     /**
-     * @var AccountRepository
-     */
-    private $accountRepo;
-
-    /**
      * @var CreateOrderUseCase
      */
     private $createOrderUseCase;
 
+    /**
+     * @var PurchasePaypalUseCase
+     */
+    private $purchaseUseCase;
+
+    /**
+     * @var CheckAvailableAccountsUseCase
+     */
+    private $availableAccountsUseCase;
+
+    /**
+     * @var PickSoldAccountsUseCase
+     */
+    private $pickSoldAccountsUseCase;
+
+    /**
+     * @var CoinRemitterUtil
+     */
+    private $coinRemitterUtil;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * @var bool
+     */
+    private $paypalSandboxMode;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var ProcessSoldAccountsUseCase
+     */
+    private $processSoldAccountsUseCase;
+
 
     public function __construct(
         OrderRepository $orderRepo,
-        AccountRepository $accountRepo,
+        CheckAvailableAccountsUseCase $availableAccountsUseCase,
+        PickSoldAccountsUseCase $pickSoldAccountsUseCase,
         CreateOrderUseCase $createOrderUseCase,
-        PayPalModel $payPal
+        PayPalModel $payPal,
+        PurchasePaypalUseCase $purchaseUseCase,
+        CoinRemitterUtil $coinRemitterUtil,
+        EventDispatcherInterface $dispatcher,
+        bool $paypalSandboxMode,
+        LoggerInterface $logger,
+        ProcessSoldAccountsUseCase $processSoldAccountsUseCase
     ) {
         $this->orderRepo = $orderRepo;
         $this->payPal = $payPal;
-        $this->accountRepo = $accountRepo;
         $this->createOrderUseCase = $createOrderUseCase;
+        $this->purchaseUseCase = $purchaseUseCase;
+        $this->availableAccountsUseCase = $availableAccountsUseCase;
+        $this->pickSoldAccountsUseCase = $pickSoldAccountsUseCase;
+        $this->coinRemitterUtil = $coinRemitterUtil;
+        $this->dispatcher = $dispatcher;
+        $this->paypalSandboxMode = $paypalSandboxMode;
+        $this->logger = $logger;
+        $this->processSoldAccountsUseCase = $processSoldAccountsUseCase;
     }
 
     /**
      * @Route("/checkout/payment/paypal", name="checkout_payment_paypal")
      * @Method({"POST"})
-     * @Template("account/index.html.twig")
      * @param Request $request
      * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
@@ -65,41 +121,39 @@ class PayPalController extends Controller
         $form = $this->createForm(PaymentFormType::class, $paymentModel, ['method' => 'POST']);
         $form->handleRequest($request);
 
-        if (!($form->isSubmitted() && $form->isValid())) {
-            $this->addFlash('danger', 'Bad input');
-            return $this->redirectToRoute('account_index');
-        }
-
-        $availableAccounts = count($this->accountRepo->findBy(['product' => $paymentModel->getProductId(), 'sold' => false]));
-
-        if ($availableAccounts < $paymentModel->getQuantity()) {
-            $this->addFlash('danger', 'Not enough items in stock');
+        if ($form->isSubmitted() && !$form->isValid() || $this->availableAccountsUseCase->check($paymentModel)) {
+            $this->addFlash('danger', 'Order failed');
             return $this->redirectToRoute('account_index');
         }
 
         $order = $this->createOrderUseCase->create($paymentModel);
 
-        $response = $this->payPal->purchase([
-            'amount' => $this->payPal->formatAmount($order->getTotalPrice()),
-            'transactionId' => $order->getId(),
-            'currency' => 'USD',
-            'cancelUrl' => $this->payPal->getCancelUrl($order),
-            'returnUrl' => $this->payPal->getReturnUrl($order),
-        ]);
+        if ($order->getMethod() == Order::TYPE_PAYMENT_CRYPTO) {
+            $totalPrice = $this->coinRemitterUtil->getCryptoTotalPrice($paymentModel->getTotalPrice());
+            $invoice = $this->coinRemitterUtil->createInvoice($totalPrice);
 
-        if ($response->isRedirect()) {
-            $response->redirect();
+            //TODO:save invoice info in database
+            if ($invoice['flag'] == 1) {
+                return $this->redirect($invoice['data']['url']);
+            }
+        }
+
+        if ($order->getMethod() == Order::TYPE_PAYMENT_PAYPAL) {
+            $response = $this->purchaseUseCase->purchase($order);
+
+            if ($response->isRedirect()) {
+                $response->redirect();
+            }
         }
 
         $this->addFlash('danger', 'Order unsuccessful');
-
         return $this->redirect($this->payPal->getCancelUrl($order));
+
     }
 
     /**
      * @Route("/paypal/checkout/{order}/completed", name="paypal_checkout_completed")
      * @Method({"GET"})
-     * @Template("account/index.html.twig")
      * @param Request $request
      * @param $order
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -111,36 +165,27 @@ class PayPalController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $response = $this->payPal->complete([
-            'amount' => $this->payPal->formatAmount($order->getTotalPrice()),
-            'transactionId' => $order->getId(),
-            'currency' => 'USD',
-            'cancelUrl' => $this->payPal->getCancelUrl($order),
-            'returnUrl' => $this->payPal->getReturnUrl($order),
-        ]);
-
-        $quantity = $order->getQuantity();
-
-        $accounts = $this->accountRepo->getAvailableAccountsByOrder($order, $quantity);
+        $response = $this->purchaseUseCase->purchase($order);
+        $accounts = $this->pickSoldAccountsUseCase->pick($order);
 
         foreach($accounts as $account) {
-            $account->setSold(true);
-            $account->setOrder($order);
             $entityManager->persist($account);
         }
 
         if ($response->isSuccessful()) {
             $order->setTransactionId($response->getTransactionReference());
             $order->setPaymentStatus(Order::PAYMENT_COMPLETED);
-
             $entityManager->persist($order);
             $entityManager->flush();
 
-            $this->addFlash('thank_you', 'Order successful!');
+            $this->dispatcher->dispatch(
+                PaymentCompletedEvent::NAME,
+                new PaymentCompletedEvent($order->getPayerEmail(), $accounts)
+            );
 
+            $this->addFlash('thank_you', 'Order successful!');
             return $this->redirectToRoute('account_index');
         }
-        $entityManager->flush();
 
         $this->addFlash('danger', 'Order unsuccessful!');
         return $this->redirect($this->payPal->getCancelUrl($order));
@@ -149,7 +194,6 @@ class PayPalController extends Controller
     /**
      * @Route("/paypal/checkout/{order}/cancelled", name="paypal_checkout_cancelled")
      * @Method({"GET"})
-     * @Template("account/index.html.twig")
      * @param $order
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -167,6 +211,54 @@ class PayPalController extends Controller
         $this->addFlash('warning', 'Order cancelled!');
 
         return $this->redirect($this->payPal->getCancelUrl($order));
+    }
+
+    /**
+     * This is the PayPal IPN url
+     * @Route("/paypal/ipn", name="paypal_instant_notification")
+     * @Method({"POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function processPaymentNotification(Request $request)
+    {
+        $params = $request->request->all();
+        $params = [
+            'payment_status' => 'Completed',
+            'txn_id' => '616463550'
+        ];
+
+        if ($params['txn_type'] != 'express_checkout') {
+            $this->logger->log('info', 'txn_type is not express_checkout set to '.$params['txn_type']);
+            return new Response('', Response::HTTP_OK);
+        }
+
+        if (strtolower($params['payment_status']) != 'completed') {
+            $this->logger->log('info', 'wrong payment_status set to '.$params['payment_status']);
+            return new Response('', Response::HTTP_OK);
+        }
+
+        $ipn = new PaypalIPN();
+        if($this->paypalSandboxMode) {
+            $ipn->useSandbox();
+        }
+
+        $verified = $ipn->verifyIPN();
+
+        if ($verified) {
+            /* @var $order Order */
+            $order = $this->orderRepo->findOneBy(['id' => $params['txn_id']]);
+
+            $accounts = $this->processSoldAccountsUseCase->process($order);
+
+            $this->dispatcher->dispatch(
+                PaymentCompletedEvent::NAME,
+                new PaymentCompletedEvent($order->getPayerEmail(), $accounts)
+            );
+        }
+
+        $this->logger->log('info', 'paypal ipn completed');
+        return new Response('', Response::HTTP_OK);
     }
 }
 

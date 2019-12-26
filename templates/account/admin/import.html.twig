@@ -1,0 +1,33 @@
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Import Accounts {% endblock %}
+
+{% block body %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card card-primary" style="margin: auto; min-width: 50%;">
+                    {{ form_start(form) }}
+                    <div class="card-header">
+                        <h3 class="card-title">Import Accounts</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                            <div class="form-group">
+                                {{ form_label(form.file) }}
+                                {{ form_widget(form.file) }}
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+{% endblock %}

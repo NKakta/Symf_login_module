@@ -4,16 +4,19 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Product;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PaymentModel
 {
     /**
      * @var string|null
+     * @Assert\NotBlank
      */
     protected $paymentMethod;
 
     /**
      * @var int|null
+     * @Assert\NotBlank
      */
     protected $quantity;
 
@@ -36,6 +39,12 @@ class PaymentModel
      * @var Product|null
      */
     private $productId;
+
+    /**
+     * @var string
+     * @Assert\NotBlank
+     */
+    private $email;
 
     /**
      * @param string|null $paymentMethod
@@ -159,4 +168,21 @@ class PaymentModel
         return $this->getQuantity() * $this->getProductId()->getPrice();
     }
 
+    /**
+     * @return string
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return PaymentModel
+     */
+    public function setEmail(string $email): PaymentModel
+    {
+        $this->email = $email;
+        return $this;
+    }
 }

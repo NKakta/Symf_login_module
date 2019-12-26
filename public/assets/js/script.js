@@ -35,6 +35,7 @@ $(function() {
 
             $('#checkoutModal').modal('show');
             $('#checkoutModal input[name="in_stock"]').val(in_stock);
+            $('#checkoutModal input[name="quantity"]').val(1);
             $('#checkoutModal .total_price').html(price + '$');
             $('#checkoutModal input[name="total_price"]').val(parseFloat(price).toFixed(2));
             $('#checkoutModal input[name="original_price"]').val(price);

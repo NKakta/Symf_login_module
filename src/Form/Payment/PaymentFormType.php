@@ -10,6 +10,7 @@ use App\Repository\AccountRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,7 +72,10 @@ class PaymentFormType extends AbstractType
                     'choices' => $this->productRepo->findAll(),
                     'required' => true
                 ]
-            );
+            )
+            ->add('email', EmailType::class)
+
+        ;
     }
 
     public function getBlockPrefix()

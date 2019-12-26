@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/foundation-emails/2.2.1/foundation-emails.min.css"
+            rel="stylesheet"
+    />
+    <title>{% block title %}{% endblock %}</title>
+    <style type="text/css">
+        body {
+            font-family: Helvetica,Arial,sans-serif;
+        }
+        h1 {
+            font-family: Helvetica,Arial,sans-serif;
+            font-size: 24px;
+            line-height: 28px;
+            font-weight: normal;
+            color: rgba(0, 0, 0, 0.85);
+        }
+        p {
+            font-family: Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.65);
+            text-align: left;
+        }
+        .text-small {
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.65);
+        }
+        .background {
+            background: #e5e5e5;
+        }
+        .wrapper.secondary {
+            background: #e5e5e5;
+        }
+        .rounded-border {
+            border-radius: 5px;
+            border: 1px solid #d9d9d9;
+            background: #ffffff;
+            max-width: 600px;
+        }
+        .padded {
+            padding: 18px 28px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .button-link {
+            font-family: Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            color: #ffffff;
+            background: #3B76C9;
+            border-radius: 4px;
+            padding: 12px 32px;
+            border: 0;
+            cursor: pointer;
+        }
+        .button-link:hover,
+        .button-link:active,
+        .button-link:visited {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .w-100 {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="background">
+    <table class="spacer">
+        <tbody>
+        <tr>
+            <td height="32px">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container float-center">
+        <tbody>
+        <tr>
+            <td>
+                <div class="rounded-border padded">
+                    <table class="spacer">
+                        <tbody>
+                        <tr>
+                            <td height="16px">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="row">
+                        <tbody>
+                        <tr>
+                            <th class="small-12 large-12 columns first last">
+                                <table>
+                                    <tr>
+                                        <th>
+                                            <a href="{{ publicUrl }}">
+                                                <img src="{{ appUrl }}/images/logo.png?20190826" alt="Logo" />
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="spacer">
+                        <tbody>
+                        <tr>
+                            <td height="16px">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="row">
+                        <tbody>
+                        <tr>
+                            <th class="small-12 large-12 columns first last">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {% block body_title %}{% endblock %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="row">
+                        <tbody>
+                        <tr>
+                            <th class="small-12 large-12 columns first last">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {% block body_text %}{% endblock %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="row w-100">
+                        <tbody>
+                        <tr>
+                            <th class="small-12 large-12 columns first last text-center">
+                                <table class="w-100">
+                                    <tr>
+                                        <td>
+                                            {% block button %}{% endblock %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <table align="center" class="wrapper secondary">
+                    <tr>
+                        <td class="wrapper-inner">
+                            <table class="spacer">
+                                <tbody>
+                                <tr>
+                                    <td height="16px">&nbsp;</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="row">
+                                <tbody>
+                                <tr>
+                                    <th class="small-12 large-12 columns last">
+                                        <table>
+                                            <tr>
+                                                <td>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p class="text-small text-center">© {{ 'now'|date('Y') }}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

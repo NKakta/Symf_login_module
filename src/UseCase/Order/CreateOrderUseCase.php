@@ -22,7 +22,7 @@ class CreateOrderUseCase
 
     /**
      * @param PaymentModel $paymentModel
-     * @return string
+     * @return Order
      * @throws \Exception
      */
     public function create(PaymentModel $paymentModel): Order
@@ -31,6 +31,7 @@ class CreateOrderUseCase
         $order->setTransactionId(null);
         $order->setQuantity($paymentModel->getQuantity());
         $order->setPaymentStatus(Order::PAYMENT_PENDING);
+        $order->setPayerEmail($paymentModel->getEmail());
         $order->setSold(false);
         $order->setProduct($paymentModel->getProductId());
         $order->setPrice((string)($paymentModel->getQuantity() * $paymentModel->getProductId()->getPrice()));

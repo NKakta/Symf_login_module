@@ -5,6 +5,7 @@ namespace App\Model;
 
 use App\Entity\Order;
 use Omnipay\Common\GatewayInterface;
+use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Omnipay;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -15,24 +16,52 @@ class PayPalModel
      */
     private $urlGenerator;
 
+    /**
+     * @var bool
+     */
+    private $sandboxMode;
+
+    /**
+     * @var string
+     */
+    private $username;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @var string
+     */
+    private $signature;
+
     public function __construct(
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        bool $sandboxMode,
+        string $username,
+        string $password,
+        string $signature
     ) {
         $this->urlGenerator = $urlGenerator;
+        $this->sandboxMode = $sandboxMode;
+        $this->username = $username;
+        $this->password = $password;
+        $this->signature = $signature;
     }
 
     /**
      * @return mixed
      */
-    public function gateway()
+    public function gateway(): GatewayInterface
     {
         /* @var $gateway GatewayInterface */
         $gateway = Omnipay::create('PayPal_Express');
 
-        $gateway->setUsername('sb-kjo5z622450_api1.business.example.com');
-        $gateway->setPassword('CKBYNN5P3GEYUD2N');
-        $gateway->setSignature('A.-UecNL5hJyWLfqBV-1IjekrtvdAhAcRfOZALi09IYyyRBffoBSlvyj');
-        $gateway->setTestMode(true);
+        $gateway->setUsername($this->username);
+        $gateway->setPassword($this->password);
+        $gateway->setSignature($this->signature);
+        $gateway->setTestMode($this->sandboxMode);
 
         return $gateway;
     }
@@ -41,7 +70,7 @@ class PayPalModel
      * @param array $parameters
      * @return mixed
      */
-    public function purchase(array $parameters)
+    public function purchase(array $parameters): ResponseInterface
     {
         $response = $this->gateway()
             ->purchase($parameters)
@@ -54,7 +83,7 @@ class PayPalModel
      * @param array $parameters
      * @return mixed
      */
-    public function complete(array $parameters)
+    public function complete(array $parameters): ResponseInterface
     {
         $response = $this->gateway()
             ->completePurchase($parameters)
@@ -67,7 +96,7 @@ class PayPalModel
      * @param $amount
      * @return string
      */
-    public function formatAmount($amount)
+    public function formatAmount($amount): string
     {
         return number_format($amount, 2, '.', '');
     }
@@ -75,7 +104,7 @@ class PayPalModel
     /**
      * @return
      */
-    public function getCancelUrl(Order $order)
+    public function getCancelUrl(Order $order): string
     {
         return $this->urlGenerator->generate(
             'paypal_checkout_cancelled',
@@ -88,7 +117,7 @@ class PayPalModel
      * @param Order $order
      * @return string
      */
-    public function getReturnUrl(Order $order)
+    public function getReturnUrl(Order $order): string
     {
         return $this->urlGenerator->generate(
             'paypal_checkout_completed',

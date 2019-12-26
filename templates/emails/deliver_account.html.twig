@@ -1,0 +1,21 @@
+{% extends "emails/base.html.twig" %}
+
+{% block title %}
+    Account delivery
+{% endblock %}
+
+{% block body_title %}
+    <h1>Account delivery</h1>
+{% endblock %}
+
+{% block body_text %}
+    {% for account in accounts %}
+        Username: {{ account.username }} Password: {{ account.password }} <br>
+    {% endfor %}
+{% endblock %}
+
+{% block button %}
+    <a href="{{ publicUrl }}">
+        <button class="button-link w-100 text-center">Home</button>
+    </a>
+{% endblock %}
