@@ -6,7 +6,7 @@ namespace App\UseCase\Account;
 use App\Model\PaymentModel;
 use App\Repository\AccountRepository;
 
-class CheckAvailableAccountsUseCase
+class DetermineProductForAccountUseCase
 {
     /**
      * @var AccountRepository
@@ -25,13 +25,7 @@ class CheckAvailableAccountsUseCase
      */
     public function check(PaymentModel $paymentModel): bool
     {
-        $availableAccounts = count($this->accountRepo->findBy(
-            [
-                'product' => $paymentModel->getProductId(),
-                'sold' => false,
-                'region' => $paymentModel->getRegion()
-            ]
-        ));
+        $availableAccounts = count($this->accountRepo->findBy(['product' => $paymentModel->getProductId(), 'sold' => false]));
 
         return $availableAccounts < $paymentModel->getQuantity();
     }

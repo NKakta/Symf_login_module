@@ -19,10 +19,12 @@
                         {{ region }}
                     </h5>
                     <ul>
-                        {% for category in categories if category.region == region %}
+                        {% for category in categories %}
                             <li><a class="sub-nav-link" href="javascript:void(0);"
                                    category-name="{{ region }}"
-                                   product-id="{{ category.id }}">
+                                   product-id="{{ category.id }}"
+                                   region-name="{{ region|slugify }}"
+                                >
                                     {{ category.name }}
                                 </a>
                             </li>

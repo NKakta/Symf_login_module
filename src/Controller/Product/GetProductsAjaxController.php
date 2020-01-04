@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -52,18 +53,16 @@ class GetProductsAjaxController extends AbstractController
      */
     public function listProducts(Request $request)
     {
-        $category = $this->categoryRepo->findById($request->query->get('category'));
-        $products = $this->repo->findByCategory($category);
-        $data = $this->serializer->serialize(
+        $products = $this->repo->findAll();
+        $region = $request->query->get('region');
+        $result = $this->render(
+            'product/ajax/products.html.twig',
             [
-                'success' => true,
-                'data' => $products
-            ],
-            'json'
+                'products' => $products,
+                'region' => $region
+            ]
         );
-        return new Response(
-            $data
-        );
+        return $result;
     }
 
 }

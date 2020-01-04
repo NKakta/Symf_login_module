@@ -13,17 +13,24 @@
                     </div>
 
                     <div class="card-body">
-
-                            <div class="form-group">
-                                {{ form_label(form.file) }}
-                                {{ form_widget(form.file) }}
-                            </div>
+                        <div class="form-group">
+                            {{ form_label(form.type) }}
+                            {{ form_widget(form.type) }}
                         </div>
-                        <!-- /.card-body -->
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            {{ form_label(form.region) }}
+                            {{ form_widget(form.region) }}
                         </div>
+                        <div class="form-group">
+                            {{ form_label(form.file) }}
+                            {{ form_widget(form.file) }}
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                     {{ form_end(form) }}
                 </div>
             </div>

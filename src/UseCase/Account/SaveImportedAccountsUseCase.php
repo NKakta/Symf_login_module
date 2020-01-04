@@ -20,7 +20,12 @@ class SaveImportedAccountsUseCase
         $this->em = $em;
     }
 
-    public function save(AccountImport $importModel)
+    /**
+     * @param AccountImport $importModel
+     * @param string $region
+     * @throws \Exception
+     */
+    public function save(AccountImport $importModel, string $region)
     {
         $accounts = $importModel->getAccounts();
         $count = 0;
@@ -41,7 +46,7 @@ class SaveImportedAccountsUseCase
             $new->setCheckedTime($account->getCheckedTime());
             $new->setRunes($account->getRunes());
             $new->setState((int)$account->getState());
-            $new->setRegion((int)$account->getRegion());
+            $new->setRegion($region);
             $new->setCreatedAt(new \DateTime());
             $new->setUpdatedAt(new \DateTime());
             $new->setSold(false);

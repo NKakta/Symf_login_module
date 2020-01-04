@@ -6,12 +6,13 @@ namespace App\Controller\Account\Admin;
 use App\Form\ImportFormType;
 use App\Model\AccountImportFormModel;
 use App\UseCase\Account\ReadAccountDataFromFileUseCase;
+use App\UseCase\Account\ReadDataFromGreenCheckerFileUseCase;
+use App\UseCase\Account\SaveGreenCheckerImportAccountsUseCase;
 use App\UseCase\Account\SaveImportedAccountsUseCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,12 +28,26 @@ class ImportAccountController extends AbstractController
      */
     private $saveAccountsUseCase;
 
+    /**
+     * @var ReadDataFromGreenCheckerFileUseCase
+     */
+    private $readGreenCheckerFileUseCase;
+
+    /**
+     * @var SaveGreenCheckerImportAccountsUseCase
+     */
+    private $saveGreenCheckerAccountsUseCase;
+
     public function __construct(
         ReadAccountDataFromFileUseCase $readFileUseCase,
-        SaveImportedAccountsUseCase $saveAccountsUseCase
+        ReadDataFromGreenCheckerFileUseCase $readGreenCheckerFileUseCase,
+        SaveImportedAccountsUseCase $saveAccountsUseCase,
+        SaveGreenCheckerImportAccountsUseCase $saveGreenCheckerAccountsUseCase
     ) {
         $this->readFileUseCase = $readFileUseCase;
         $this->saveAccountsUseCase = $saveAccountsUseCase;
+        $this->readGreenCheckerFileUseCase = $readGreenCheckerFileUseCase;
+        $this->saveGreenCheckerAccountsUseCase = $saveGreenCheckerAccountsUseCase;
     }
 
     /**
@@ -49,13 +64,16 @@ class ImportAccountController extends AbstractController
         $form = $this->createForm(ImportFormType::class, $model);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $file */
-            $file = $form['file']->getData();
-            if(!$file) {
-                return new Response('', Response::HTTP_BAD_REQUEST);
+            $file = $model->getFile();
+            //TODO: reikia nustatyti accountui kategorija (pagal kaina hierarchija)
+            if ($model->getType() == AccountImportFormModel::TYPE_GREEN_CHECKER) {
+                $import = $this->readGreenCheckerFileUseCase->read($file);
+                $this->saveGreenCheckerAccountsUseCase->save($import, $model->getRegion());
             }
-            $model = $this->readFileUseCase->read($file);
-            $this->saveAccountsUseCase->save($model);
+            if ($model->getType() == AccountImportFormModel::TYPE_WHITE_CHECKER) {
+                $import = $this->readFileUseCase->read($file, $model->getType());
+                $this->saveAccountsUseCase->save($import, $model->getRegion());
+            }
         }
 
         return ['form' => $form->createView()];

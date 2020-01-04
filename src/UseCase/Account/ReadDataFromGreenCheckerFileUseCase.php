@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\UseCase\Account;
 
 use App\Model\AccountImport;
+use App\Model\Import\GreenChecker\Account;
+use App\Model\Import\GreenChecker\GreenCheckerAccountImport;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ReadAccountDataFromFileUseCase
+class ReadDataFromGreenCheckerFileUseCase
 {
     /**
      * @var SerializerInterface
@@ -21,14 +23,14 @@ class ReadAccountDataFromFileUseCase
 
     /**
      * @param UploadedFile $file
-     * @return AccountImport
+     * @return Account[]
      */
-    public function read(UploadedFile $file): AccountImport
+    public function read(UploadedFile $file): array
     {
         $data = file_get_contents($file->getPathname());
         $model = $this->serializer->deserialize(
             $data,
-            AccountImport::class,
+            'array<App\Model\Import\GreenChecker\Account>',
             'json'
         );
 

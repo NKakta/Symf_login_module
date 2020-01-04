@@ -167,9 +167,9 @@ class Account
     private $state;
 
     /**
-     * @var int
+     * @var string|null
      *
-     * @ORM\Column(name="region", type="integer", nullable=true)
+     * @ORM\Column(name="region", type="string", nullable=true)
      */
     private $region;
 
@@ -571,22 +571,20 @@ class Account
     }
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getRegion(): ?int
+    public function getRegion(): ?string
     {
         return $this->region;
     }
 
     /**
-     * @param int $region
+     * @param string $region
      * @return Account
      */
-    public function setRegion(int $region): Account
+    public function setRegion(string $region): Account
     {
         $this->region = $region;
         return $this;
     }
-
-
 }

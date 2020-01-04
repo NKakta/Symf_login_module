@@ -1,4 +1,4 @@
-<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-hidden="true" data-region="">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form action="{{ path('checkout_payment_paypal') }}" method="POST">
@@ -59,6 +59,7 @@
                             <input type="hidden" name="total_price" value="">
                             <input type="hidden" name="original_price" value="">
                             <input type="hidden" name="product_id" value="">
+                            <input type="hidden" name="region" value="">
                         </div>
                         <div class="col-md-6 mt-5 mt-md-0">
                             <h3 class="text-uppercase product_name font-weight-bold"></h3>

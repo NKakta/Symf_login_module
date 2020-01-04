@@ -1,0 +1,39 @@
+{% for product in products %}
+    <div class="col-md-4 mt-3">
+        <div class="product-photo">
+            {% if product.getInStock > 0 %}
+                <div class="hovered-photo-bg checkout-btn"
+                     photo="{{ asset('assets/images/products/' ~ product.photoFilename) }}"
+                     product-id="{{ product.id }}"
+                     price="{{ product.price }}"
+                     product-name="{{ product.name }}"
+                     in-stock="{{ product.getInStock() }}"
+                     region-name="{{ region }}"
+                >
+                    <p>Buy now</p>
+                </div>
+            {% else %}
+
+                <div class="hovered-photo-bg">
+                    <p>Out of stock</p>
+                </div>
+            {% endif %}
+            <img class="img-fluid" src="{{ asset('assets/images/products/' ~ product.photoFilename) }}" width="100%">
+        </div>
+        <div class="row product-details">
+            <div class="col-md-8">
+                <h4 class="mb-0 title">{{ product.name }}</h4>
+                <h4 class="mb-0 stock">In stock: <span>{{ product.getInStock() }}</span></h4>
+            </div>
+            <div class="col-md-4">
+                <h1 class="mb-0 price text-right">{{ product.price }}$</h1>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% if products|length < 1 %}
+    <div class="col-md-12">
+        <div class="alert alert-danger d-block w-100" role="alert">No products in this category.</div>
+    </div>
+{% endif %}

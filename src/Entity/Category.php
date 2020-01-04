@@ -32,12 +32,6 @@ class Category
     private $color;
 
     /**
-     * @ORM\Column(name="region", type="string", length=255, unique=false)
-     * @Assert\NotBlank
-     */
-    private $region;
-
-    /**
      * @var Product[]
      *
      * @ORM\OneToMany(
@@ -158,25 +152,6 @@ class Category
     public function getCategoryTemplateId(): string
     {
         return str_replace(' ', '_', strtolower($this->name));
-    }
-
-    /**
-     * @param mixed $region
-     * @return Category
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRegion()
-    {
-        return $this->region;
     }
 
     /**

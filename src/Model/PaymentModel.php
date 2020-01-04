@@ -47,6 +47,11 @@ class PaymentModel
     private $email;
 
     /**
+     * @var string|null
+     */
+    private $region;
+
+    /**
      * @param string|null $paymentMethod
      * @return PaymentModel
      */
@@ -183,6 +188,24 @@ class PaymentModel
     public function setEmail(string $email): PaymentModel
     {
         $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param string|null $region
+     * @return PaymentModel
+     */
+    public function setRegion(?string $region): PaymentModel
+    {
+        $this->region = $region;
         return $this;
     }
 }

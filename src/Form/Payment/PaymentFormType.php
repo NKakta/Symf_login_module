@@ -74,6 +74,7 @@ class PaymentFormType extends AbstractType
                 ]
             )
             ->add('email', EmailType::class)
+            ->add('region', TextType::class)
 
         ;
     }

@@ -40,6 +40,7 @@ $(function() {
             $('#checkoutModal input[name="total_price"]').val(parseFloat(price).toFixed(2));
             $('#checkoutModal input[name="original_price"]').val(price);
             $('#checkoutModal input[name="product_id"]').val($(this).attr('product-id'));
+            $('#checkoutModal input[name="region"]').val($(this).attr('region-name'));
             $('#checkoutModal .product_name').html($(this).attr('product-name'));
         });
 
@@ -64,6 +65,7 @@ function loadProducts() {
     if ($('.menu-cat ul li a.active').length) {
         var item = $('.menu-cat ul li a.active');
         var id = item.attr('product-id');
+        var region = item.attr('region-name');
 
         $('.breadcrumb-category').html(item.attr('category-name'));
         $('.breadcrumb-subcategory').html(item.html());
@@ -71,45 +73,15 @@ function loadProducts() {
         $('.loader').show();
         $.ajax({
             method: "GET",
-            dataType: "json",
+            dataType: "html",
             url: window.location.href.split('?')[0]+"ajax/products",
-            data: { category: id }
+            data: {
+                category: id,
+                region: region
+            }
         })
         .done(function(resp) {
-            setTimeout(function() {
-                $('.loader').hide();
-            }, 1000);
-
-            if (resp.success) {
-                var output = '';
-                $.each(resp.data, function(key, value) {
-                    console.log(value);
-                    output += '<div class="col-md-4 mt-3">';
-                        output += '<div class="product-photo">';
-                            let photoUrl = window.location.href.split('?')[0]+'assets/images/products/'+value.photo_filename;
-                            if (value.in_stock > 0) {
-                                output += '<div class="hovered-photo-bg checkout-btn" photo="'+ photoUrl +'" product-id="'+value.id+'" price="'+parseFloat(value.price).toFixed(2)+'" product-name="'+value.name+'" in-stock="'+value.in_stock+'"><p>Buy now</p></div>';
-                            } else {
-                                output += '<div class="hovered-photo-bg"><p>Out of stock</p></div>';
-                            }
-                            output += '<img class="img-fluid" src="'+ photoUrl +'" width="100%">';
-                        output += '</div>';
-
-                        output += '<div class="row product-details">';
-                            output += '<div class="col-md-8">';
-                                output += '<h4 class="mb-0 title">'+value.name+'</h4>';
-                                output += '<h4 class="mb-0 stock">In stock: <span>'+value.in_stock+'</span></h4>';
-                            output += '</div>';
-                            output += '<div class="col-md-4">';
-                                output += '<h1 class="mb-0 price text-right">'+parseFloat(value.price).toFixed(2)+'$</h1>';
-                            output += '</div>';
-                        output += '</div>';
-                    output += '</div>';
-                });
-            } else {
-                output = '<div class="col-md-12"><div class="alert alert-danger d-block w-100" role="alert">No products in this category!</div></div>';
-            }
-            $('.products .row').html(output);
+            $('.products .row').html(resp);
         });
     }
 }
