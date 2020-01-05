@@ -7,21 +7,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ path('vacation_index') }}">
-                    Vacations
+                <a class="nav-link active" href="{{ path('list_ad') }}">
+                    All of the ads(filtered by my ip)
                 </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
-                <a class="nav-link active" href="{{ path('vacation_request_index') }}">
-                    Vacation Requests
+                <a class="nav-link active" href="{{ path('ad_index') }}">
+                    Ads control
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('department_index') }}">
-                    Departments
-                </a>
-            </li>
+            {% endif %}
         </ul>
-
     </div>
 </nav>

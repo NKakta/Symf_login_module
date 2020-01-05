@@ -19,14 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserFormType extends AbstractType
 {
-    /**
-     * @var DepartmentRepository
-     */
-    private $departmentRepo;
-
-    public function __construct(DepartmentRepository $departmentRepo)
+    public function __construct()
     {
-        $this->departmentRepo = $departmentRepo;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -43,13 +37,6 @@ class UserFormType extends AbstractType
                 ],
                 'multiple' => true,
                 'expanded' => true,
-            ])
-            ->add('department', EntityType::class, [
-                'choice_label' => 'name',
-                'class' => Department::class,
-                'choices' => [
-                    $this->departmentRepo->findAll()
-                ],
             ])
             ->add('plainPassword', PasswordType::class, ['label' => 'Password']);
     }

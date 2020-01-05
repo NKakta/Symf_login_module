@@ -1,11 +1,15 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Departments {% endblock %}
+{% block title %} Ads {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('department_index') }}">Back to Departments list</a>
     {{ form_start(form)}}
-    {{ form_row(form.name) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.ipFrom) }}
+    {{ form_row(form.ipTo) }}
+    {{ form_row(form.dateFrom) }}
+    {{ form_row(form.dateTo) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <button type="submit">Submit</button>
     {{ form_end(form) }}

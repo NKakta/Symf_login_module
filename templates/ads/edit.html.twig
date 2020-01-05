@@ -1,9 +1,14 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Vacation requests {% endblock %}
+{% block title %} Ads {% endblock %}
 
 {% block body %}
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('ad_index') }}">Back to list</a>
     {{ form_start(form)}}
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.ipFrom) }}
+    {{ form_row(form.ipTo) }}
     {{ form_row(form.dateFrom) }}
     {{ form_row(form.dateTo) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
