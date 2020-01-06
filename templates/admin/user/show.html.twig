@@ -1,16 +1,16 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Users {% endblock %}
+{% block title %} Vartotojai {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Back to list</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('user_index') }}">Grįžti į sąrašą</a>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
             <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th>
+                <th>Slapyvardis</th>
+                <th>El. paštas</th>
+                <th>Rolė</th>
             </tr>
             </thead>
             <tbody>

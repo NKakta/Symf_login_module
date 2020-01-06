@@ -25,6 +25,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->where('a.ipFromNumber <= :ip')
             ->andWhere('a.ipToNumber >= :ip')
+            ->andWhere('a.confirmed = true')
             ->setParameter('ip', $ip)
             ->orderBy('a.id', 'ASC')
             ->getQuery()

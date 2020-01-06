@@ -1,6 +1,7 @@
 <nav id="navbar" class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
     <div class="container">
-        <a href="{{ path('app_homepage') }}" class="navbar-brand">User Module</a>
+        <a href="{{ path('app_homepage') }}" class="navbar-brand">Individualizuotos reklamos prisijungiant prie Internetinio puslapio valdymo sistema</a>
+        <a>Aurelijus Varpučianskis</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span class="navbar-toggle-icon"></span>
         </button>
@@ -8,25 +9,25 @@
         <div class="collapse navbar-collapse" id="mobile-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ path('app_homepage') }}" class="nav-link">Home</a>
+                    <a href="{{ path('app_homepage') }}" class="nav-link">Namai</a>
                 </li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
-                        <a href="{{ path('admin_home') }}" class="nav-link">Admin</a>
+                        <a href="{{ path('admin_home') }}" class="nav-link">Administratoriams</a>
                     </li>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
-                        <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
+                        <a href="{{ path('app_logout') }}" class="nav-link">Atsijungti</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a href="{{ path('app_login') }}" class="nav-link">Log in</a>
+                        <a href="{{ path('app_login') }}" class="nav-link">Prisijungti</a>
                     </li>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
                     <li class="nav-item">
-                        <a href="{{ path('app_register') }}" class="nav-link">Register</a>
+                        <a href="{{ path('app_register') }}" class="nav-link">Užsiregistruoti</a>
                     </li>
                 {% endif %}
             </ul>

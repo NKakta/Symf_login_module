@@ -1,7 +1,22 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %} User module {% endblock %}
+{% block title %} User Module {% endblock %}
 
 {% block body %}
-    <h1>Welcome!</h1>
+    <h1>Čia galėtų būti jūsų reklama.</h1>
+    {% for ad in ads %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+    {% if ad.confirmed == true %}
+        style="background: beige;"
+    {% endif %}
+    >
+        <span class="h2">{{ ad.title }}</span>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if ads|length < 1 %}
+        <p> Jokių reklamų nerasta. </p>
+    {% endif %}
 {% endblock %}

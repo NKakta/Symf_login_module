@@ -139,13 +139,31 @@ class AdController extends AbstractController
         return $this->redirectToRoute('ad_index');
     }
 
+    
+
     /**
      * @Route("admin/ads/list", name="list_ad")
      * @Template("ads/index.html.twig")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      * Traukia filtruotas reklamas pagal mano ip dabartini
      */
     public function listAdsForUsers(Request $request)
+    {
+        //1. Gaunu ip is $_server
+        //2. Paverciu i skaiciu su ip2long kad galeciau lyginti
+        //3. Gaunu atitinkamu adsu array
+        $ads = $this->repo->findByIp(ip2long($_SERVER['REMOTE_ADDR']));
+
+        return ['ads' => $ads];
+    }
+
+    /**
+     * @Route("/", name="home")
+     * @Template("home.html.twig")
+     * @IsGranted("ROLE_USER")
+     * Traukia filtruotas reklamas pagal mano ip dabartini
+     */
+    public function listAdsForAllUsers(Request $request)
     {
         //1. Gaunu ip is $_server
         //2. Paverciu i skaiciu su ip2long kad galeciau lyginti

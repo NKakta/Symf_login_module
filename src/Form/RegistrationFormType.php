@@ -26,11 +26,11 @@ class RegistrationFormType extends AbstractType
             ->add('username', TextType::class, [
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Username can not be empty',
+                        'message' => 'Slapyvardis negali būti tuščias',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your username should be at least {{ limit }} characters',
+                        'minMessage' => 'Jūsų slapyvardis turėtų būti bent {{ limit }} simbolių',
                         'max' => 255
                     ]),
                 ],
@@ -39,21 +39,21 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'Slaptažodis',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password'
+                    'label' => 'Pakartoti Slaptažodį'
                 ],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Prašome įvesti slaptažodį',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Jūsų slaptažodis turėtų būti bent {{ limit }} simbolių',
                         'max' => 255
                     ]),
                 ],

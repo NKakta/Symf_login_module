@@ -1,9 +1,9 @@
 {% extends 'layouts/admin-base.html.twig' %}
 
-{% block title %} Ads {% endblock %}
+{% block title %} Reklamos {% endblock %}
 
 {% block body %}
-    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('ad_index') }}">Back to list</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('ad_index') }}">Grįžti į sąrašą</a>
     {{ form_start(form)}}
     {{ form_row(form.title) }}
     {{ form_row(form.content) }}
@@ -12,6 +12,6 @@
     {{ form_row(form.dateFrom) }}
     {{ form_row(form.dateTo) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit">Submit</button>
+    <button type="submit">Pateikti</button>
     {{ form_end(form) }}
 {% endblock %}
