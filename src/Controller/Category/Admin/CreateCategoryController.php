@@ -25,7 +25,7 @@ class CreateCategoryController extends AbstractController
     /**
      * @Route("/admin/account/create", name="create_category")
      * @Method({"GET", "POST"})
-     * @Template("account/admin/create.html.twig")
+     * @Template("category/admin/create.html.twig")
      * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
