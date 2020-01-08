@@ -30,7 +30,13 @@ class AccountFormType extends AbstractType
         $builder
             ->add('username', TextType::class)
             ->add('password', TextType::class)
-            ->add('sold', CheckboxType::class)
+            ->add(
+                'sold',
+                CheckboxType::class,
+                [
+                    'required' => false
+                ]
+            )
             ->add('product', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Product::class,
