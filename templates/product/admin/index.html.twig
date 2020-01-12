@@ -50,7 +50,7 @@
                         {{ product.category }}
                     </td>
                     <td>
-                        <img src="{{ product.photoFilename }}" alt="product image">
+                        <img src="{{ asset('assets/images/products/' ~ product.photoFilename) }}" alt="product image">
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm" href="{{ path('edit_product', { 'id': product.id }) }}">

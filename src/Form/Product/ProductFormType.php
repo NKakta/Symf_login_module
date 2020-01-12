@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,10 +38,19 @@ class ProductFormType extends AbstractType
                     $this->categoryRepository->findAll()
                 ],
             ])
-            ->add(
-                'photoFilename', TextType::class,
-                ['label' => 'Photo url']
-            )
+            ->add('photoFilename', ChoiceType::class, [
+                'choices' => [
+                    '1.png' => '1.png',
+                    '2.png' => '2.png',
+                    '3.png' => '3.png',
+                    '4.png' => '4.png',
+                    '5.png' => '5.png',
+                    '6.png' => '6.png',
+                    '7.png' => '7.png',
+                    '8.png' => '8.png',
+                    '9.png' => '9.png',
+                ],
+            ])
         ;
     }
 
