@@ -29,7 +29,6 @@
                     <th style="width: 10px">#</th>
                     <th>Category</th>
                     <th>Color</th>
-                    <th>Region</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -44,9 +43,6 @@
                     </td>
                     <td>
                         {{ category.color }}
-                    </td>
-                    <td>
-                        {{ category.region }}
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm" href="{{ path('edit_category', { 'id': category.id }) }}">

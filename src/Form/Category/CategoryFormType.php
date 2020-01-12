@@ -18,12 +18,15 @@ class CategoryFormType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('color', TextType::class)
-            ->add('region', ChoiceType::class, [
-                'choices' => [
-                    Regions::getChoices()
-                ],
-            ])
-        ;
+            ->add(
+                'region',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        Regions::getChoices()
+                    ],
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -23,7 +23,7 @@ class CreateCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/admin/account/create", name="create_category")
+     * @Route("/admin/category/create", name="create_category")
      * @Method({"GET", "POST"})
      * @Template("category/admin/create.html.twig")
      * @param Request $request
