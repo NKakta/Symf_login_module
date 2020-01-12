@@ -23,10 +23,6 @@
                             {{ form_label(form.color) }}
                             {{ form_widget(form.color) }}
                         </div>
-                        <div class="form-group">
-                            {{ form_label(form.region) }}
-                            {{ form_widget(form.region) }}
-                        </div>
                     </div>
                     <!-- /.card-body -->
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

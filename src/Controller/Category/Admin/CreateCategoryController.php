@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Category\Admin;
 
-use App\Entity\Account;
-use App\Form\AccountFormType;
-use App\Repository\AccountRepository;
+use App\Entity\Category;
+use App\Form\Category\CategoryFormType;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,7 +17,7 @@ class CreateCategoryController extends AbstractController
 {
     private $repo;
 
-    public function __construct(AccountRepository $repo)
+    public function __construct(CategoryRepository $repo)
     {
         $this->repo = $repo;
     }
@@ -30,21 +30,21 @@ class CreateCategoryController extends AbstractController
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function createAccountAction(Request $request)
+    public function createCategoryAction(Request $request)
     {
-        $account = new Account();
-        $form = $this->createForm(AccountFormType::class, $account);
+        $category = new Category();
+        $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $account->setCreatedAt(new \DateTime());
-            $account->setUpdatedAt(new \DateTime());
-            $entityManager->persist($account);
+            $category->setCreatedAt(new \DateTime());
+            $category->setUpdatedAt(new \DateTime());
+            $entityManager->persist($category);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Account created');
+            $this->addFlash('success', 'Category  created');
 
             //Sends email to the user with login link
             return $this->redirectToRoute('admin_category_index');
