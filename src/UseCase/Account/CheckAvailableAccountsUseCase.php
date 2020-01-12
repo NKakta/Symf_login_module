@@ -28,8 +28,7 @@ class CheckAvailableAccountsUseCase
         $availableAccounts = count($this->accountRepo->findBy(
             [
                 'product' => $paymentModel->getProductId(),
-                'sold' => false,
-                'region' => $paymentModel->getRegion()
+                'sold' => false
             ]
         ));
 

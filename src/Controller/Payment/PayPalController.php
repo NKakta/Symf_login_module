@@ -121,8 +121,14 @@ class PayPalController extends Controller
         $form = $this->createForm(PaymentFormType::class, $paymentModel, ['method' => 'POST']);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && !$form->isValid() || $this->availableAccountsUseCase->check($paymentModel)) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $this->addFlash('danger', 'Order failed');
+            return $this->redirectToRoute('account_index');
+        }
+
+        if($this->availableAccountsUseCase->check($paymentModel))
+        {
+            $this->addFlash('danger', 'Not enough stock');
             return $this->redirectToRoute('account_index');
         }
 
