@@ -115,6 +115,7 @@ class CheckoutController extends AbstractController
             if ($invoice['flag'] == 1) {
                 return $this->redirect($invoice['data']['url']);
             }
+            dd($invoice);
         }
 
         if ($order->getMethod() == Order::TYPE_PAYMENT_PAYPAL) {

@@ -9,11 +9,11 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BitcoinNotificationController extends Controller
+class BitcoinNotificationController extends AbstractController
 {
     /**
      * @var CoinRemitterUtil
@@ -43,6 +43,10 @@ class BitcoinNotificationController extends Controller
     {
         $this->logger->log('critical', 'logged critical stuff');
         $this->logger->log('critical', json_encode($request->request->all()));
+
+        $data = $request->request->all();
+
+        $data = $response;
         $response = [
             'id' => "5de4b1235aa55814b8223952",
             'invoice_id' => "BTC080",
@@ -80,6 +84,8 @@ class BitcoinNotificationController extends Controller
             'invoice_date'=>"2019-12-02 12:07:23",
             'last_updated_date'=>"2019-12-02 12:15:02"
         ];
+
+//        if(isset($data[])){}
         return new Response();
     }
 }
