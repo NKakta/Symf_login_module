@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Payment;
+namespace App\Controller\Payment\Crypto;
 
 use App\CoinRemitter\CoinRemitterUtil;
 use App\Entity\Order;
@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BitcoinNotificationController extends Controller
 {
@@ -33,16 +34,15 @@ class BitcoinNotificationController extends Controller
     }
 
     /**
-     * @Route("/payment/checkout/completed", name="crypto_checkout_completed")
-     * @Method({"GET", "POST"})
+     * @Route("/crypto/notification", name="crypto_payment_notification")
+     * @Method({"POST"})
      * @param Request $request
-     * @param $order
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
-    public function completed(Request $request)
+    public function process(Request $request)
     {
         $this->logger->log('critical', 'logged critical stuff');
-        dd($request->request->all());
+        $this->logger->log('critical', json_encode($request->request->all()));
         $response = [
             'id' => "5de4b1235aa55814b8223952",
             'invoice_id' => "BTC080",
@@ -80,31 +80,7 @@ class BitcoinNotificationController extends Controller
             'invoice_date'=>"2019-12-02 12:07:23",
             'last_updated_date'=>"2019-12-02 12:15:02"
         ];
-
-        /* @var $order Order */
-        $order = $this->orderRepo->findOneBy(['id' => $order]);
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $response = $this->purchaseUseCase->purchase($order);
-        $accounts = $this->pickSoldAccountsUseCase->pick($order);
-
-        foreach($accounts as $account) {
-            $entityManager->persist($account);
-        }
-
-        if ($response->isSuccessful()) {
-            $order->setTransactionId($response->getTransactionReference());
-            $order->setPaymentStatus(Order::PAYMENT_COMPLETED);
-            $entityManager->persist($order);
-            $entityManager->flush();
-
-            $this->addFlash('thank_you', 'Order successful!');
-            return $this->redirectToRoute('account_index');
-        }
-
-        $this->addFlash('danger', 'Order unsuccessful!');
-        return $this->redirect($this->payPal->getCancelUrl($order));
+        return new Response();
     }
 }
 

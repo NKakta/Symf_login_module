@@ -102,7 +102,8 @@ class PayPalModel
     }
 
     /**
-     * @return
+     * @param Order $order
+     * @return string
      */
     public function getCancelUrl(Order $order): string
     {

@@ -34,7 +34,7 @@ class DeliverAccountUseCase
     }
 
     /**
-     * @param string $email
+     * @param string $toEmail
      * @param Account[] $accounts
      * @return void
      * @throws \Twig_Error_Loader
@@ -44,7 +44,7 @@ class DeliverAccountUseCase
     public function deliver(string $toEmail, array $accounts)
     {
         $body = $this->twig->render(
-            'emails/Account/deliver_account.html.twig',
+            'emails/deliver_account.html.twig',
             [
                 'accounts' => $accounts,
                 'publicUrl' => 'https://example.com',

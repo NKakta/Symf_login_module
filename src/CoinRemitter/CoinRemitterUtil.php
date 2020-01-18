@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\CoinRemitter;
 
+use App\Entity\Order;
 use CoinRemitter\CoinRemitter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CoinRemitterUtil
 {
@@ -27,7 +29,13 @@ class CoinRemitterUtil
      */
     private $password;
 
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
     public function __construct(
+        UrlGeneratorInterface $urlGenerator,
         string $coin,
         string $apiKey,
         string $password
@@ -42,6 +50,7 @@ class CoinRemitterUtil
         $this->coin = $coin;
         $this->apiKey = $apiKey;
         $this->password = $password;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function withdraw(string $toAddress, float $amount): array
@@ -81,17 +90,17 @@ class CoinRemitterUtil
         return $this->coinRemitter->get_coin_rate()['data'][$this->coin]['price'];
     }
 
-    public function createInvoice(float $price): array
+    public function createInvoice(float $price, Order $order): array
     {
         $param = [
             'amount' => $price,      //required.
-            'notify_url' => '', //required,url on which you wants to receive notification,
+            'notify_url' => $this->getNotificationUrl(), //required,url on which you wants to receive notification,
             'name' => '',//optional,
             'currency' => 'usd',//optional,
             'expire_time' => '',//optional,
             'description' => '',//optional.
-            'suceess_url' => 'https://symf-login-module.test',
-            'fail_url' => 'https://symf-login-module.test',
+            'suceess_url' => $this->getReturnUrl($order),
+            'fail_url' => $this->getCancelUrl($order),
         ];
 
         $invoice = $this->coinRemitter->create_invoice($param);
@@ -101,5 +110,43 @@ class CoinRemitterUtil
     public function getInvoice(string $id): array
     {
         return $this->coinRemitter->get_invoice(['invoice_id' => $id]);
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     */
+    public function getCancelUrl(Order $order): string
+    {
+        return $this->urlGenerator->generate(
+            'paypal_checkout_cancelled',
+            [ 'order' => $order->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+    }
+
+    /**
+     * @param Order $order
+     * @return string
+     */
+    public function getReturnUrl(Order $order): string
+    {
+        return $this->urlGenerator->generate(
+            'paypal_checkout_completed',
+            [ 'order' => $order->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotificationUrl(): string
+    {
+        return $this->urlGenerator->generate(
+            'crypto_payment_notification',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

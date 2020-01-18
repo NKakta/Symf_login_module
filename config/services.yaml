@@ -41,6 +41,6 @@ services:
             $password: '%env(APP_PAYPAL_PASSWORD)%'
             $signature: '%env(APP_PAYPAL_SIGNATURE)%'
 
-    App\Controller\Payment\PayPalController:
+    App\Controller\Payment\Paypal\ProcessPaymentController:
         arguments:
             $paypalSandboxMode: '%env(bool:APP_PAYPAL_SANDBOX_MODE)%'
