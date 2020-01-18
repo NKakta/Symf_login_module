@@ -46,7 +46,6 @@ class BitcoinNotificationController extends AbstractController
 
         $data = $request->request->all();
 
-        $data = $response;
         $response = [
             'id' => "5de4b1235aa55814b8223952",
             'invoice_id' => "BTC080",
