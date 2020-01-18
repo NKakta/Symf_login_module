@@ -94,7 +94,7 @@ class CoinRemitterUtil
     {
         $param = [
             'amount' => $price,      //required.
-            'notify_url' => $this->getNotificationUrl(), //required,url on which you wants to receive notification,
+            'notify_url' => '', //required,url on which you wants to receive notification,
             'name' => '',//optional,
             'currency' => 'usd',//optional,
             'expire_time' => '',//optional,
