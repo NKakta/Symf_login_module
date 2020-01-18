@@ -143,10 +143,10 @@ class CoinRemitterUtil
      */
     public function getNotificationUrl(): string
     {
-        dd( $this->urlGenerator->generate(
+        return $this->urlGenerator->generate(
             'crypto_payment_notification',
             [],
             UrlGeneratorInterface::ABSOLUTE_URL
-        ));
+        );
     }
 }
