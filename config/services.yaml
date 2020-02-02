@@ -44,3 +44,7 @@ services:
     App\Controller\Payment\Paypal\ProcessPaymentController:
         arguments:
             $paypalSandboxMode: '%env(bool:APP_PAYPAL_SANDBOX_MODE)%'
+
+    App\UseCase\Account\DeliverAccountUseCase:
+        arguments:
+            $fromEmail: '%env(APP_DELIVER_ACCOUNT_FROM_EMAIL)%'

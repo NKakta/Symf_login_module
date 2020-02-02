@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %} Resumes {% endblock %}
+{% block title %} LOL accounts club {% endblock %}
 
 {% block body %}
     {% include('inc/sidebar-mobile.html.twig') %}
@@ -13,7 +13,7 @@
                 <h4 class="m-title text-uppercase">League of Legends accounts</h4>
                 <p class="m-subtitle">Choose your package</p>
 
-                <div class="products">
+                <div class="products" data-products-url="{{ getProductsAjaxUrl }}">
                     <div class="row pb-5">
                         {% for product in products %}
                         <div class="col-md-4 mt-3">

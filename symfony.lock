@@ -281,6 +281,9 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "sudiptpa/paypal-ipn": {
+        "version": "v2.0.1"
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.1.3"
     },

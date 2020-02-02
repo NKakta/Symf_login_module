@@ -12,6 +12,7 @@ use App\UseCase\Account\CheckAvailableAccountsUseCase;
 use App\UseCase\Account\PickSoldAccountsUseCase;
 use App\UseCase\Order\CreateOrderUseCase;
 use App\UseCase\Payment\PurchasePaypalUseCase;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -61,6 +62,11 @@ class CheckoutController extends AbstractController
      */
     private $logger;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
     public function __construct(
         CheckAvailableAccountsUseCase $availableAccountsUseCase,
         PickSoldAccountsUseCase $pickSoldAccountsUseCase,
@@ -69,6 +75,7 @@ class CheckoutController extends AbstractController
         PurchasePaypalUseCase $purchaseUseCase,
         CoinRemitterUtil $coinRemitterUtil,
         EventDispatcherInterface $dispatcher,
+        EntityManagerInterface $manager,
         LoggerInterface $logger
     ) {
         $this->payPal = $payPal;
@@ -79,6 +86,7 @@ class CheckoutController extends AbstractController
         $this->coinRemitterUtil = $coinRemitterUtil;
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
+        $this->manager = $manager;
     }
 
     /**
@@ -111,17 +119,21 @@ class CheckoutController extends AbstractController
             $totalPrice = $this->coinRemitterUtil->getCryptoTotalPrice($paymentModel->getTotalPrice());
             $invoice = $this->coinRemitterUtil->createInvoice($totalPrice, $order);
 
-            //TODO:save invoice info in database
             if ($invoice['flag'] == 1) {
+                $order->setTransactionId($invoice['data']['invoice_id']);
+                $this->manager->persist($order);
+                $this->manager->flush();
                 return $this->redirect($invoice['data']['url']);
             }
-            dd($invoice);
         }
 
         if ($order->getMethod() == Order::TYPE_PAYMENT_PAYPAL) {
             $response = $this->purchaseUseCase->purchase($order);
 
             if ($response->isRedirect()) {
+                $order->setTransactionId($response->getTransactionReference());
+                $this->manager->persist($order);
+                $this->manager->flush();
                 $response->redirect();
             }
         }

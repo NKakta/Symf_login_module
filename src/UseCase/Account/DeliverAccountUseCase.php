@@ -18,19 +18,27 @@ class DeliverAccountUseCase
      * @var \Swift_Mailer
      */
     private $mailer;
+
     /**
      * @var \Twig\Environment
      */
     private $twig;
 
+    /**
+     * @var string
+     */
+    private $fromEmail;
+
     public function __construct(
         AccountRepository $accountRepo,
         \Swift_Mailer $mailer,
-        \Twig\Environment $twig
+        \Twig\Environment $twig,
+        string $fromEmail
     ) {
         $this->accountRepo = $accountRepo;
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->fromEmail = $fromEmail;
     }
 
     /**
@@ -54,7 +62,7 @@ class DeliverAccountUseCase
         /** @var \Swift_Message $message */
         $message = $this->mailer->createMessage();
         $message
-            ->setFrom('email@email.com')
+            ->setFrom($this->fromEmail)
             ->setSubject('Account delivery')
             ->setTo($toEmail)
             ->setBody($body, 'text/html');

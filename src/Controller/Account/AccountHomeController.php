@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 class AccountHomeController extends AbstractController
@@ -51,12 +52,19 @@ class AccountHomeController extends AbstractController
             $showModal = true;
         }
 
+        $getProductsAjaxUrl = $this->generateUrl(
+            'products_ajax',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
         return [
             'categories' => $categories,
             'accounts' => $accounts,
             'products' => $products,
             'regions' => $regions,
-            'show_modal' => $showModal
+            'show_modal' => $showModal,
+            'getProductsAjaxUrl' => $getProductsAjaxUrl
         ];
     }
 }

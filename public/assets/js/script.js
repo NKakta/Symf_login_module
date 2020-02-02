@@ -62,6 +62,7 @@ $(function() {
 });
 
 function loadProducts() {
+    var getProductsUrl = $('.products').data('products-url');
     if ($('.menu-cat ul li a.active').length) {
         var item = $('.menu-cat ul li a.active');
         var id = item.attr('product-id');
@@ -74,7 +75,7 @@ function loadProducts() {
         $.ajax({
             method: "GET",
             dataType: "html",
-            url: window.location.href.split('?')[0]+"ajax/products",
+            url: getProductsUrl,
             data: {
                 category: id,
                 region: region
