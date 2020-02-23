@@ -22,6 +22,7 @@ final class Version20200214171433 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE products ADD ranks LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
         $this->addSql('ALTER TABLE products CHANGE ranks ranks LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
     }
 
@@ -29,7 +30,7 @@ final class Version20200214171433 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
+        $this->addSql('ALTER TABLE products DROP ranks');
         $this->addSql('ALTER TABLE products CHANGE ranks ranks LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:array)\'');
     }
 }
