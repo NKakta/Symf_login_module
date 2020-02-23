@@ -10,6 +10,7 @@ class AccountImportFormModel
 {
     const TYPE_GREEN_CHECKER = 'green_checker';
     const TYPE_WHITE_CHECKER = 'white_checker';
+    const TYPE_CONCRETE_CHECKER = 'concrete_checker';
 
     /**
      * @var string|null

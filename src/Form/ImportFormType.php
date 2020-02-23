@@ -29,8 +29,9 @@ class ImportFormType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    'White Checker' => 'white_checker',
-                    'Green Checker' => 'green_checker',
+                    'White Checker' => AccountImportFormModel::TYPE_WHITE_CHECKER,
+                    'Green Checker' => AccountImportFormModel::TYPE_GREEN_CHECKER,
+                    'Concrete Checker' => AccountImportFormModel::TYPE_CONCRETE_CHECKER,
 
                 ],
                 'required' => true

@@ -79,6 +79,66 @@ class Product
     private $sold = false;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="days_not_played", type="integer", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
+     */
+    private $daysNotPlayed;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_level", type="integer", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
+     */
+    private $minLevel;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_champ_count", type="integer", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
+     */
+    private $minChampCount;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_skin_count", type="integer", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
+     */
+    private $minSkinCount;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_rp_count", type="integer", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
+     */
+    private $minRpCount;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ranks", type="array", nullable=true)
+     *
+     * @Serializer\Expose()
+     * @Serializer\Type("array<string>")
+     */
+    private $ranks;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -100,6 +160,7 @@ class Product
 
     public function __construct()
     {
+        $this->ranks = [];
     }
 
     /**
@@ -278,4 +339,111 @@ class Product
         return $count;
     }
 
+    /**
+     * @return int
+     */
+    public function getDaysNotPlayed(): ?int
+    {
+        return $this->daysNotPlayed;
+    }
+
+    /**
+     * @param int $daysNotPlayed
+     * @return Product
+     */
+    public function setDaysNotPlayed(int $daysNotPlayed): Product
+    {
+        $this->daysNotPlayed = $daysNotPlayed;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinLevel(): ?int
+    {
+        return $this->minLevel;
+    }
+
+    /**
+     * @param int $minLevel
+     * @return Product
+     */
+    public function setMinLevel(int $minLevel): Product
+    {
+        $this->minLevel = $minLevel;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinChampCount(): ?int
+    {
+        return $this->minChampCount;
+    }
+
+    /**
+     * @param int $minChampCount
+     * @return Product
+     */
+    public function setMinChampCount(?int $minChampCount): Product
+    {
+        $this->minChampCount = $minChampCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSkinCount(): ?int
+    {
+        return $this->minSkinCount;
+    }
+
+    /**
+     * @param int $minSkinCount
+     * @return Product
+     */
+    public function setMinSkinCount(?int $minSkinCount): Product
+    {
+        $this->minSkinCount = $minSkinCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinRpCount(): ?int
+    {
+        return $this->minRpCount;
+    }
+
+    /**
+     * @param int $minRpCount
+     * @return Product
+     */
+    public function setMinRpCount(?int $minRpCount): Product
+    {
+        $this->minRpCount = $minRpCount;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRanks(): ?array
+    {
+        return $this->ranks;
+    }
+
+    /**
+     * @param array $ranks
+     * @return Product
+     */
+    public function setRanks(?array $ranks): Product
+    {
+        $this->ranks = $ranks;
+        return $this;
+    }
 }

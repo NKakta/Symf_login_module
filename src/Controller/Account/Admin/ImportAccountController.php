@@ -5,6 +5,8 @@ namespace App\Controller\Account\Admin;
 
 use App\Form\ImportFormType;
 use App\Model\AccountImportFormModel;
+use App\UseCase\Account\Import\ConcreteChecker\ReadAccountDataFromConcreteFileUseCase;
+use App\UseCase\Account\Import\ConcreteChecker\SaveConcreteImportAccountsUseCase;
 use App\UseCase\Account\ReadAccountDataFromFileUseCase;
 use App\UseCase\Account\ReadDataFromGreenCheckerFileUseCase;
 use App\UseCase\Account\SaveGreenCheckerImportAccountsUseCase;
@@ -38,16 +40,30 @@ class ImportAccountController extends AbstractController
      */
     private $saveGreenCheckerAccountsUseCase;
 
+    /**
+     * @var ReadAccountDataFromConcreteFileUseCase
+     */
+    private $readFromConcreteFileUseCase;
+
+    /**
+     * @var SaveConcreteImportAccountsUseCase
+     */
+    private $saveConcreteAccountsUseCase;
+
     public function __construct(
         ReadAccountDataFromFileUseCase $readFileUseCase,
         ReadDataFromGreenCheckerFileUseCase $readGreenCheckerFileUseCase,
+        ReadAccountDataFromConcreteFileUseCase $readFromConcreteFileUseCase,
         SaveImportedAccountsUseCase $saveAccountsUseCase,
-        SaveGreenCheckerImportAccountsUseCase $saveGreenCheckerAccountsUseCase
+        SaveGreenCheckerImportAccountsUseCase $saveGreenCheckerAccountsUseCase,
+        SaveConcreteImportAccountsUseCase $saveConcreteAccountsUseCase
     ) {
         $this->readFileUseCase = $readFileUseCase;
         $this->saveAccountsUseCase = $saveAccountsUseCase;
         $this->readGreenCheckerFileUseCase = $readGreenCheckerFileUseCase;
         $this->saveGreenCheckerAccountsUseCase = $saveGreenCheckerAccountsUseCase;
+        $this->readFromConcreteFileUseCase = $readFromConcreteFileUseCase;
+        $this->saveConcreteAccountsUseCase = $saveConcreteAccountsUseCase;
     }
 
     /**
@@ -65,14 +81,19 @@ class ImportAccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $model->getFile();
-            //TODO: reikia nustatyti accountui kategorija (pagal kaina hierarchija)
             if ($model->getType() == AccountImportFormModel::TYPE_GREEN_CHECKER) {
+                //TODO: nepriskiria produktui
                 $import = $this->readGreenCheckerFileUseCase->read($file);
                 $this->saveGreenCheckerAccountsUseCase->save($import, $model->getRegion());
             }
             if ($model->getType() == AccountImportFormModel::TYPE_WHITE_CHECKER) {
-                $import = $this->readFileUseCase->read($file, $model->getType());
+                //TODO: nepriskiria produktui
+                $import = $this->readFileUseCase->read($file);
                 $this->saveAccountsUseCase->save($import, $model->getRegion());
+            }
+            if ($model->getType() == AccountImportFormModel::TYPE_CONCRETE_CHECKER) {
+                $import = $this->readFromConcreteFileUseCase->read($file);
+                $this->saveConcreteAccountsUseCase->save($import);
             }
         }
 

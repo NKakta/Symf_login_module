@@ -11,8 +11,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Create Product</h3>
                     </div>
+                    {% include('inc/flash-messages.html.twig') %}
                     <div class="card-body">
-
                         <div class="form-group">
                             {{ form_label(form.name) }}
                             {{ form_widget(form.name) }}
@@ -28,6 +28,30 @@
                         <div class="form-group">
                             {{ form_label(form.photoFilename) }}
                             {{ form_widget(form.photoFilename) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.daysNotPlayed) }}
+                            {{ form_widget(form.daysNotPlayed) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.minLevel) }}
+                            {{ form_widget(form.minLevel) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.minChampCount) }}
+                            {{ form_widget(form.minChampCount) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.minSkinCount) }}
+                            {{ form_widget(form.minSkinCount) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.minRpCount) }}
+                            {{ form_widget(form.minRpCount) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.ranks) }}
+                            {{ form_widget(form.ranks) }}
                         </div>
                     </div>
                     <!-- /.card-body -->

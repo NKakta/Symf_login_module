@@ -48,4 +48,20 @@ final class Regions
         ];
     }
 
+    public static function getConcreteCheckerChoices(): array
+    {
+        return [
+            'EUW' => 'europe_west',
+            'NA' => 'north_america',
+            'EUNE' => 'europe_nordic_east',
+            'BR' => 'brazil',
+            'LAS' => 'las',
+            'LAN' => 'lan',
+            'RU' => 'russia',
+            'TU' => 'turkey',
+            'OC' => 'oceania',
+
+        ];
+    }
+
 }

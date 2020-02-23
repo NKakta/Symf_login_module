@@ -174,6 +174,20 @@ class Account
     private $region;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="champ_count", type="integer", nullable=true)
+     */
+    private $champCount;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="skin_count", type="integer", nullable=true)
+     */
+    private $skinCount;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -285,7 +299,7 @@ class Account
      * @param Product $product
      * @return Account
      */
-    public function setProduct(Product $product): Account
+    public function setProduct(?Product $product): Account
     {
         $this->product = $product;
 
@@ -585,6 +599,42 @@ class Account
     public function setRegion(string $region): Account
     {
         $this->region = $region;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChampCount(): ?int
+    {
+        return $this->champCount;
+    }
+
+    /**
+     * @param int $champCount
+     * @return Account
+     */
+    public function setChampCount(?int $champCount): Account
+    {
+        $this->champCount = $champCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSkinCount(): ?int
+    {
+        return $this->skinCount;
+    }
+
+    /**
+     * @param int $skinCount
+     * @return Account
+     */
+    public function setSkinCount(?int $skinCount): Account
+    {
+        $this->skinCount = $skinCount;
         return $this;
     }
 }
