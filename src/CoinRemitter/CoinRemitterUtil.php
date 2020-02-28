@@ -75,7 +75,6 @@ class CoinRemitterUtil
 
     public function getCoinRate(): ?float
     {
-        dd($this->coinRemitter->get_coin_rate());
         return $this->coinRemitter->get_coin_rate()['data'][$this->coin]['price'];
     }
 
