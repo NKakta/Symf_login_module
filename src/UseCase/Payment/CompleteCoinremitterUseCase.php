@@ -66,5 +66,4 @@ class CompleteCoinremitterUseCase
             new PaymentCompletedEvent($order->getPayerEmail(), $accounts)
         );
     }
-
 }

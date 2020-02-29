@@ -85,7 +85,7 @@ class CoinRemitterUtil
             'notify_url' => $this->getNotificationUrl(), //required,url on which you wants to receive notification,
             'name' => '',//optional,
             'currency' => 'usd',//optional,
-            'expire_time' => '',//optional,
+//            'expire_time' => '',//optional,
             'description' => '',//optional.
             'suceess_url' => $this->getReturnUrl($order),
             'fail_url' => $this->getCancelUrl($order),
@@ -131,11 +131,10 @@ class CoinRemitterUtil
      */
     public function getNotificationUrl(): string
     {
-        return 'http://159.89.49.125/crypto/notification';
-//        return $this->urlGenerator->generate(
-//            'crypto_payment_notification',
-//            [],
-//            UrlGeneratorInterface::ABSOLUTE_URL
-//        );
+        return $this->urlGenerator->generate(
+            'crypto_payment_notification',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }
