@@ -118,7 +118,7 @@ class CheckoutController extends AbstractController
         if ($order->getMethod() == Order::TYPE_PAYMENT_CRYPTO) {
             $totalPrice = $this->coinRemitterUtil->getCryptoTotalPrice($paymentModel->getTotalPrice());
             $invoice = $this->coinRemitterUtil->createInvoice($totalPrice, $order);
-
+            dd($invoice);
             if ($invoice['flag'] == 1) {
                 $order->setTransactionId($invoice['data']['invoice_id']);
                 $this->manager->persist($order);
