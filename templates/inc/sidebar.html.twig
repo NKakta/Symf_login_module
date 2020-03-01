@@ -16,7 +16,7 @@
             <p class="mt-3">Browse by category</p>
             {% for region in regions %}
                 <div class="menu-cat">
-                    <h5 class="d-flex align-items-center">
+                    <h5 class="d-flex align-items-center" data-region="{{ region|slugify }}">
                         <a class="d-flex align-items-center" href="#" data-toggle="collapse"
                            data-target="#{{ region|slugify }}">
                             <div class="menu-title-circle mr-2"></div>{{ region }}

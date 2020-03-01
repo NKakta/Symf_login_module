@@ -13,7 +13,7 @@
                 <h4 class="m-title text-uppercase">League of Legends accounts</h4>
                 <p class="m-subtitle">Choose your package</p>
 
-                <div class="products" data-products-url="{{ getProductsAjaxUrl }}">
+                <div class="products" data-products-url="{{ getProductsAjaxUrl }}" data-region-name="{{ defaultRegion }}">
                     <div class="row pb-5">
                         {% for product in products %}
                         <div class="col-md-6 mt-3">

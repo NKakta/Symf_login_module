@@ -58,13 +58,16 @@ class AccountHomeController extends AbstractController
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
+        $defaultRegion = 'europe_west';
+
         return [
             'categories' => $categories,
             'accounts' => $accounts,
             'products' => $products,
             'regions' => $regions,
             'show_modal' => $showModal,
-            'getProductsAjaxUrl' => $getProductsAjaxUrl
+            'getProductsAjaxUrl' => $getProductsAjaxUrl,
+            'defaultRegion' => $defaultRegion
         ];
     }
 }

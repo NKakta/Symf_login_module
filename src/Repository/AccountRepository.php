@@ -54,8 +54,10 @@ class AccountRepository extends ServiceEntityRepository
 
         $qb
             ->where('acc.product = :product')
+            ->where('acc.region = :region')
             ->andWhere('acc.sold = 0')
             ->setParameter('product', $order->getProduct())
+            ->setParameter('region', $order->getRegion())
             ->setMaxResults($amount)
         ;
         return $qb->getQuery()->getResult();

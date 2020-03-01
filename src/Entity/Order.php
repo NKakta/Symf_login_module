@@ -74,6 +74,11 @@ class Order
     private $method;
 
     /**
+     * @ORM\Column(name="region", type="string", length=255, unique=false, nullable=false)
+     */
+    private $region;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="sold", type="boolean", nullable=true)
@@ -109,24 +114,25 @@ class Order
     public function setId(string $id): Order
     {
         $this->id = $id;
-
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param mixed $name
+     * @return Order
      */
-    public function setName($name): void
+    public function setName(?string $name): Order
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -139,10 +145,12 @@ class Order
 
     /**
      * @param \DateTime $createdAt
+     * @return Order
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Order
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -155,10 +163,12 @@ class Order
 
     /**
      * @param \DateTime $updatedAt
+     * @return Order
      */
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): Order
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**
@@ -171,20 +181,21 @@ class Order
 
     /**
      * @param string|null $price
+     * @return Order
      */
-    public function setPrice(?string $price): void
+    public function setPrice(?string $price): Order
     {
         $this->price = $price;
+        return $this;
     }
 
     /**
-     * @param mixed $transactionId
+     * @param string $transactionId
      * @return Order
      */
-    public function setTransactionId($transactionId)
+    public function setTransactionId(string $transactionId): Order
     {
         $this->transactionId = $transactionId;
-
         return $this;
     }
 
@@ -203,7 +214,6 @@ class Order
     public function setProduct(?Product $product): Order
     {
         $this->product = $product;
-
         return $this;
     }
 
@@ -216,39 +226,37 @@ class Order
     }
 
     /**
-     * @param mixed $quantity
+     * @param int $quantity
      * @return Order
      */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity): Order
     {
         $this->quantity = $quantity;
-
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
 
     /**
-     * @param mixed $method
+     * @param string $method
      * @return Order
      */
-    public function setMethod($method)
+    public function setMethod(string $method): Order
     {
         $this->method = $method;
-
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -260,7 +268,6 @@ class Order
     public function setSold(bool $sold): Order
     {
         $this->sold = $sold;
-
         return $this;
     }
 
@@ -276,36 +283,34 @@ class Order
      * @param mixed $payerEmail
      * @return Order
      */
-    public function setPayerEmail($payerEmail)
+    public function setPayerEmail(?string $payerEmail): Order
     {
         $this->payerEmail = $payerEmail;
-
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getPayerEmail()
+    public function getPayerEmail(): ?string
     {
         return $this->payerEmail;
     }
 
     /**
-     * @param mixed $paymentStatus
+     * @param string $paymentStatus
      * @return Order
      */
-    public function setPaymentStatus($paymentStatus)
+    public function setPaymentStatus(string $paymentStatus): Order
     {
         $this->paymentStatus = $paymentStatus;
-
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPaymentStatus()
+    public function getPaymentStatus(): string
     {
         return $this->paymentStatus;
     }
@@ -318,5 +323,21 @@ class Order
         return $this->getQuantity() * $this->getProduct()->getPrice();
     }
 
+    /**
+     * @return string
+     */
+    public function getRegion(): string
+    {
+        return $this->region;
+    }
 
+    /**
+     * @param string $region
+     * @return Order
+     */
+    public function setRegion(string $region): Order
+    {
+        $this->region = $region;
+        return $this;
+    }
 }

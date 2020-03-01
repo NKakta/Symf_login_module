@@ -1,14 +1,13 @@
 {% for product in products %}
     <div class="col-md-6 mt-3">
         <div class="product-photo">
-            {% if product.getInStock > 0 %}
+            {% if product[0].getInStock > 0 %}
                 <div class="hovered-photo-bg checkout-btn"
-                     photo="{{ asset('assets/images/products/' ~ product.photoFilename) }}"
-                     product-id="{{ product.id }}"
-                     price="{{ product.price }}"
-                     product-name="{{ product.name }}"
-                     in-stock="{{ product.getInStock() }}"
-                     region-name="{{ region }}"
+                     photo="{{ asset('assets/images/products/' ~ product[0].photoFilename) }}"
+                     product-id="{{ product[0].id }}"
+                     price="{{ product[0].price }}"
+                     product-name="{{ product[0].name }}"
+                     in-stock="{{ product['accountCount'] }}"
                 >
                     <p>Buy now</p>
                 </div>
@@ -18,15 +17,15 @@
                     <p>Out of stock</p>
                 </div>
             {% endif %}
-            <img class="img-fluid" src="{{ asset('assets/images/products/' ~ product.photoFilename) }}" width="100%">
+            <img class="img-fluid" src="{{ asset('assets/images/products/' ~ product[0].photoFilename) }}" width="100%">
         </div>
         <div class="row product-details">
             <div class="col-md-8">
-                <h4 class="mb-0 title">{{ product.name }}</h4>
-                <h4 class="mb-0 stock">In stock: <span>{{ product.getInStock() }}</span></h4>
+                <h4 class="mb-0 title">{{ product[0].name }}</h4>
+                <h4 class="mb-0 stock">In stock: <span>{{ product['accountCount'] }}</span></h4>
             </div>
             <div class="col-md-4">
-                <h1 class="mb-0 price text-right">{{ product.price }}$</h1>
+                <h1 class="mb-0 price text-right">{{ product[0].price }}$</h1>
             </div>
         </div>
     </div>

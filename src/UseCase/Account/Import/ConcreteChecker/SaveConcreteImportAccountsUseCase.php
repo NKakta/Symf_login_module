@@ -46,7 +46,7 @@ class SaveConcreteImportAccountsUseCase
             $new->setRpBalance($account->getRp());
             $new->setLastPlay($account->getLastPlayed());
             $new->setSoloQRank($account->getCurrent());
-            $new->setRegion(Regions::getConcreteCheckerChoices()[$account->getRegion()]);
+            $new->setRegion($account->getRegion());
             $new->setCreatedAt(new \DateTime());
             $new->setUpdatedAt(new \DateTime());
             $new->setSold(false);

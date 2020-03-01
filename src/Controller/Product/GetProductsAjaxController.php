@@ -53,8 +53,10 @@ class GetProductsAjaxController extends AbstractController
      */
     public function listProducts(Request $request)
     {
-        $products = $this->repo->findAll();
         $region = $request->query->get('region');
+        $category = $request->query->get('category');
+        $products = $this->repo->findAllWithAccountCount($region, $category);
+//        $products = $this->repo->findAll();
         $result = $this->render(
             'product/ajax/products.html.twig',
             [

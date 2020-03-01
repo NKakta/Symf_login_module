@@ -69,4 +69,34 @@ class ProductRepository extends ServiceEntityRepository
         ;
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param string $region
+     * @param string $category
+     * @return Product[]
+     */
+    public function findAllWithAccountCount(string $region, string $category): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->addSelect('p')
+            ->leftJoin('p.accounts', 'accounts')
+            ->where('accounts.region = :region')
+            ->andWhere('p.category = :category')
+            ->addSelect('COUNT(accounts) AS accountCount')
+            ->groupBy('p.id')
+            ->setParameter('region', $region)
+            ->setParameter('category', $category)
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
+//    public function countNumberPrintedForCategory(Category $category)
+//    {
+//        $qb = $userRepository->createQueryBuilder('magazine')
+//            ->addSelect("magazine.id,magazine.name,magazine.description")
+//            ->leftJoin('magazine.wardrobe', 'wardrobe') // To show as well the magazines without wardrobes related
+//            ->addSelect('COUNT(wardrobe.id) AS wardrobecount')
+//            ->groupBy('magazine.id'); // To group the results per magazine
+//    }
 }

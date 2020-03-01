@@ -22,12 +22,14 @@ class CheckAvailableAccountsUseCase
     /**
      * @param PaymentModel $paymentModel
      * @return bool
+     * returns false not enough items for purchase
      */
     public function check(PaymentModel $paymentModel): bool
     {
         $availableAccounts = count($this->accountRepo->findBy(
             [
                 'product' => $paymentModel->getProductId(),
+                'region' => $paymentModel->getRegion(),
                 'sold' => false
             ]
         ));

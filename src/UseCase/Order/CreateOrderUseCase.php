@@ -32,6 +32,7 @@ class CreateOrderUseCase
         $order->setQuantity($paymentModel->getQuantity());
         $order->setPaymentStatus(Order::PAYMENT_PENDING);
         $order->setPayerEmail($paymentModel->getEmail());
+        $order->setRegion($paymentModel->getEmail());
         $order->setSold(false);
         $order->setProduct($paymentModel->getProductId());
         $order->setPrice((string)($paymentModel->getQuantity() * $paymentModel->getProductId()->getPrice()));
