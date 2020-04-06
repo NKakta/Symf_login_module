@@ -5,9 +5,11 @@ namespace App\Form;
 
 use App\Entity\Account;
 use App\Entity\Product;
+use App\Enum\Regions;
 use App\Repository\ProductRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,6 +39,12 @@ class AccountFormType extends AbstractType
                     'required' => false
                 ]
             )
+            ->add('region', ChoiceType::class, [
+                'choices' => [
+                    Regions::getChoices()
+                ],
+                'required' => true
+            ])
             ->add('product', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Product::class,

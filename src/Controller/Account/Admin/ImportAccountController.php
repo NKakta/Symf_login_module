@@ -100,5 +100,3 @@ class ImportAccountController extends AbstractController
         return ['form' => $form->createView()];
     }
 }
-
-
