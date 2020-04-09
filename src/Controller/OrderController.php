@@ -1,39 +1,40 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Uzsakymas;
-use App\Form\UzsakymasType;
-use App\Repository\UzsakymasRepository;
+use App\Entity\Order;
+use App\Form\OrderType;
+use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/uzsakymas")
+ * @Route("/order")
  */
-class UzsakymasController extends AbstractController
+class OrderController extends AbstractController
 {
     /**
-     * @Route("/", name="uzsakymas_index", methods={"GET"})
+     * @Route("/", name="order_index", methods={"GET"})
      */
-    public function index(UzsakymasRepository $uzsakymasRepository): Response
+    public function index(OrderRepository $orderRepository): Response
     {
-        return $this->render('uzsakymas/index.html.twig', [
-            'uzsakymas' => $uzsakymasRepository->findAll(),
+        return $this->render('order/index.html.twig', [
+            'order' => $orderRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="uzsakymas_new", methods={"GET","POST"})
+     * @Route("/new", name="order_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $sessionVal = $this->get('session')->get('productsInOrder');
 
-        $uzsakyma = new Uzsakymas();
-        $form = $this->createForm(UzsakymasType::class, $uzsakyma);
+        $uzsakyma = new Order();
+        $form = $this->createForm(OrderType::class, $uzsakyma);
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,10 +54,10 @@ class UzsakymasController extends AbstractController
             dump($uzsakyma);
             $entityManager->flush();
 
-            return $this->redirectToRoute('uzsakymas_index');
+            return $this->redirectToRoute('order_index');
         }
 
-        return $this->render('uzsakymas/new.html.twig', [
+        return $this->render('order/new.html.twig', [
             'uzsakyma' => $uzsakyma,
             'products'=>$sessionVal,
             'form' => $form->createView(),
@@ -64,39 +65,39 @@ class UzsakymasController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="uzsakymas_show", methods={"GET"})
+     * @Route("/{id}", name="order_show", methods={"GET"})
      */
-    public function show(Uzsakymas $uzsakyma): Response
+    public function show(Order $uzsakyma): Response
     {
-        return $this->render('uzsakymas/show.html.twig', [
+        return $this->render('order/show.html.twig', [
             'uzsakyma' => $uzsakyma,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="uzsakymas_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Uzsakymas $uzsakyma): Response
+    public function edit(Request $request, Order $uzsakyma): Response
     {
-        $form = $this->createForm(UzsakymasType::class, $uzsakyma);
+        $form = $this->createForm(OrderType::class, $uzsakyma);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('uzsakymas_index');
+            return $this->redirectToRoute('order_index');
         }
 
-        return $this->render('uzsakymas/edit.html.twig', [
+        return $this->render('order/edit.html.twig', [
             'uzsakyma' => $uzsakyma,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="uzsakymas_delete", methods={"DELETE"})
+     * @Route("/{id}", name="order_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Uzsakymas $uzsakyma): Response
+    public function delete(Request $request, Order $uzsakyma): Response
     {
         if ($this->isCsrfTokenValid('delete'.$uzsakyma->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -104,6 +105,6 @@ class UzsakymasController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('uzsakymas_index');
+        return $this->redirectToRoute('order_index');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -7,9 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UzsakymasRepository")
+ * @ORM\Entity(repositoryClass="OrderRepository")
  */
-class Uzsakymas
+class Order
 {
     /**
      * @ORM\Id()
@@ -21,32 +22,32 @@ class Uzsakymas
     /**
      * @ORM\Column(type="boolean")
      */
-    private $patvirtinimo_laiskas;
+    private $emailNotification;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $numeris;
+    private $number;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      */
-    private $bendra_suma;
+    private $totalPrice;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="uzsakymas")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="order")
      */
     private $product;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $additional_order_info;
+    private $additionalInfo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="uzsakymas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="order")
      */
-    private $user_orderer;
+    private $client;
 
     public function __construct()
     {
@@ -58,38 +59,38 @@ class Uzsakymas
         return $this->id;
     }
 
-    public function getPatvirtinimoLaiskas(): ?bool
+    public function getEmailNotification(): ?bool
     {
-        return $this->patvirtinimo_laiskas;
+        return $this->emailNotification;
     }
 
-    public function setPatvirtinimoLaiskas(bool $patvirtinimo_laiskas): self
+    public function setEmailNotification(bool $emailNotification): self
     {
-        $this->patvirtinimo_laiskas = $patvirtinimo_laiskas;
+        $this->emailNotification = $emailNotification;
 
         return $this;
     }
 
-    public function getNumeris(): ?int
+    public function getNumber(): ?int
     {
-        return $this->numeris;
+        return $this->number;
     }
 
-    public function setNumeris(int $numeris): self
+    public function setNumber(int $number): self
     {
-        $this->numeris = $numeris;
+        $this->number = $number;
 
         return $this;
     }
 
-    public function getBendraSuma(): ?int
+    public function getTotalPrice(): ?float
     {
-        return $this->bendra_suma;
+        return $this->totalPrice;
     }
 
-    public function setBendraSuma(int $bendra_suma): self
+    public function setTotalPrice(float $totalPrice): self
     {
-        $this->bendra_suma = $bendra_suma;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
@@ -121,26 +122,26 @@ class Uzsakymas
         return $this;
     }
 
-    public function getAdditionalOrderInfo(): ?string
+    public function getAdditionalInfo(): ?string
     {
-        return $this->additional_order_info;
+        return $this->additionalInfo;
     }
 
-    public function setAdditionalOrderInfo(?string $additional_order_info): self
+    public function setAdditionalInfo(?string $additionalInfo): self
     {
-        $this->additional_order_info = $additional_order_info;
+        $this->additionalInfo = $additionalInfo;
 
         return $this;
     }
 
-    public function getUserOrderer(): ?User
+    public function getClient(): ?User
     {
-        return $this->user_orderer;
+        return $this->client;
     }
 
-    public function setUserOrderer(?User $user_orderer): self
+    public function setClient(?User $client): self
     {
-        $this->user_orderer = $user_orderer;
+        $this->client = $client;
 
         return $this;
     }

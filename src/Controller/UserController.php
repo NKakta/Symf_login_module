@@ -31,7 +31,6 @@ class UserController extends AbstractController
         $this->validator = $validator;
     }
 
-
     /**
      * @Route("/admin", name="admin_home")
      * @Method({"GET", "POST"})

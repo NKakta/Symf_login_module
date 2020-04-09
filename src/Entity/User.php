@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -73,38 +74,15 @@ class User implements UserInterface
      */
     private $roles = null;
 
-    /**
-     * @var VacationRequest[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="VacationRequest",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $vacationRequests;
 
     /**
-     * @var Vacation[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Vacation",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="user_orderer")
      */
-    private $vacations;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Uzsakymas", mappedBy="user_orderer")
-     */
-    private $uzsakymas;
+    private $order;
 
     public function __construct()
     {
-        $this->uzsakymas = new ArrayCollection();
+        $this->order = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -222,38 +200,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return VacationRequest[]
-     */
-    public function getVacationRequests()
-    {
-        return $this->vacationRequests;
-    }
-
-    /**
-     * @param VacationRequest[] $vacationRequests
-     */
-    public function setVacationRequests(array $vacationRequests): void
-    {
-        $this->vacationRequests = $vacationRequests;
-    }
-
-    /**
-     * @return Vacation[]
-     */
-    public function getVacations(): array
-    {
-        return $this->vacations;
-    }
-
-    /**
-     * @param Vacation[] $vacations
-     */
-    public function setVacations(array $vacations): void
-    {
-        $this->vacations = $vacations;
-    }
-
-    /**
      * @return mixed
      */
     public function getActivated()
@@ -308,35 +254,18 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Uzsakymas[]
+     * @return Collection|Order[]
      */
-    public function getUzsakymas(): Collection
+    public function getOrder(): Collection
     {
-        return $this->uzsakymas;
+        return $this->order;
     }
 
-    public function addUzsakyma(Uzsakymas $uzsakyma): self
+    public function setOrder(?Order $order): self
     {
-        if (!$this->uzsakymas->contains($uzsakyma)) {
-            $this->uzsakymas[] = $uzsakyma;
-            $uzsakyma->setUserOrderer($this);
-        }
+        $this->order = $order;
 
         return $this;
     }
-
-    public function removeUzsakyma(Uzsakymas $uzsakyma): self
-    {
-        if ($this->uzsakymas->contains($uzsakyma)) {
-            $this->uzsakymas->removeElement($uzsakyma);
-            // set the owning side to null (unless already changed)
-            if ($uzsakyma->getUserOrderer() === $this) {
-                $uzsakyma->setUserOrderer(null);
-            }
-        }
-
-        return $this;
-    }
-
 
 }

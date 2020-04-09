@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -27,39 +28,37 @@ class Product
     private $name;
 
     /**
-     * @var User[]
+     * @var string|null
      *
-     * @ORM\OneToMany(
-     *     targetEntity="User",
-     *     mappedBy="product",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      */
-    private $users;
+    private $price;
 
     /**
-     * @var \DateTime
+     * @var string|null
      *
-     * @ORM\Column(name="date_from", type="datetime")
+     * @ORM\Column(type="integer")
      */
-    private $dateFrom;
+    private $quantity;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_to", type="datetime")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $dateTo;
+    private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Uzsakymas", mappedBy="product")
+     * @ORM\Column(type="string", length=191)
      */
-    private $uzsakymas;
+    private $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Order", mappedBy="product")
+     */
+    private $order;
 
     public function __construct()
     {
-        $this->uzsakymas = new ArrayCollection();
+        $this->order = new ArrayCollection();
     }
 
     /**
@@ -101,84 +100,82 @@ class Product
     }
 
     /**
-     * @param \DateTime $dateFrom
+     * @return Collection|Order[]
+     */
+    public function getOrder(): Collection
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param string|null $price
      * @return Product
      */
-    public function setDateFrom(\DateTime $dateFrom): Product
+    public function setPrice(?string $price): Product
     {
-        $this->dateFrom = $dateFrom;
-
+        $this->price = $price;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return string|null
      */
-    public function getDateFrom(): ?\DateTime
+    public function getQuantity(): ?string
     {
-        return $this->dateFrom;
+        return $this->quantity;
     }
 
     /**
-     * @param \DateTime $dateTo
+     * @param string|null $quantity
      * @return Product
      */
-    public function setDateTo(\DateTime $dateTo): Product
+    public function setQuantity(?string $quantity): Product
     {
-        $this->dateTo = $dateTo;
-
+        $this->quantity = $quantity;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return mixed
      */
-    public function getDateTo(): ?\DateTime
+    public function getDescription()
     {
-        return $this->dateTo;
+        return $this->description;
     }
 
     /**
-     * @return User[]
+     * @param mixed $description
+     * @return Product
      */
-    public function getUsers()
+    public function setDescription($description)
     {
-        return $this->users;
-    }
-
-    /**
-     * @param User[] $users
-     */
-    public function setUsers(array $users): void
-    {
-        $this->users = $users;
-    }
-
-    /**
-     * @return Collection|Uzsakymas[]
-     */
-    public function getUzsakymas(): Collection
-    {
-        return $this->uzsakymas;
-    }
-
-    public function addUzsakyma(Uzsakymas $uzsakyma): self
-    {
-        if (!$this->uzsakymas->contains($uzsakyma)) {
-            $this->uzsakymas[] = $uzsakyma;
-            $uzsakyma->addProduct($this);
-        }
-
+        $this->description = $description;
         return $this;
     }
 
-    public function removeUzsakyma(Uzsakymas $uzsakyma): self
+    /**
+     * @return mixed
+     */
+    public function getType()
     {
-        if ($this->uzsakymas->contains($uzsakyma)) {
-            $this->uzsakymas->removeElement($uzsakyma);
-            $uzsakyma->removeProduct($this);
-        }
+        return $this->type;
+    }
 
+    /**
+     * @param mixed $type
+     * @return Product
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 }
