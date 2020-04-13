@@ -28,18 +28,25 @@ class Product
     private $name;
 
     /**
-     * @var string|null
+     * @var float|null
      *
      * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      */
     private $price;
 
     /**
-     * @var string|null
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      */
     private $quantity;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $reservedQuantity;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -52,13 +59,19 @@ class Product
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Order", mappedBy="product")
+     * @ORM\ManyToMany(targetEntity="Order", inversedBy="products", cascade={"remove"})
+     * @ORM\JoinTable(
+     *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="cascade")},
+     *     )
+     *   )
      */
-    private $order;
+    private $orders;
 
     public function __construct()
     {
-        $this->order = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->reservedQuantity = 0;
     }
 
     /**
@@ -100,14 +113,6 @@ class Product
     }
 
     /**
-     * @return Collection|Order[]
-     */
-    public function getOrder(): Collection
-    {
-        return $this->order;
-    }
-
-    /**
      * @return string|null
      */
     public function getPrice(): ?string
@@ -126,18 +131,18 @@ class Product
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getQuantity(): ?string
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
     /**
-     * @param string|null $quantity
+     * @param int|null $quantity
      * @return Product
      */
-    public function setQuantity(?string $quantity): Product
+    public function setQuantity(?int $quantity): Product
     {
         $this->quantity = $quantity;
         return $this;
@@ -176,6 +181,45 @@ class Product
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getReservedQuantity(): ?int
+    {
+        return $this->reservedQuantity;
+    }
+
+    /**
+     * @param int|null $reservedQuantity
+     */
+    public function setReservedQuantity(?int $reservedQuantity): void
+    {
+        $this->reservedQuantity = $reservedQuantity;
+    }
+
+    public function getCalculatedQuantity(): int
+    {
+        return $this->quantity - $this->reservedQuantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param mixed $orders
+     * @return Product
+     */
+    public function setOrders($orders)
+    {
+        $this->orders = $orders;
         return $this;
     }
 }

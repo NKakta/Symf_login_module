@@ -5,7 +5,7 @@
 {% block body %}
     {{ form_start(form)}}
     {{ form_row(form.name) }}
+    {{ form_end(form) }}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <button type="submit">Submit</button>
-    {{ form_end(form) }}
 {% endblock %}

@@ -12,3 +12,9 @@
 .sidebar-sticky {
     padding-top: 16px;
 }
+
+form div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 100px 300px;
+}

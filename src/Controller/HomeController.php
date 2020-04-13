@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\Client\AbstractClientController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class HomeController extends AbstractController
+class HomeController extends AbstractClientController
 {
     /**
      * @Route("/", name="app_homepage")
@@ -16,5 +16,6 @@ class HomeController extends AbstractController
      * @Template("home.html.twig")
      */
     public function showHomepageAction() {
+        return ['cart' => $this->getCart()];
     }
 }

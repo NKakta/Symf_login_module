@@ -4,14 +4,18 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="OrderRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Table(name="orders")
  */
 class Order
 {
+    const STATUS_PAYED = 'payed';
+    const STATUS_NOT_PAYED = 'not_payed';
+    const STATUS_CANCELED = 'canceled';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,14 +34,19 @@ class Order
     private $number;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $status;
+
+    /**
      * @ORM\Column(name="price", type="decimal", precision=19, scale=2, nullable=false)
      */
     private $totalPrice;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="order")
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="orders", cascade={"persist"})
      */
-    private $product;
+    private $products;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -45,13 +54,15 @@ class Order
     private $additionalInfo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="order")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $client;
+    private $createdAt;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,44 +94,18 @@ class Order
         return $this;
     }
 
-    public function getTotalPrice(): ?float
+    public function getTotalPrice(): ?string
     {
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $totalPrice): self
+    public function setTotalPrice(string $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
 
         return $this;
     }
 
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProduct(): Collection
-    {
-        return $this->product;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->product->contains($product)) {
-            $this->product->removeElement($product);
-        }
-
-        return $this;
-    }
 
     public function getAdditionalInfo(): ?string
     {
@@ -134,15 +119,56 @@ class Order
         return $this;
     }
 
-    public function getClient(): ?User
+    /**
+     * @return mixed
+     */
+    public function getProducts()
     {
-        return $this->client;
+        return $this->products;
     }
 
-    public function setClient(?User $client): self
+    /**
+     * @param mixed $products
+     * @return Order
+     */
+    public function setProducts($products): Order
     {
-        $this->client = $client;
+        $this->products = $products;
 
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     * @return Order
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
         return $this;
     }
 }

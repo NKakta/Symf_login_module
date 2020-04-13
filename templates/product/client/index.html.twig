@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %} Candy Shop | Products {% endblock %}
+{% block body %}
+    <div class="grid">
+        {% for product in products %}
+            <div class="card">
+                <h1> {{ product.name }} </h1>
+                <span> {{ product.price }} </span>
+                <span> {{ product.description }} </span>
+                <button class="add-to-cart-button">
+                    <a href="{{ path('product_add_to_cart', { 'id': product.id }) }}">
+                        Add to cart
+                    </a>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include 'inc/cart.html.twig' %}
+{% endblock %}
