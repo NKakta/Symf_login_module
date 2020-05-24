@@ -44,8 +44,6 @@ class UserController extends AbstractController
      * @Route("/admin/user", name="user_index")
      * @Method({"GET", "POST"})
      * @Template("admin/user/index.html.twig")
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return array
      */
     public function userListAction(Request $request, PaginatorInterface $paginator)
@@ -77,9 +75,6 @@ class UserController extends AbstractController
      * @Route("/admin/user/create", name="create_user")
      * @Method({"GET", "POST"})
      * @Template("admin/user/create.html.twig")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param EventDispatcherInterface $dispatcher
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createUserAction(
@@ -140,8 +135,6 @@ class UserController extends AbstractController
      * @Route("/admin/user/edit/{id}", name="edit_user", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("admin/user/edit.html.twig")
-     * @param Request $request
-     * @param $id
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editUserAction(Request $request, $id)
@@ -162,7 +155,6 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/{id}", name="show_user", requirements={"id"="\d+"})
      * @Template("admin/user/show.html.twig")
-     * @param $id
      * @return array
      */
     public function showUserAction($id)
@@ -173,7 +165,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/remove/{id}", name="remove_user", requirements={"id"="\d+"})
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeUser($id)
@@ -188,8 +179,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/search/{email}", name="search_user")
-     * @param $email
-     * @param ValidatorInterface $validator
      * @return JsonResponse
      */
     public function searchAction($email, ValidatorInterface $validator)
@@ -214,7 +203,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/user/{id}/deactivate", name="deactivate_user", requirements={"id"="\d+"})
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deactivateUser($id)
@@ -233,8 +221,6 @@ class UserController extends AbstractController
      * @Route("/admin/user/settings", name="settings_user", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      * @Template("admin/user/settings.html.twig")
-     * @param Request $request
-     * @param $id
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editSettingsUser(Request $request)

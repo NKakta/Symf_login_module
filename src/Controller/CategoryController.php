@@ -27,7 +27,6 @@ class CategoryController extends AbstractController
      * @Route("/categories", name="category_index")
      * @Method({"GET"})
      * @Template("category/index.html.twig")
-     * @param Request $request
      * @return array
      */
     public function listCategories(Request $request)
@@ -56,7 +55,6 @@ class CategoryController extends AbstractController
      * @Route("/admin/category/create", name="create_category")
      * @Method({"GET", "POST"})
      * @Template("category/create.html.twig")
-     * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */

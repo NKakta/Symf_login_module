@@ -54,6 +54,29 @@ class Order
     private $additionalInfo;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $user;
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     * @return Order
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")

@@ -23,9 +23,6 @@ class Cart implements \Serializable
      */
     public $totalPrice;
 
-    /**
-     * Cart constructor.
-     */
     public function __construct()
     {
         $this->items = [];
@@ -43,7 +40,6 @@ class Cart implements \Serializable
 
     /**
      * @param array<StoredItem> $items
-     * @return Cart
      */
     public function setItems(array $items): ?Cart
     {
@@ -51,46 +47,28 @@ class Cart implements \Serializable
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getTotalQuantity(): int
     {
         return $this->totalQuantity;
     }
 
-    /**
-     * @param int $totalQuantity
-     * @return Cart
-     */
     public function setTotalQuantity(int $totalQuantity): ?Cart
     {
         $this->totalQuantity = $totalQuantity;
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getTotalPrice(): float
     {
         return $this->totalPrice;
     }
 
-    /**
-     * @param float $totalPrice
-     * @return Cart
-     */
     public function setTotalPrice(float $totalPrice): ?Cart
     {
         $this->totalPrice = $totalPrice;
         return $this;
     }
 
-    /**
-     * @param Product $product
-     * @throws NotEnoughInStockException
-     */
     public function add(Product $product)
     {
         $storedItem = $this->getIfExists($product);
@@ -118,10 +96,6 @@ class Cart implements \Serializable
         return new StoredItem(0, (float)$product->getPrice(), $product);
     }
 
-    /**
-     * @param Product $product
-     * @throws NotEnoughInStockException
-     */
     public function reduceByOne(Product $product)
     {
         $storedItem = $this->getIfExists($product);

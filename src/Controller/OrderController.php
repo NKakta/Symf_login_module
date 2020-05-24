@@ -33,32 +33,31 @@ class OrderController extends AbstractController
     {
         $sessionVal = $this->get('session')->get('productsInOrder');
 
-        $uzsakyma = new Order();
-        $form = $this->createForm(OrderType::class, $uzsakyma);
+        $order = new Order();
+        $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
             if($sessionVal!=null) {
                 foreach ($sessionVal as $product) {
                     $entityManager->persist($product);
-                    $uzsakyma->addProduct($product);
+                    $order->addProduct($product);
                 }
             }
-            $entityManager->persist($uzsakyma);
+            $entityManager->persist($order);
             //only user, not admin
             $user =$this->getUser();
             if($user!=null){
-                $user->addUzsakyma($uzsakyma);
+                $user->addUzsakyma($order);
                 $entityManager->persist($user);
             }
-            dump($uzsakyma);
             $entityManager->flush();
 
             return $this->redirectToRoute('order_index');
         }
 
         return $this->render('order/new.html.twig', [
-            'uzsakyma' => $uzsakyma,
+            'order' => $order,
             'products'=>$sessionVal,
             'form' => $form->createView(),
         ]);
@@ -67,19 +66,19 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}", name="order_show", methods={"GET"})
      */
-    public function show(Order $uzsakyma): Response
+    public function show(Order $order): Response
     {
         return $this->render('order/show.html.twig', [
-            'uzsakyma' => $uzsakyma,
+            'order' => $order,
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $uzsakyma): Response
+    public function edit(Request $request, Order $order): Response
     {
-        $form = $this->createForm(OrderType::class, $uzsakyma);
+        $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,7 +88,7 @@ class OrderController extends AbstractController
         }
 
         return $this->render('order/edit.html.twig', [
-            'uzsakyma' => $uzsakyma,
+            'order' => $order,
             'form' => $form->createView(),
         ]);
     }
@@ -97,11 +96,11 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}", name="order_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Order $uzsakyma): Response
+    public function delete(Request $request, Order $order): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$uzsakyma->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($uzsakyma);
+            $entityManager->remove($order);
             $entityManager->flush();
         }
 

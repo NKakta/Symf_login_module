@@ -25,8 +25,6 @@ class ProductController extends AbstractClientController
 
     /**
      * ProductController constructor.
-     * @param ProductRepository $repo
-     * @param SessionInterface $session
      */
     public function __construct(ProductRepository $repo, SessionInterface $session)
     {
@@ -55,8 +53,6 @@ class ProductController extends AbstractClientController
     /**
      * @Route("/product/{id}/add-to-cart", name="product_add_to_cart")
      * @Method({"GET"})
-     * @param Request $request
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addToCart(Request $request, $id)
@@ -79,8 +75,6 @@ class ProductController extends AbstractClientController
     /**
      * @Route("/product/{id}/remove-one-from-cart", name="cart_remove_one")
      * @Method({"GET"})
-     * @param Request $request
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function reduceByOneFromCart(Request $request, $id)
@@ -103,8 +97,6 @@ class ProductController extends AbstractClientController
     /**
      * @Route("/product/{id}/add-one-to-cart", name="cart_add_one")
      * @Method({"GET"})
-     * @param Request $request
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function increaseByOneFromCart(Request $request, $id)
@@ -127,7 +119,6 @@ class ProductController extends AbstractClientController
     /**
      * @Route("/product/{id}/remove-item-from-cart", name="cart_remove_item")
      * @Method({"GET"})
-     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeItemFromCart($id) {

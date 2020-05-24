@@ -66,7 +66,6 @@ class ProductController extends AbstractController
      * @Route("/admin/product/create", name="create_product")
      * @Method({"GET", "POST"})
      * @Template("product/create.html.twig")
-     * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createProduct(Request $request)

@@ -7,7 +7,6 @@ use App\Controller\Client\AbstractClientController;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Exception\NotEnoughInStockException;
-use App\Model\Cart;
 use App\Model\StoredItem;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,9 +38,6 @@ class CheckoutController extends AbstractClientController
     /**
      * @Route("/checkout", name="checkout")
      * @Method({"POST"})
-     * @param Request $request
-     * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
      */
     public function checkout(Request $request)
     {
@@ -65,7 +61,6 @@ class CheckoutController extends AbstractClientController
         }
 
         $this->em->flush();
-
 
         $order = new Order();
         $order
