@@ -25,5 +25,9 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Model\PayPalUtil:
+        arguments:
+            $sandboxMode: '%env(bool:APP_PAYPAL_SANDBOX_MODE)%'
+            $username: '%env(APP_PAYPAL_USERNAME)%'
+            $password: '%env(APP_PAYPAL_PASSWORD)%'
+            $signature: '%env(APP_PAYPAL_SIGNATURE)%'

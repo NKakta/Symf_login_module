@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -59,24 +60,6 @@ class Order
     private $user;
 
     /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     * @return Order
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -122,7 +105,7 @@ class Order
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(string $totalPrice): self
+    public function setTotalPrice(string $totalPrice): Order
     {
         $this->totalPrice = $totalPrice;
 
@@ -135,63 +118,53 @@ class Order
         return $this->additionalInfo;
     }
 
-    public function setAdditionalInfo(?string $additionalInfo): self
+    public function setAdditionalInfo(?string $additionalInfo): Order
     {
         $this->additionalInfo = $additionalInfo;
-
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
 
-    /**
-     * @param mixed $products
-     * @return Order
-     */
-    public function setProducts($products): Order
+    public function setProducts(array $products): Order
     {
         $this->products = $products;
-
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Order
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param mixed $status
-     * @return Order
-     */
-    public function setStatus($status)
+    public function setStatus(string $status): Order
     {
         $this->status = $status;
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): Order
+    {
+        $this->user = $user;
         return $this;
     }
 }
