@@ -146,7 +146,7 @@ class Order
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -157,12 +157,12 @@ class Order
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user): Order
+    public function setUser(?User $user): Order
     {
         $this->user = $user;
         return $this;

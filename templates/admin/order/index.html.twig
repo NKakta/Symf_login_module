@@ -1,49 +1,30 @@
-{% extends 'layouts/base.html.twig' %}
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Users {% endblock %}
+
 {% block body %}
-<!DOCTYPE html>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_new') }}">Create new Order</a>
 
-<title>Uzsakymas index</title>
-    <h1>Uzsakymas index</h1>
+    {% for order in orders %}
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <span class="h2">Id {{ order.id }}</span>
+            <span class="h2">Number {{ order.number }}</span>
+            <span class="h2">Price {{ order.totalPrice }}</span>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group mr-2">
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_show',   { 'id': order.id }) }}">Show</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_edit',   { 'id': order.id }) }}">Edit</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_delete', { 'id': order.id }) }}">Delete</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Patvirtinimo_laiskas</th>
-                <th>Numeris</th>
-                <th>Bendra_suma</th>
-                <th>Papildoma informacija užsakymo</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+{#    {% if users|length < 1 %}#}
+{#        <p> No users found. </p>#}
+{#    {% endif %}#}
 
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        DEEEEEEEEEEEEZ
-        {#{% for uzsakyma in uzsakymas %}
-            <tr>
-                <td>{{ uzsakyma.id }}</td>
-                <td>{{ uzsakyma.patvirtinimoLaiskas ? 'Yes' : 'No' }}</td>
-                <td>{{ uzsakyma.numeris }}</td>
-                <td>{{ uzsakyma.bendraSuma }}</td>
-                <td>{{ uzsakyma.getAdditionalOrderInfo() }}</td>
-                <td>
-                    <a href="{{ path('uzsakymas_show', {'id': uzsakyma.id}) }}">show</a>
-                    <a href="{{ path('uzsakymas_edit', {'id': uzsakyma.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}#}
-        </tbody>
-    </table>
-
-{#    <a href="{{ path('uzsakymas_new') }}">Create new</a>#}
+{#    <div class="navigation">#}
+{#        {{ knp_pagination_render(users) }}#}
+{#    </div>#}
 {% endblock %}

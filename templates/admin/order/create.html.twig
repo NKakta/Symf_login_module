@@ -1,23 +1,16 @@
-{% extends 'layouts/base.html.twig' %}
+{% extends 'layouts/admin-base.html.twig' %}
+
+{% block title %} Users {% endblock %}
+
 {% block body %}
-<!DOCTYPE html>
-
-<title>New Uzsakymas</title>
-
-    <h1>Create new Uzsakymas</h1>
-
-    {{ include('uzsakymas/_form.html.twig') }}
-    <h1>Produktai</h1>
-    {% for product in products %}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <span class="h2">{{ product.name }}</span>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_product_order', { 'id': product.id }) }}">Remove from order</a>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <a href="{{ path('order_index') }}">back to list</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('order_index') }}">Back to Order list</a>
+    {{ form_start(form)}}
+    {{ form_row(form.emailNotification) }}
+    {{ form_row(form.number) }}
+    {{ form_row(form.totalPrice) }}
+    {{ form_row(form.additionalInfo) }}
+    {{ form_row(form.status) }}
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <button type="submit">Submit</button>
+    {{ form_end(form) }}
 {% endblock %}

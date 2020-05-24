@@ -17,7 +17,15 @@
             </tr>
         </thead>
         <tbody>
-        {% for uzsakyma in uzsakymas %}
+
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        {#{% for uzsakyma in uzsakymas %}
             <tr>
                 <td>{{ uzsakyma.id }}</td>
                 <td>{{ uzsakyma.patvirtinimoLaiskas ? 'Yes' : 'No' }}</td>
@@ -33,9 +41,9 @@
             <tr>
                 <td colspan="6">no records found</td>
             </tr>
-        {% endfor %}
+        {% endfor %}#}
         </tbody>
     </table>
 
-    <a href="{{ path('uzsakymas_new') }}">Create new</a>
+{#    <a href="{{ path('uzsakymas_new') }}">Create new</a>#}
 {% endblock %}
