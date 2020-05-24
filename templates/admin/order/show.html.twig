@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+
+<title>Uzsakymas</title>
+
+    <h1>Uzsakymas</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ uzsakyma.id }}</td>
+            </tr>
+            <tr>
+                <th>Patvirtinimo_laiskas</th>
+                <td>{{ uzsakyma.patvirtinimoLaiskas ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Numeris</th>
+                <td>{{ uzsakyma.numeris }}</td>
+            </tr>
+            <tr>
+                <th>Bendra_suma</th>
+                <td>{{ uzsakyma.bendraSuma }}</td>
+            </tr>
+            <tr>
+                <th>Papildoma užsakymo informacija</th>
+                <td>{{ uzsakyma.getAdditionalOrderInfo() }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('order_index') }}">back to list</a>
+
+    <a href="{{ path('uzsakymas_edit', {'id': uzsakyma.id}) }}">edit</a>
+
+    {{ include('uzsakymas/_delete_form.html.twig') }}
+{% endblock %}

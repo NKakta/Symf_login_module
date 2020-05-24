@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+
+<title>Uzsakymas index</title>
+    <h1>Uzsakymas index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Patvirtinimo_laiskas</th>
+                <th>Numeris</th>
+                <th>Bendra_suma</th>
+                <th>Papildoma informacija užsakymo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        DEEEEEEEEEEEEZ
+        {#{% for uzsakyma in uzsakymas %}
+            <tr>
+                <td>{{ uzsakyma.id }}</td>
+                <td>{{ uzsakyma.patvirtinimoLaiskas ? 'Yes' : 'No' }}</td>
+                <td>{{ uzsakyma.numeris }}</td>
+                <td>{{ uzsakyma.bendraSuma }}</td>
+                <td>{{ uzsakyma.getAdditionalOrderInfo() }}</td>
+                <td>
+                    <a href="{{ path('uzsakymas_show', {'id': uzsakyma.id}) }}">show</a>
+                    <a href="{{ path('uzsakymas_edit', {'id': uzsakyma.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}#}
+        </tbody>
+    </table>
+
+{#    <a href="{{ path('uzsakymas_new') }}">Create new</a>#}
+{% endblock %}
