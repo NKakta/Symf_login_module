@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+
+<title>New Uzsakymas</title>
+
+    <h1>Create new Uzsakymas</h1>
+
+    {{ include('uzsakymas/_form.html.twig') }}
+    <h1>Produktai</h1>
+    {% for product in products %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <span class="h2">{{ product.name }}</span>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ path('remove_product_order', { 'id': product.id }) }}">Remove from order</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <a href="{{ path('order_index') }}">back to list</a>
+{% endblock %}
