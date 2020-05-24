@@ -37,60 +37,34 @@ class OrderController extends AbstractController
      */
     public function index(OrderRepository $orderRepository)
     {
-//        $user = $this->getDoctrine()->getRepository(User::class)->find(0);
-//        return ['user' => $user];
-
-//        dd($orderRepository->find(1));
-
         return [
             'orders' => $orderRepository->findAll(),
         ];
-
-//        return $this->render('order/index.html.twig', [
-//            'order' => $orderRepository->find(0),
-//        ]);
     }
 
     /**
      * @Route("admin/new", name="order_new", methods={"GET","POST"})
      * @Template("admin/order/create.html.twig")
      */
-    public function new(Request $request)
+    public function createProduct(Request $request)
     {
-        $sessionVal = $this->get('session')->get('productsInOrder');
-
         $order = new Order();
+        $order->setCreatedAt(new \DateTime());
+
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
-        $order->setCreatedAt(new \DateTime());
-        $order->setUser($this->getUser());
-
-        $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            if($sessionVal!=null) {
-                foreach ($sessionVal as $product) {
-                    $entityManager->persist($product);
-                    $order->addProduct($product);
-                }
-            }
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($order);
-            //only user, not admin
-            $user =$this->getUser();
-            if($user!=null){
-                $user->addUzsakyma($order);
-                $entityManager->persist($user);
-            }
             $entityManager->flush();
-
+            $this->addFlash('success', 'Product created');
             return $this->redirectToRoute('order_index');
         }
-
-        return [
-            'order' => $order,
-            'products'=>$sessionVal,
-            'form' => $form->createView(),
-        ];
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Invalid data');
+        }
+        return ['form' => $form->createView()];
     }
 
     /**
@@ -139,18 +113,4 @@ class OrderController extends AbstractController
 
         return $this->redirectToRoute('delete.html.twig');
     }
-
-//    /**
-//     * @Route("/admin/user/remove/{id}", name="remove_user", requirements={"id"="\d+"})
-//     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-//     */
-//    public function removeUser($id)
-//    {
-//        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $entityManager->remove($user);
-//        $entityManager->flush();
-//        $this->addFlash('success', 'User has been removed');
-//        return $this->redirectToRoute('user_index');
-//    }
 }

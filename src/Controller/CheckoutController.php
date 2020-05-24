@@ -59,9 +59,6 @@ class CheckoutController extends AbstractClientController
             return $this->redirectToRoute('product_client_index');
         }
 
-
-
-
         $order = $this->createOrderFromCart($cart);
 
         $response = $this->purchaseUseCase->purchase($order);
@@ -71,9 +68,6 @@ class CheckoutController extends AbstractClientController
             $this->em->flush();
             $response->redirect();
         }
-        dd("not redirect");
-
-//        $this->updateProductQuantities($cart);
 
         $this->em->persist($order);
         $this->em->flush();
@@ -106,7 +100,6 @@ class CheckoutController extends AbstractClientController
             $this->em->persist($product);
         }
     }
-
 }
 
 
