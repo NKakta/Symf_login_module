@@ -59,12 +59,7 @@ class Product
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Order", inversedBy="products", cascade={"remove"})
-     * @ORM\JoinTable(
-     *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="cascade")},
-     *     )
-     *   )
+     * @ORM\ManyToMany(targetEntity="Order", mappedBy="products", cascade={"persist"})
      */
     private $orders;
 

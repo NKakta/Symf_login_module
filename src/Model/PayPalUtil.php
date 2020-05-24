@@ -83,8 +83,8 @@ class PayPalUtil
     public function getReturnUrl(Order $order): string
     {
         return $this->urlGenerator->generate(
-            'product_client_index',
-            [],
+            'paypal_checkout_complete',
+            ['order' => $order->getId()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }

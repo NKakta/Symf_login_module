@@ -45,7 +45,12 @@ class Order
     private $totalPrice;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Product", mappedBy="orders", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="orders", cascade={"persist"})
+     * @ORM\JoinTable(
+     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="cascade")},
+     *     )
+     *  )
      */
     private $products;
 
@@ -129,7 +134,7 @@ class Order
         return $this->products;
     }
 
-    public function setProducts(array $products): Order
+    public function setProducts(?Collection $products): Order
     {
         $this->products = $products;
         return $this;
@@ -165,6 +170,12 @@ class Order
     public function setUser(User $user): Order
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function addProduct(Product $product): Order
+    {
+        $this->products->add($product);
         return $this;
     }
 }
